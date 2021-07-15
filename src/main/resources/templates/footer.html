@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+	<footer>
+
+		<div th:fragment="footer" class="foot">
+			<p>·<a href="/index">首页</a>·
+				<a href="/index?vid=1">螺纹</a>·
+				<a href="/index?vid=2">盘螺</a>·
+				<a href="/index?vid=3">高线</a>·
+				<a href="">手机</a>·
+				<a href="">联系我们</a>·</p>
+			版权所有：上海钢之家信息科技有限公司&nbsp;&nbsp;安徽钢之家供应链<br>
+			平台合作：<a href="//www.zgdzwz.com/" target="_blank">中铁物资集团钢之家电子商务有限公司（中国大宗物资网）</a>
+			<a href="//www.isechome.com/" target="_blank">钢之家易钢云商</a><br>
+			技术支持：<a href="//www.steelhome.cn" target="_blank">上海钢之家信息科技有限公司</a><br>
+			沪B2-20130105
+		</div>
+		<script th:src="@{/js/login.js}"></script>
+	</footer>
+</body>
+</html>

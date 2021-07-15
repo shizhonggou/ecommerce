@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isechome.ecommerce.mapper.isechome.PieceWeightMapper">
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.PieceWeight">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="spec" jdbcType="VARCHAR" property="spec" />
+    <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+  </resultMap>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+<!--    delete from piece_weight_manage-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+    update piece_weight_manage
+    set `status` = -1
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="review" >
+    update piece_weight_manage
+    set `status` = 1
+    where `status`=0
+  </update>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.PieceWeight">
+    insert into piece_weight_manage (id, spec, weight, 
+      `status`, creat_time, create_user_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, 
+      #{status,jdbcType=TINYINT}, #{creatTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.PieceWeight">
+    update piece_weight_manage
+    set spec = #{spec,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=REAL},
+      `status` = #{status,jdbcType=TINYINT},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, spec, weight, `status`, creat_time, create_user_id
+    from piece_weight_manage
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, spec, weight, `status`, creat_time, create_user_id
+    from piece_weight_manage
+    where `status` != -1 order by id desc
+  </select>
+  <select id="getBySpec" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from piece_weight_manage
+    where `status` = 1 and spec = #{spec, jdbcType=VARCHAR} limit 1
+  </select>
+</mapper>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>账号管理</title>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <aside>
+            <div th:insert="~{left :: left(accountManage)}"></div>
+        </aside>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+                <div class="pozition"><p>当前位置：会员中心  &gt; 会员管理 &gt; 账号管理 </p></div>
+                <table class="management" cellspacing="0" cellpadding="0" border="0">
+                    <thead>
+                    <tr style="background: #f6f6f6;">
+                        <td>用户id </td>
+                        <td>姓名</td>
+                        <td>昵称</td>
+                        <td>用户名</td>
+                        <td>手机号</td>
+                        <td>职位</td>
+                        <td th:if="${userLoginID} eq ${zhuLianXiRenID}">主联系人</td>
+                        <td th:if="${userLoginID} eq ${zhuLianXiRenID}">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="accountList_item:${accountList}" align="center">
+                        <td th:text="${accountList_item.id}" align="left"></td>
+                        <td th:text="${accountList_item.real_name}"></td>
+                        <td th:text="${accountList_item.nick_name}"></td>
+                        <td th:text="${accountList_item.user_name}"></td>
+                        <td th:text="${accountList_item.mobile}"></td>
+                        <td th:text="${accountList_item.job}"></td>
+                        <td th:if="${userLoginID} eq ${zhuLianXiRenID}"><input type="radio" name="zhulxr" th:checked="${accountList_item.id} eq ${zhuLianXiRenID}" th:value="${accountList_item.id}"> </td>
+                        <td class="cz" th:if="${userLoginID} eq ${zhuLianXiRenID}"><span class="xg">
+                            <a th:href="@{'/userInfo/accountDetail?id='+${accountList_item.id}}" target="_blank">修改</a>
+                        </span><span class="delete">
+                            <a th:href="@{'/userInfo/accountDelete?id='+${accountList_item.id}}"  onClick="return confirm('确定删除吗?');">删除</a>
+                        </span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <div class="cz2" th:if="${userLoginID} eq ${zhuLianXiRenID}">
+                    <a href="/userInfo/accountAdd" target="_blank">新增</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</section>
+<div th:insert="~{footer :: footer}"></div>
+
+<script type="text/javascript">
+ $(function(){
+  $(":radio").click(function(){
+   var luId = $(this).val();
+   $.ajax({
+            type: "POST",//方法类型
+
+            url: "/userInfo/accountUpdateZhuLXR",//url
+            data: {'link_user_id':luId,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                  },
+            success: function (data) {
+                alert("设置主联系人成功！");
+                    location.reload();
+            },
+            error: function(request, status, error){
+                console.log(error);
+                alert("设置主联系人失败！");
+            }
+        });
+  });
+ });
+</script>
+
+</body>
+</html>

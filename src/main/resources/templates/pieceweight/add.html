@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::commonHeader(${title})">
+</head>
+
+<div th:insert="~{header :: header}"></div>
+<body>
+<section>
+  <div class="main w1000">
+    <div th:insert="~{left :: left(${mark})}"></div>
+
+    <aside>
+      <div class="resources">
+        <div class="resources_tt" th:include="common::varietyTag2"></div>
+        <div class="pozition">
+          <p>当前位置：会员中心 &gt; 系统管理 &gt; 件重设置 </p>
+        </div>
+
+        <form id="pieceweightform" method="get" action="" onsubmit=" return  checkpieceweightForm();">
+          <table class="heavy_set" cellspacing="0" cellpadding="0" border="0">
+            <thead>
+            <tr>
+              <td>规格</td>
+              <td>件重</td>
+              <td>操作</td>
+            </tr>
+            </thead>
+            <tbody >
+              <tr>
+                <td ><input type="text" autocomplete="off"  name="spec" id="spec" th:value="${pieceweight.spec?: ''}" placeholder="请输入规格"></td>
+                <td ><input type="text" autocomplete="off"  name="weight" id="weight" th:value="${pieceweight.weight}" placeholder="请输入重量"></td>
+                <td class="cz">
+                  <input type="hidden" name="id"   th:value="${pieceweight.id}">
+                  <input type="submit" id="saveSubmitBtn" value="保存">
+                  <span class="delete">
+                    <a href="/pieceweight/list" th:text="返回"  ></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </aside>
+  </div>
+
+</section>
+</body>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+
+</html>

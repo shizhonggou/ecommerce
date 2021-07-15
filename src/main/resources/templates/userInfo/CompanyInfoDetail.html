@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>公司信息</title>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <aside>
+            <div th:insert="~{left :: left(companyInfo)}"></div>
+        </aside>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+                <div class="pozition"><p>当前位置：会员中心  &gt; 会员管理  &gt; 公司信息 </p></div>
+                <form action="/userInfo/updateCompanyInfo" name="huiFuLY" id="lybform" onsubmit="return checkCompanyInfoForm()" method="POST" enctype="multipart/form-data">
+                    <table class="Information" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td>公司名称<span>*</span></td>
+                            <td ><input type="text" name="com_name" id="com_name" th:value="${companyDetail.com_name}" th:disabled="${userLoginID} ne ${companyDetail.link_user_id}"> </td>
+                            <td>公司简称<span>*</span></td>
+                            <td ><input type="text" name="com_name_short" id="com_name_short" th:value="${companyDetail.com_name_short}" th:disabled="${userLoginID} ne ${companyDetail.link_user_id}" > </td>
+                        </tr>
+                        <tr>
+                            <td>公司描述<span>*</span></td>
+                            <td colspan="3"><textarea name="com_desc" id="com_desc" th:text="${companyDetail.com_desc}" th:disabled="${userLoginID} ne ${companyDetail.link_user_id}"> </textarea></td>
+
+                        </tr>
+                        <tr>
+                            <td>省   份<span>*</span></td>
+                            <td><input type="text" name="address_state" id="address_state" th:value="${companyDetail.address_state}" th:disabled="${userLoginID} ne ${companyDetail.link_user_id}"></td>
+                            <td>城   市<span>*</span></td>
+                            <td><input type="text" name="address_city" id="address_city" th:value="${companyDetail.address_city}" th:disabled="${userLoginID} ne ${companyDetail.link_user_id}"></td>
+                        </tr>
+                        <tr>
+                            <td>详细地址<span>*</span></td>
+                            <td colspan="3"><input type="text" name="address" id="address" th:value="${companyDetail.address}" th:disabled="${userLoginID} ne ${companyDetail.link_user_id}"></td>
+
+                        </tr>
+                        <tr th:if="${userLoginID} eq ${companyDetail.link_user_id}">
+                            <td>三证附件</td>
+                            <td><input type="file" name="file" id="file"></td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <div style="text-align: center;" th:if="${userLoginID} eq ${companyDetail.link_user_id}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="hidden"  name="id" th:value="${companyDetail.id}">
+                        <input type="submit" value="保存"  style="background: #FF6632;color: white;width: 300px;height: 30px;border: 0;cursor:pointer;">
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

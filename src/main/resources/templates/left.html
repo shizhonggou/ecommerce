@@ -1,0 +1,64 @@
+<!--
+ * @Author: lina
+ * @Date: 2021-06-09 16:23:26
+ * @LastEditTime: 2021-06-11 18:00:20
+ * @FilePath: \e-commerce\src\main\resources\templates\left.html
+ * @Description: 
+ * @Copyright: © 2021, SteelHome. All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <aside th:fragment="left(mark)">
+        <div class="nav_tree">
+            <h3><img src="/images/khzx.fw.png">会员中心</h3>
+            <dl class="dl1">
+                <dt>资源管理</dt>
+                <dd>
+                    <a th:if="${mark eq 'sh'}" href="/resourcemanage/index?act=sh" class="now" >资源发布</a>
+                    <a th:if="${mark ne 'sh'}" href="/resourcemanage/index?act=sh" >资源发布</a>
+                </dd>
+                <dd>
+                    <a th:if="${mark eq 'sj'}" href="/resourcemanage/index?act=sj" class="now" >资源上架</a>
+                    <a th:if="${mark ne 'sj'}" href="/resourcemanage/index?act=sj" >资源上架</a>
+                </dd>
+                <dd>
+                    <a th:if="${mark eq 'xj'}" href="/resourcemanage/index?act=xj" class="now" >在售资源</a>
+                    <a th:if="${mark ne 'xj'}" href="/resourcemanage/index?act=xj" >在售资源</a>
+                </dd>
+                
+            </dl>
+            <dl class="dl2">
+                <dt>订单管理</dt>
+                <dd><a th:if="${mark eq 'order'}" href="/orderinformation/index" class="now" >订单列表</a></dd>
+                <dd><a th:if="${mark ne 'order'}" href="/orderinformation/index" >订单列表</a></dd>
+            </dl>
+            <dl class="dl3" th:if="${session.SPRING_SECURITY_CONTEXT.authentication.principal.id} eq ${T(com.isechome.ecommerce.constant.CommonConstant).GCGZJ}" >
+                <dt>系统管理</dt>
+                <dd><a th:if="${mark eq 'pieceweight'}" href="/pieceweight/list" class="now" >件重设置</a></dd>
+                <dd><a th:if="${mark ne 'pieceweight'}" href="/pieceweight/list" >件重设置</a></dd>
+            </dl>
+            <dl class="dl4">
+                <dt>会员管理</dt>
+                <dd>
+                    <a th:if="${mark eq 'userInfo'}" href="/userInfo/userInfoDetail" class="now">个人信息</a>
+                    <a th:if="${mark ne 'userInfo'}" href="/userInfo/userInfoDetail">个人信息</a>
+                </dd>
+                <dd>
+                    <a th:if="${mark eq 'companyInfo'}" href="/userInfo/companyDetail" class="now">公司信息</a>
+                    <a th:if="${mark ne 'companyInfo'}" href="/userInfo/companyDetail">公司信息</a>
+                </dd>
+                <dd>
+                    <a th:if="${mark eq 'accountManage'}" href="/userInfo/accountList" class="now">账号管理</a>
+                    <a th:if="${mark ne 'accountManage'}" href="/userInfo/accountList">账号管理</a>
+                </dd>
+            </dl>
+        </div>
+    </aside>
+</body>
+</html>

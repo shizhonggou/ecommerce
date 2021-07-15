@@ -1,0 +1,64 @@
+<!--
+ * @Author: lina
+ * @Date: 2021-05-31 10:15:41
+ * @LastEditTime: 2021-06-04 10:05:44
+ * @FilePath: \e-commerce\src\main\resources\templates\resourceManage\upexcel.html
+ * @Description: 
+ * @Copyright: © 2021, SteelHome. All rights reserved.
+-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+		<meta name="renderer" content="webkit">
+		<title>资源上传</title>
+		<style type="text/css"></style>
+	</head>
+	<body>
+	<table width="1000" border="0" align="center" cellpadding="0"
+			cellspacing="0">
+			<tr>
+				<td height="150">
+					<form name="biaoge" enctype="multipart/form-data" method="post" action="doupexcel">
+						<p>&nbsp;
+						</p>
+						<table width="50%" align="center">
+							<tr>
+								<td colspan="2">
+									请选择本机excel文件上传
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<input name="file" type="file" size="40">
+								</td>
+							</tr>
+							<tr>
+								<td height="40" colspan="2">
+									<div align="center">
+										<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+										<input type="submit" name="Submit" value="提交">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td width="27%" valign="top">
+									<div align="left">
+										下载模版：
+										<br>
+									</div>
+								</td>
+								<td width="73%" valign="top">
+									<p>
+										<a href="/download/zymb.xlsx">点击下载模板</a><br>
+									</p>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</td>
+			</tr>
+	</table>
+	</body>
+</html>

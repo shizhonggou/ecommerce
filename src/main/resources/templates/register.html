@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+	<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<title>安徽钢之家供应链微电商平台</title>
+
+
+		<!-- sreach 下拉 start -->
+</head>
+
+<div th:insert="~{header :: header}"></div>	
+<section>
+<div class="registered" >	
+<div class="pozition"><p>当前位置：会员注册</p></div>
+<h4>基本信息</h4>
+<form action="/register/registerAddAction" name="regform" id="regform" method="POST" enctype="multipart/form-data"  onsubmit="return check()">
+		<table class="Information" cellspacing="0" cellpadding="0" border="0">
+			
+		<tbody>
+		<tr>
+			
+			<td><span>*</span>姓   名</td>
+			<td><input type="text"  name="real_name"></td>
+			<td><span>*</span>昵   称</td>
+			<td><input type="text"  name="nick_name"></td>
+			</tr>
+				<tr>
+			<td><span>*</span>用户名</td>
+			<td><input type="text"   name="user_name" autocomplete="new-text" onchange="ajaxcheckuname(this.value)" ></td>
+			<td><span>*</span>密 码</td>
+			<td><input type="password" name="password" autocomplete="new-password" onchange="onblurcheckpassword(this.value);"  ></td>
+			</tr>
+				<tr>
+			<td><span>*</span>交易密码</td>
+			<td ><input type="password" name="pay_password"   onchange="onblurcheckpassword2(this.value);"> </td>
+			<td><span>*</span>手机号</td>
+			<td ><input type="text" name="mobile" onchange="ajaxchecktel(this.value)" > </td>
+			</tr>
+				<tr>
+			<td><span>*</span>身份证号</td>
+			<td ><input type="text" name="idcard"  onchange="onblurcheckidcard(this.value);"  > </td>
+			<td>&nbsp; 邮   箱</td>
+			<td ><input type="text" name="email" > </td>
+			</tr>
+				<tr>
+			<td>&nbsp; 职    位</td>
+			<td ><input type="text" name="job" > </td>
+			<td>&nbsp; 性   别</td>
+			<td><select name="sex" style="width: 70%; color: #3333338c; padding: 8px 20px; margin: 12px auto; display: inline-block;border: 1px solid #ccc; border-radius: 0px;box-sizing: border-box;">
+				<option value="1">男</option>
+				<option value="2">女</option>
+			</select></td>
+			</tr>
+			<tr>
+			<td><span>*</span>地    址</td>
+			<td colspan="3"><input type="text" name="address_user" > </td>
+			
+			</tr>
+			
+		</tbody>	
+</table>
+	
+<h4>公司信息</h4>
+	<table class="Information" cellspacing="0" cellpadding="0" border="0">
+			
+		<tbody>
+		<tr>
+			<td><span>*</span>公司名称</td>
+			<td><input type="text"  name="com_name" ></td>
+			<td><span>*</span>公司简称</td>
+			<td><input type="text" name="com_name_short"></td>
+			</tr>
+				<tr>
+			<td><span>*</span>公司描述</td>
+			<td colspan="3"><textarea name="com_desc" ></textarea></td>
+			
+			</tr>
+				<tr>
+			<td><span>*</span>省   份</td>
+			<td><input type="text" name="address_state"></td>
+			<td><span>*</span>城   市</td>
+			<td><input type="text" name="address_city"></td>
+			</tr>
+				<tr>
+			<td><span>*</span>详细地址</td>
+			<td colspan="3"><input type="text" name="address"></td>
+			
+			</tr>
+				<tr>
+			<td>&nbsp; 三证附件</td>
+			 <td><input type="file" name="file"></td>
+			
+			</tr>
+			
+		</tbody>	
+</table>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+				<input type="hidden" name="erro" id = "erro" value = "">
+	<div class="save"><input type="submit" value="保存"  id="ty" style="background: #FF6632;color: white;width: 300px;height: 30px;border: 0;cursor:pointer;"></div>
+</form>
+</div>
+</section>
+
+<script type="text/javascript">
+function check(){
+	var f = document.forms["regform"];
+	if( f.real_name.value == '' ){
+	    alert("请输入姓名");
+		f.real_name.focus();
+		return false;
+	}
+	
+	if( f.user_name.value == '' ){
+	    alert("请输入用户名");
+		f.user_name.focus();
+		return false;
+	}
+	if( f.nick_name.value == '' ){
+	    alert("请输入昵称");
+		f.nick_name.focus();
+		return false;
+	}
+    if( f.password.value == '' ){
+        alert("请输入密码");
+		f.password.focus();
+        return false;
+    }
+	var regPwd = /^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z_][A-Za-z_0-9]{5,16}$/;
+	var password=f.password.value.replace(/\s*/g,"");
+  if(!regPwd.test(password)){
+	alert("请输入正确的密码（6~16位字母数字下划线，不能以数字开头）");
+	f.password.focus();
+        return false;
+        }
+
+
+	if( f.pay_password.value == '' ){
+        alert("请输入交易密码");
+		f.pay_password.focus();
+        return false;
+    }
+	var pay_password=f.pay_password.value.replace(/\s*/g,"");
+	if(f.pay_password.value.length < 6 ){
+	alert("请输入六位以上的交易密码");
+	f.pay_password.focus();
+        return false;
+        }
+   
+    if( f.mobile.value == '' ){
+        alert("请输入手机号码");
+		f.mobile.focus();
+        return false;
+    }
+	if(!(/^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z_][A-Za-z_0-9]{0,}$/).test(f.user_name.value)) {
+        alert("用户名长度应该为6～18位，且不能包含字母数字下划线以外的字符");
+		f.user_name.focus();
+        return false;
+        }
+
+	if( f.idcard.value == '' ){
+        alert("请输入身份证号");
+		f.idcard.focus();
+        return false;
+    }
+	if(f.idcard.value.length != 18){
+		alert("身份证号码长度错误");
+		f.idcard.focus();
+        return false;
+        }
+	if( f.address_user.value == '' ){
+	    alert("请输入地址");
+		f.address_user.focus();
+		return false;
+	}
+	if( f.com_name.value == '' ){
+	    alert("请输入公司名称");
+		f.com_name.focus();
+		return false;
+	}
+
+	if( f.com_name_short.value == '' ){
+	    alert("请输入公司简称");
+		f.com_name_short.focus();
+		return false;
+	}
+	if( f.com_desc.value == '' ){
+	    alert("请输入公司描述");
+		f.com_desc.focus();
+		return false;
+	}
+	if( f.address_state.value == '' ){
+	    alert("请输入省份");
+		f.address_state.focus();
+		return false;
+	}
+	if( f.address_city.value == '' ){
+	    alert("请输入城市");
+		f.address_city.focus();
+		return false;
+	}
+	if( f.address.value == '' ){
+	    alert("请输入详细地址");
+		f.address.focus();
+		return false;
+	}
+	if( f.erro.value == '0' ){
+	    alert("有信息填写错误，请检查！");
+		//f.com_name.focus();
+		return false;
+	}
+	　return true;
+}
+
+
+
+function ajaxcheckuname(name){
+    var f = document.forms["regform"];
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    if(name!=''){
+
+        if(/.*[\u4e00-\u9fa5]+.*$/.test(name)){
+	    alert("用户名不能为中文");
+		f.user_name.focus();
+            return;
+        }
+	  
+        if(!(/^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z_][A-Za-z_0-9]{0,}$/).test(name)) {
+        alert("用户名长度应该为6～18位，且不能包含字母数字下划线以外的字符");
+			f.user_name.focus();
+            return;
+        }
+
+		$.ajax({
+                url: "/checkusername",
+                type: "POST",
+                dataType:"json",
+                data: {"username": name},
+		beforeSend: function(xhr){
+                xhr.setRequestHeader(header,token);
+            },                  
+        success: function(data) {
+			if(data.iscz==1){
+			alert(data.Message);
+			document.getElementById('erro').value = 1;
+            return;
+		}
+		else{
+			document.getElementById('erro').value = 0;	
+		}
+						   },
+	    error: function (xhr,ajaxOptions, thrownError) {
+                console.log(xhr.status + ": " + thrownError);
+            }
+        });
+}
+}
+
+
+function onblurcheckpassword(i){
+	var f = document.forms["regform"];
+	var regPwd = /^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z_][A-Za-z_0-9]{5,16}$/;
+	var password=f.password.value.replace(/\s*/g,"");
+  if(!regPwd.test(password)){
+	alert("请输入正确的密码（6~16位字母数字下划线，不能以数字开头）");
+		document.getElementById('erro').value = 1;
+        }
+		else{
+		document.getElementById('erro').value = 0;	
+		}
+	}
+	
+	function onblurcheckpassword2(i){
+	var f = document.forms["regform"];
+	//var regPwd = /^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z_][A-Za-z_0-9]{5,16}$/;
+	var pay_password=f.pay_password.value.replace(/\s*/g,"");
+	if(f.pay_password.value.length < 6 ){
+	alert("请输入六位以上的交易密码");
+		document.getElementById('erro').value = 1;
+        }
+		else{
+		document.getElementById('erro').value = 0;	
+		}
+	}
+	
+	function onblurcheckidcard(i){
+	var f = document.forms["regform"];
+	if(f.idcard.value.length != 18){
+		alert("身份证号码长度错误");
+		//f.password.focus();
+		document.getElementById('erro').value = 1;
+        }
+		else{
+		document.getElementById('erro').value = 0;	
+		}
+	}
+
+
+	function ajaxchecktel(sMobile){
+    var f = document.forms["regform"];
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    if(sMobile!=''){
+		reg= /^(1[0-9]{10})$/;
+    if(!reg.test(sMobile)){
+        alert( "请输入正确的手机号码" );
+        return false;
+    }
+	}
+		$.ajax({
+                url: "/checktel",
+                type: "POST",
+                dataType:"json",
+                data: {"tel": sMobile},
+		beforeSend: function(xhr){
+                xhr.setRequestHeader(header,token);
+            },                  
+        success: function(data) {
+			if(data.iscz==1){
+			alert(data.Message);
+			document.getElementById('erro').value = 1;
+            return;
+		}
+		else{
+			document.getElementById('erro').value = 1;	
+		}
+						   },
+	    error: function (xhr,ajaxOptions, thrownError) {
+                console.log(xhr.status + ": " + thrownError);
+            }
+        });
+}
+
+</script> 
+
+<div th:insert="~{footer :: footer}"></div>	
+<div th:include="common::commonFooter"></div>
+<body>
+</body>
+</html>

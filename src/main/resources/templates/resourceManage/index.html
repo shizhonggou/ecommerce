@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>资源管理</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <script type="text/javascript" th:src="@{/js/layui/layui.all.js}"></script>
+    <link  th:href="@{/js/layui/css/layui.css}" rel="stylesheet" type="text/css" />
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+    <style>
+    .steel_list_table input[type="text"]{border: 1px solid #dedede;text-align:center;padding:1px 2px;width:50px;height: 22px;}
+    </style>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<section>
+<div class="main w1000">
+<div th:insert="~{left :: left(${act})}"></div>
+<aside>
+<div class="resources">
+<div class="resources_tt" th:include="common::varietyTag2"></div>
+
+<div class="pozition">
+    <p>当前位置：会员中心 &gt; 资源管理 &gt; 
+    <span th:if="${act eq 'sh'}">资源发布</span>
+    <span th:if="${act eq 'sj'}">资源上架</span>
+    <span th:if="${act eq 'xj'}">在售资源</span>
+    </p>
+</div>
+   
+<section>
+<div class="steel_list w830">
+    <div class="ss">
+        <form name="form1" id="form1" th:action="@{'/resourcemanage/index?act='+${act}}" method="post">	
+            <table cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                <tr>
+                    <td><p>品名：</p><input type="text" name="varietyName" id="varietyName" th:value="${varietyName}" size="18"></td>
+                    <td><p>材质：</p><input type="text" name="Material" id="Material" th:value="${Material}" size="18"></td>
+                    <td><p>规格：</p><input type="text"  name="Spec" id="Spec" th:value="${Spec}" size="18"><p></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><p>产地：</p><input type="text" name="origin_code" id="origin_code" th:value="${origin_code}" size="18"></td>
+                    <input type="hidden" name="page" id="page"/>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>					
+                    <td><a href="javascript:find();">搜索</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div> 
+<form name="form2" id="form2" action="" method="post">
+<table class="steel_list_table w830" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="checkbox">全选 <input type='checkbox' id="selallbox" onclick="selall();"/></td>
+            <td>品名</td>
+            <td>材质</td>
+            <td>规格</td>
+            <td>产地</td>
+            <td>仓库</td>
+            <td>件数</td>
+            <td>重量(吨)</td>
+            <td>价格</td>
+            <td>开始时间</td>
+            <td>结束时间</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="list:${resourceSales}">
+            <td class="checkbox"><input type='checkbox' name='checkednum' th:id="@{'checkednum_'+${list.id}}" th:value="${list.id}"/></td>
+            <td th:text="${list.varietyname}"></td>
+            <td th:text="${list.material}"></td>
+            <td th:text="${list.spec}" th:id="@{'spec_'+${list.id}}"></td>
+            <td th:text="${list.originCode}"></td>
+            <td th:text="${list.cangku}"></td>
+            <td th:if="${#strings.contains(list.varietyname,'螺纹')}">
+                <input type="text" th:name="@{'piece_'+${list.id}}" th:id="@{'piece_'+${list.id}}" th:value="${#numbers.formatInteger(list.piece,0)}" th:oninput="'sel(\''+${list.id}+'\'), checkPrice(this);'" th:onchange="'getWeight(\''+${list.id}+'\');'"/>
+            </td>
+            <td th:unless="${#strings.contains(list.varietyname,'螺纹')}">
+                <input type="text" th:name="@{'piece_'+${list.id}}" th:id="@{'piece_'+${list.id}}" th:value="${#numbers.formatInteger(list.piece,0)}" th:oninput="'sel(\''+${list.id}+'\'), checkPrice(this);'"/>
+            </td>
+
+            <td th:if="${#strings.contains(list.varietyname,'螺纹')}">
+                <input type="text" th:name="@{'num_'+${list.id}}" th:id="@{'num_'+${list.id}}" th:value="${list.num}" readonly/>
+            </td>
+            <td th:unless="${#strings.contains(list.varietyname,'螺纹')}">
+                <input type="text" th:name="@{'num_'+${list.id}}" th:id="@{'num_'+${list.id}}" th:value="${list.num}" th:oninput="'sel(\''+${list.id}+'\'), checkNum(this);'"/>
+            </td>
+            
+            <td>
+                <input type="text" th:name="@{'price_'+${list.id}}" th:id="@{'price_'+${list.id}}" th:value="${#numbers.formatInteger(list.price,0)}" th:oninput="'sel(\''+${list.id}+'\')'"/>
+            </td>
+            <td >
+                <input type="text" th:name="@{'salesStartTime_'+${list.id}}" style="width:150px;text-align:left;" class="Wdate" th:onclick="@{'WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', onpicked:function(){sel('+${list.id}+');}})'}" th:value="${#dates.format(list.salesStartTime, 'yyyy-MM-dd HH:mm:ss')}" autocomplete="off"/>
+            </td>
+            <td>
+                <input type="text"th:name="@{'salesEndTime_'+${list.id}}" style="width:150px;text-align:left;" class="Wdate" th:onclick="@{'WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', onpicked:function(){sel('+${list.id}+');}})'}" th:value="${#dates.format(list.salesEndTime, 'yyyy-MM-dd HH:mm:ss')}" autocomplete="off" />
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page">
+
+    <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+');'">上一页</a>
+
+    <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+        <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+        <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+');'" th:text="${navigatepageNum}"></a>
+    </p>
+    <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+');'">下一页</a>
+
+
+    <span>到第</span>
+    <input type="text" id="jump_num">
+    <span>页</span>
+    <button type="button" onclick="jumppage();">确定</button>
+</div>
+<div class="batch" th:if="${act eq 'sh'}">
+    <!-- <a class="bt" href="#">添加明细</a> -->
+    <a href="javascript:void(0)" class="bt" id="upload">导入excel明细</a>
+    <a href="/download/zymb.xlsx">点击下载批量上传Excel模板</a>
+</div>
+<div class="order_confirm">
+    <div class="confirm">
+        <input type="password" name="pay_password" id="pay_password" placeholder="输入交易密码">
+        <input th:if="${act} eq 'sh'" type="button" value="审核" onclick="updateStatus();">
+        <input th:if="${act} eq 'sj'" type="button" value="上架" onclick="updateStatus();">
+        <input th:if="${act} eq 'xj'" type="button" value="下架" onclick="updateStatus();">
+        <input type="button" value="保存" onclick="save();">
+        <input type="hidden" name="allsel" id="allsel"/>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </div>
+</div>
+</form>
+<div style="clear:both"></div>
+</section>
+</aside>
+</div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+<script>
+    // 翻页
+    function jumppage() {
+        var pageNum = document.getElementById("jump_num").value;
+        if(pageNum>0){
+            queryDeviceRecords(pageNum);
+        }
+    }
+
+    function find(pageNum) {
+        document.getElementById('form1').submit();
+    }
+    
+    function queryDeviceRecords(pageNum) {
+        $("#page").val(pageNum);
+        document.getElementById('form1').submit();
+    }
+
+    function checkPrice(obj) {
+        obj.value = obj.value.replace(/[^0-9]/g,'');
+    }
+
+    function checkNum(obj) {
+        obj.value = obj.value.replace(/[^\d.]/g, ""); //清除“数字”和“.”以外的字符   
+        obj.value = obj.value.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的   
+        obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/, '$1$2.$3'); //只能输入三个小数   
+    }
+
+    // 全选
+    function selall(){
+        var checkarr = document.getElementsByName("checkednum");
+        var length = checkarr.length;
+        obj = document.getElementById("selallbox");
+        if(obj.checked){
+            //全选
+            for(i=0;i<length;i++){
+                checkarr[i].checked=true;
+            }
+        }else{
+            //全不选
+            for(i=0;i<length;i++){
+                checkarr[i].checked=false;
+            }
+        }
+    }
+
+    //获得选中项
+    function getcheckednum() {
+        var allSel = "";
+        var checkarr = document.getElementsByName("checkednum");
+        for (i = 0; i < checkarr.length; i++) {
+            if (checkarr[i].checked) {
+                if (allSel == "")
+                    allSel = checkarr[i].value;
+                else
+                    allSel = allSel + "," + checkarr[i].value;
+            }
+        }
+        return allSel;
+    }
+
+    function save() {
+        var allsel = getcheckednum();
+        if (allsel == "") {
+            alert("请选择资源！");
+            return false;
+        }
+        $("#allsel").val(allsel);
+        $.ajax({
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/resourcemanage/resourceupdate" ,//url
+            data: $('#form2').serialize(),
+            success: function (data) {
+                if (data == "1") {
+                    alert("保存成功！");
+                    location.reload();
+                } else {
+                    alert("保存失败！");
+                }
+            },
+            error: function(request, status, error){
+                console.log(error);
+                alert("保存失败！");
+            }
+        });
+    }
+
+    function sel(id) {
+        document.getElementById("checkednum_"+id).checked=true;
+    }
+
+    //螺纹根据件数获取重量
+    function getWeight(id) {
+        var spec = $("#spec_"+id).text();
+        $.ajax({ 
+            type: "post", 
+            url: "/resourcemanage/getWeight",   
+            dataType: "json",
+            data: {
+                'spec':spec,
+                "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+            },
+            success: function (data) {
+                // console.log(spec);
+                setWeight(id, data);
+            },
+            error: function(request, status, error){
+                console.log(error);
+            }
+        });
+    }
+
+    function setWeight(id, oneweight) {
+        var piece = $("#piece_"+id).val();
+        var sumWeight = piece * oneweight;
+        $("#num_"+id).val(sumWeight.toFixed(3));
+    }
+
+    function updateStatus() {
+        var allsel = getcheckednum();
+        if (allsel == "") {
+            alert("请选择资源！");
+            return false;
+        }
+        var checkstr = checkPayWord();
+        if (checkstr == "successed") {
+            var act = "[[${act}]]";
+            $.ajax({ 
+                type: "post", 
+                url: "/resourcemanage/updateStatus",   
+                dataType: "json",
+                data: {
+                    'act': act,
+                    'allsel': allsel,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                },
+                success: function (data) {
+                    if (data == "1") {
+                        alert("操作成功！");
+                        location.reload();
+                    }
+                },
+                error: function(request, status, error){
+                    console.log(error);
+                }
+            });
+        }
+    }
+
+    function checkPayWord() {
+        var inputPayWord = $("#pay_password").val();
+        var str = "falsed";
+        if(inputPayWord==""){
+            alert("请输入交易密码！");
+            return str;
+        }
+        $.ajax({ 
+            type: "post", 
+            url: "/resourcemanage/checkPayWord",   
+            dataType: "json",
+            async:false, 
+            data: {
+                'inputPayWord': inputPayWord,
+                "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+            },
+            success: function (data) {
+                if (data == "1") {
+                    str = "successed";
+                } else if(data == '2'){
+                    alert("交易密码错误！")
+                }
+            },
+            error: function(request, status, error){
+                console.log(error);
+            }
+        });
+        return str;
+    }
+
+    layui.use(['upload','form','layer'], function(){
+        var upload = layui.upload;
+        var form = layui.form;
+        var uploadInst = upload.render({
+            elem: '#upload' //绑定元素
+            ,url: 'doupexcel'
+            ,data: {
+                "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+            }
+            ,accept: 'file'
+            ,acceptMime: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            ,exts: 'xls|xlsx'
+            ,size: 2048
+            ,before: function(){
+                layer.load(1);
+            }
+            ,done: function(res){
+                console.log(res);
+                layer.closeAll('loading');
+                if (res == "0") {
+                    alert("导入成功！");
+                    location.reload();
+                } else if (res == "-1") {
+                    alert("文件类型不正确或为空！");
+                } else {
+                    alert("有"+res+"条数据导入失败!");
+                }
+            }
+            ,error: function(message){
+                layer.closeAll('loading');
+            }
+        });
+    });
+</script>
+</html>

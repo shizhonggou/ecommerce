@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="commonHeader(title)">
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jiazai.css}">
+</head>
+<body>
+
+<div th:fragment="varietyTag(vid)">
+    <ul class="tabs" id="">
+        <li th:if="${vid} eq 1" class="thistab"><a href="/index?vid=1">螺纹</a></li>
+        <li th:if="${vid} neq 1" ><a href="/index?vid=1">螺纹</a></li>
+        <li th:if="${vid} eq 2"  class="thistab"><a href="/index?vid=2">盘螺</a></li>
+        <li th:if="${vid} neq 2"  class=""><a href="/index?vid=2">盘螺</a></li>
+        <li th:if="${vid} eq 3" class="thistab"><a href="/index?vid=3">高线</a></li>
+        <li th:if="${vid} neq 3" class=""><a href="/index?vid=3">高线</a></li>
+    </ul>
+</div>
+
+<div class="resources_tt" th:fragment="varietyTag2">
+    <div class="tittle">
+        <a href="/index?vid=1">螺纹</a>
+        <a href="/index?vid=2">盘螺</a>
+        <a href="/index?vid=3">高线</a>
+    </div>
+</div>
+
+<footer th:fragment="commonFooter">
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/js/pieceweight.js}"></script>
+    <script th:src="@{/js/resource.js}" ></script>
+</footer>
+</body>
+</html>

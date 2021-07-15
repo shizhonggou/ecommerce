@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.isechome.SmsCheckCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.SmsCheckCode" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="check_code" property="check_code" jdbcType="VARCHAR" />
+    <result column="creat_time" property="creat_time" jdbcType="TIMESTAMP" />
+    <result column="expire_date" property="expire_date" jdbcType="TIMESTAMP" />
+    <result column="is_valid" property="is_valid" jdbcType="TINYINT" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectSmsCheckCodeByMobileNumber" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT * FROM  sms_check_code WHERE mobile=#{MobileNumber} and expire_date>=NOW() order by creat_time desc limit 1
+  </select>
+</mapper>

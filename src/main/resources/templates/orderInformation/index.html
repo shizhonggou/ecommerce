@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>订单管理</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<section>
+<div class="main w1000">
+    <div th:insert="~{left :: left(${mark})}"></div>
+    <aside>
+    <div class="resources">
+    <div class="resources_tt" th:include="common::varietyTag2"></div>
+
+    <div class="pozition">
+        <p>当前位置：会员中心 &gt; 订单管理 &gt; 
+        <span th:if="${status eq '1'}">待确认</span>
+        <span th:if="${status eq '2'}">待发货</span>
+        <span th:if="${status eq '3'}">已发货</span>
+        <span th:if="${status eq '4'}">已完成</span>
+        <span th:if="${status eq '5'}">无效订单</span>
+        </p>
+    </div>
+
+    <div class="ss">
+    <form name="form1" id="form1" th:action="@{'/orderinformation/index?status='+${status}}" method="post">
+        <table cellspacing="0" cellpadding="0" border="0">
+        <tbody>
+            <tr>
+                <td><p>品名：</p><input type="text" name="varietyName" id="varietyName" th:value="${varietyName}" size="18"></td>
+                <td><p>材质：</p><input type="text" name="Material" id="Material" th:value="${Material}" size="18"></td>
+                <td><p>规格：</p><input type="text" name="Spec" id="Spec" th:value="${Spec}" size="18"></td>
+            </tr>
+            <tr>
+                <td><p>产地：</p><input type="text" name="origin_code" id="origin_code" th:value="${origin_code}" size="18"></td>
+                <td colspan="2"><p>订单时间：</p><input type="text" name="stime" id="stime" style="width:140px" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" th:value="${stime}" autocomplete="off" size="18"><p> - </p><input type="text" name="etime" id="etime" style="width:140px" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" th:value="${etime}" autocomplete="off" size="18"> <a href="javascript:find();">搜索</a></td>
+            </tr>
+            <input type="hidden" name="page" id="page"/>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        </tr></tbody>
+        </table>
+    </form>
+    </div>
+    </div>
+    <section>
+    <div class="order">
+    <div class="process">
+    <div class="tab1" id="tab1">
+    <div class="menu">                                                                                              
+        <ul>
+            <li id="one1" onclick="setTab(1)" th:if="${status eq '1'}" class="off">待确认订单</li>
+            <li id="one1" onclick="setTab(1)" th:if="${status ne '1'}">待确认订单</li>
+            <li id="one2" onclick="setTab(2)" th:if="${status eq '2'}" class="off">待发货</li>
+            <li id="one2" onclick="setTab(2)" th:if="${status ne '2'}">待发货</li>
+            <li id="one3" onclick="setTab(3)" th:if="${status eq '3'}" class="off">发货中</li>
+            <li id="one3" onclick="setTab(3)" th:if="${status ne '3'}">发货中</li>
+            <li id="one4" onclick="setTab(4)" th:if="${status eq '4'}" class="off">已完成</li>
+            <li id="one4" onclick="setTab(4)" th:if="${status ne '4'}">已完成</li>
+            <li id="one5" onclick="setTab(5)" th:if="${status eq '5'}" class="off">无效订单</li>
+            <li id="one5" onclick="setTab(5)" th:if="${status ne '5'}">无效订单</li>
+        </ul>
+    </div>
+    <div class="menudiv">
+    <div id="con_one_1">
+    <div class="confirmed_order">
+        <table cellspacing="0" cellpadding="0" border="0">
+        <thead>
+            <tr class="tt">
+                <td>品名</td><td>材质</td><td>规格</td><td>产地</td><td>仓库</td><td>件数</td><td>重量</td><td>价格</td><td>订单时间</td>
+            </tr>
+        </thead>
+        <tbody>
+            <span th:each="list:${orderlist}">
+            <tr class="tittle">
+                <td colspan="11">订单号: <span th:text="${list.orderId}"></span></td>
+            </tr>
+            <tr class="tt">
+                <td th:text="${list.resourceSales.varietyname}"></td>
+                <td th:text="${list.resourceSales.material}"></td>
+                <td th:text="${list.resourceSales.spec}"></td>
+                <td th:text="${list.resourceSales.originCode}"></td>
+                <td th:text="${list.resourceSales.cangku}"></td>
+                <td th:if="${status ne '4'}" th:text="${#numbers.formatInteger(list.piece,0)}"></td>
+                <td th:if="${status ne '4'}" th:text="${list.num}"></td>
+                <td th:if="${status eq '4'}" th:text="${#numbers.formatInteger(list.actualPiece,0)}"></td>
+                <td th:if="${status eq '4'}" th:text="${list.actualNum}"></td>
+                <td th:text="${#numbers.formatInteger(list.price,0)}"></td>
+                <td th:if="${status} eq '1'" th:text="${#dates.format(list.creatTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:if="${status} ne '1'" th:text="${#dates.format(list.confirmTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            <tr class="bb">
+                <td colspan="11">
+                <span class="bt1"><a href="javascript:void(0)" th:onclick="'detail(\''+${list.id}+'\');'">详 细</a></span>
+                <!-- <span class="bt2"><a href="">合 同</a></span> -->
+                <span class="bt3" th:if="${status} ne '5'"><a href="javascript:void(0)" th:onclick="'cancel(\''+${list.id}+'\');'">取 消</a></span>
+                </td>	
+            </tr>
+            </span>
+        </tbody>
+        </table>
+        <div class="page">
+
+            <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+');'">上一页</a>
+    
+            <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+                <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+                <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+');'" th:text="${navigatepageNum}"></a>
+            </p>
+            <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+');'">下一页</a>
+    
+    
+            <span>到第</span>
+            <input type="text" id="jump_num">
+            <span>页</span>
+            <button type="button" onclick="jumppage();">确定</button>
+        </div>
+    </div>
+</div>
+</div>
+</aside>
+</div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+<script>
+    // 翻页
+    function jumppage() {
+        var pageNum = document.getElementById("jump_num").value;
+        if(pageNum>0){
+            queryDeviceRecords(pageNum);
+        }
+    }
+
+    function find(pageNum) {
+        document.getElementById('form1').submit();
+    }
+    
+    function queryDeviceRecords(pageNum) {
+        $("#page").val(pageNum);
+        document.getElementById('form1').submit();
+    }
+
+    // 取消
+    function cancel(id) {
+        if (!confirm("确定取消？")){
+            return false;
+        }
+        $.ajax({ 
+            type: "post", 
+            url: "/orderinformation/updateStatus",   
+            dataType: "json",
+            data: {
+                'id': id,
+                'status': "5",
+                "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+            },
+            success: function (data) {
+                if (data == "1") {
+                    alert("取消成功！");
+                    location.reload();
+                } else {
+                    alert("取消失败！");
+                }
+            },
+            error: function(request, status, error){
+                console.log(error);
+                alert("取消失败！");
+            }
+        });
+    }
+
+    function detail(id) {
+        window.open("detail?id="+id)
+    }
+
+    function setTab(status) {
+        window.location.href = "index?status="+status;
+    }
+</script>
+</html>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.isechome.OrderInformationMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.OrderInformation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="rs_id" property="rsId" jdbcType="INTEGER" />
+    <result column="purchase_mid" property="purchaseMid" jdbcType="INTEGER" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="piece" property="piece" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="DOUBLE" />
+    <result column="actual_piece" property="actualPiece" jdbcType="DOUBLE" />
+    <result column="actual_num" property="actualNum" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="order_expiration_time" property="orderExpirationTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="where_from" property="whereFrom" jdbcType="TINYINT" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="confirm_user_id" property="confirmUserId" jdbcType="INTEGER" />
+    <association property="resourceSales" javaType="com.isechome.ecommerce.entity.ResourceSales">        
+      <!-- <result column="id" jdbcType="INTEGER" property="id" /> -->
+      <result column="varietyName" jdbcType="VARCHAR" property="varietyname" />
+      <result column="vid" jdbcType="TINYINT" property="vid" />
+      <result column="Material" jdbcType="VARCHAR" property="material" />
+      <result column="Spec" jdbcType="VARCHAR" property="spec" />
+      <result column="origin_code" jdbcType="VARCHAR" property="originCode" />
+      <result column="cangku" jdbcType="VARCHAR" property="cangku" />
+      <!-- <result column="piece" jdbcType="DOUBLE" property="piece" /> -->
+      <result column="sold_num" jdbcType="DOUBLE" property="soldNum" />
+      <!-- <result column="num" jdbcType="DOUBLE" property="num" /> -->
+      <!-- <result column="price" jdbcType="DOUBLE" property="price" /> -->
+      <result column="sales_start_time" jdbcType="TIMESTAMP" property="salesStartTime" />
+      <result column="sales_end_time" jdbcType="TIMESTAMP" property="salesEndTime" />
+      <!-- <result column="status" jdbcType="TINYINT" property="status" /> -->
+      <!-- <result column="where_from" jdbcType="TINYINT" property="whereFrom" /> -->
+      <result column="sales_mid" jdbcType="INTEGER" property="salesMid" />
+      <!-- <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" /> -->
+      <!-- <result column="create_user_id" jdbcType="INTEGER" property="createUserId" /> -->
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order_information
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.OrderInformation" >
+    insert into order_information ( order_id, rs_id,
+      purchase_mid, order_type, piece, 
+      num, actual_piece, actual_num, 
+      price, order_expiration_time, `status`, 
+      where_from, creat_time, create_user_id, 
+      confirm_time, confirm_user_id)
+    values ( #{orderId,jdbcType=VARCHAR}, #{rsId,jdbcType=INTEGER},
+      #{purchaseMid,jdbcType=INTEGER}, #{orderType,jdbcType=TINYINT}, #{piece,jdbcType=DOUBLE}, 
+      #{num,jdbcType=DOUBLE}, #{actualPiece,jdbcType=DOUBLE}, #{actualNum,jdbcType=DOUBLE}, 
+      #{price,jdbcType=DOUBLE}, #{orderExpirationTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{whereFrom,jdbcType=TINYINT}, #{creatTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}, 
+      #{confirmTime,jdbcType=TIMESTAMP}, #{confirmUserId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.OrderInformation" >
+    update order_information
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      rs_id = #{rsId,jdbcType=INTEGER},
+      purchase_mid = #{purchaseMid,jdbcType=INTEGER},
+      order_type = #{orderType,jdbcType=TINYINT},
+      piece = #{piece,jdbcType=DOUBLE},
+      num = #{num,jdbcType=DOUBLE},
+      actual_piece = #{actualPiece,jdbcType=DOUBLE},
+      actual_num = #{actualNum,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DOUBLE},
+      order_expiration_time = #{orderExpirationTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT},
+      where_from = #{whereFrom,jdbcType=TINYINT},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      confirm_user_id = #{confirmUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, order_id, rs_id, purchase_mid, order_type, piece, num, actual_piece, actual_num, 
+    price, order_expiration_time, `status`, where_from, creat_time, create_user_id, confirm_time, 
+    confirm_user_id
+    from order_information
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, order_id, rs_id, purchase_mid, order_type, piece, num, actual_piece, actual_num, 
+    price, order_expiration_time, `status`, where_from, creat_time, create_user_id, confirm_time, 
+    confirm_user_id
+    from order_information
+  </select>
+  <select id="getOrderList" resultMap="BaseResultMap" >
+    select res.varietyName, res.Material, res.Spec, res.origin_code, res.cangku, ord.piece, ord.num,ord.actual_piece, ord.actual_num, ord.id, 
+    ord.price, ord.order_id, ord.creat_time, ord.confirm_time 
+    from order_information ord, resource_sales res
+    <where>
+      ord.rs_id = res.id 
+      and ord.status = #{status} 
+      and (ord.purchase_mid = #{mid} or res.sales_mid = #{mid})
+      <if test="varietyName != null and varietyName!=''">
+        and res.varietyName like '%${varietyName}%'
+      </if>
+      <if test="Material!=null and Material!=''">
+        and res.Material like '%${Material}%'
+      </if>
+      <if test="Spec!=null and Spec!=''">
+        and res.Spec like '%${Spec}%'
+      </if>
+      <if test="origin_code!=null and origin_code!=''">
+        and res.origin_code like '%${origin_code}%'
+      </if>
+      <choose>
+        <when test="status == 1">
+          <if test="stime!=null and stime!=''">
+            AND ord.creat_time &gt;= #{stime}
+          </if>
+          <if test="etime!=null and etime!=''">
+            AND ord.creat_time &lt;= #{etime}
+          </if>
+          order by  ord.creat_time desc
+        </when>
+        <otherwise>
+          <if test="stime!=null and stime!=''">
+            AND ord.confirm_time &gt;= #{stime}
+          </if>
+          <if test="etime!=null and etime!=''">
+            AND ord.confirm_time &lt;= #{etime}
+          </if>
+          order by ord.confirm_time desc
+        </otherwise>
+      </choose>
+
+    </where>
+  </select>
+  <select id="getOrderByid" resultMap="BaseResultMap" >
+    select res.varietyName, res.Material, res.Spec, res.origin_code, res.cangku, 
+    res.sales_mid, ord.piece, ord.num, ord.id, ord.price, ord.actual_piece, ord.actual_num, 
+    ord.id, ord.price, ord.order_id, ord.purchase_mid, ord.order_type, ord.status, 
+    ord.creat_time, ord.confirm_time 
+    from order_information ord, resource_sales res
+    <where>
+      ord.rs_id = res.id and ord.id = #{id,jdbcType=INTEGER}
+    </where>
+  </select>
+  <update id="updateStatus" parameterType="com.isechome.ecommerce.entity.OrderInformation" >
+    update order_information
+    set `status` = #{status,jdbcType=INTEGER} 
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateActual" parameterType="com.isechome.ecommerce.entity.OrderInformation" >
+    update order_information
+    set `actual_piece` = #{actual_piece,jdbcType=INTEGER}, 
+    `actual_num` = #{actual_num,jdbcType=INTEGER} 
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="orderShenhe" parameterType="com.isechome.ecommerce.entity.OrderInformation" >
+    update order_information
+    set `status` = '2', `confirm_user_id` = #{confirm_user_id,jdbcType=INTEGER}, 
+    `confirm_time` = #{confirm_time,jdbcType=INTEGER} 
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

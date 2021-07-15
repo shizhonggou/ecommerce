@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    steelhome:
+      url: jdbc:mysql://172.17.200.199:4307/steelhome?characterEncoding=cp1252&useSSL=false&autoReconnect=true&failOverReadOnly=false
+      username: dbread
+      password: sth@50581010
+#      url: jdbc:mysql://172.16.200.209:4307/steelhome?characterEncoding=cp1252&useSSL=false&zeroDateTimeBehavior=convertToNull
+#      username: llh
+#      password: st01697828
+      ConnectionPropertiesTransform: false
+      driver-class-name: com.mysql.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+
+connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+# spring.mvc.static-path-pattern: /static/**
+#spring.mvc.static-path-pattern: /static/**
+
+## 设置debug可以打印Sql语句
+logging:
+  level:
+    cn:
+      steelhome:
+        ess: debug

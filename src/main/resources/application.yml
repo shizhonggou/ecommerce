@@ -1,0 +1,39 @@
+spring:
+  profiles:
+    active: dev
+  thymeleaf:
+    enabled: true
+    encoding: utf-8
+    prefix: classpath:/templates/
+    cache: false
+    mode: HTML
+    suffix: .html
+
+  redis:
+    host: 172.16.200.227
+    port: 6379
+    password: 123456
+    timeout: 30000
+  session:
+    store-type: redis
+  cache:
+    type: redis
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+server:
+  port: 8989
+
+mybatis:
+  mapper-locations: classpath:mapping/**/*.xml
+  type-aliases-package: cn.steelhome.ess
+
+# 分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

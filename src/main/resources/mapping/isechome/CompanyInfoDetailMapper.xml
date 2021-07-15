@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.isechome.CompanyInfoDetailMapper" >
+    <resultMap id="BaseResultMap" type="com.isechome.ecommerce.security.entity.CompanyInfo" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="com_name" property="com_name" jdbcType="VARCHAR" />
+        <result column="com_name_short" property="com_name_short" jdbcType="VARCHAR" />
+        <result column="com_desc" property="com_desc" jdbcType="VARCHAR" />
+        <result column="address_state" property="address_state" jdbcType="VARCHAR" />
+        <result column="address_city" property="address_city" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="enclosure_url" property="enclosure_url" jdbcType="VARCHAR" />
+        <result column="link_user_id" property="link_user_id" jdbcType="INTEGER" />
+        <result column="create_date" property="create_date" jdbcType="TIMESTAMP" />
+        <result column="create_user_id" property="create_user_id" jdbcType="VARCHAR" />
+        <result column="where_from" property="where_from" jdbcType="TINYINT" />
+        <result column="external_uniqueness" property="external_uniqueness" jdbcType="VARCHAR" />
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from `sys_company`
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.isechome.ecommerce.entity.CompanyInfo" >
+        insert into `sys_company` ( com_name, com_name_short,
+        com_desc, address_state, address_city,
+        address, enclosure_url, link_user_id,
+        create_date, create_user_id, where_from,
+        external_uniqueness)
+        values ( #{comName,jdbcType=VARCHAR}, #{comNameShort,jdbcType=VARCHAR},
+        #{comDesc,jdbcType=VARCHAR}, #{addressState,jdbcType=VARCHAR}, #{addressCity,jdbcType=VARCHAR},
+        #{address,jdbcType=VARCHAR}, #{enclosureUrl,jdbcType=VARCHAR}, #{linkUserId,jdbcType=INTEGER},
+        #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{whereFrom,jdbcType=TINYINT},
+        #{externalUniqueness,jdbcType=VARCHAR})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.CompanyInfo" >
+        update `sys_company`
+        set com_name = #{comName,jdbcType=VARCHAR},
+        com_name_short = #{comNameShort,jdbcType=VARCHAR},
+        com_desc = #{comDesc,jdbcType=VARCHAR},
+        address_state = #{addressState,jdbcType=VARCHAR},
+        address_city = #{addressCity,jdbcType=VARCHAR},
+        address = #{address,jdbcType=VARCHAR},
+        enclosure_url = #{enclosureUrl,jdbcType=VARCHAR},
+        link_user_id = #{linkUserId,jdbcType=INTEGER},
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+        where_from = #{whereFrom,jdbcType=TINYINT},
+        external_uniqueness = #{externalUniqueness,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, com_name, com_name_short, com_desc, address_state, address_city, address,
+        enclosure_url, link_user_id, create_date, create_user_id, where_from, external_uniqueness
+        from `sys_company`
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, com_name, com_name_short, com_desc, address_state, address_city, address,
+        enclosure_url, link_user_id, create_date, create_user_id, where_from, external_uniqueness
+        from `sys_company`
+    </select>
+    <select id="selectCompanyInfo" resultMap="BaseResultMap">
+        select * from sys_company where id = #{id}
+    </select>
+    <update id="updateCompanyInfoDetail" >
+        update `sys_company` set
+        com_name = #{com_name,jdbcType=VARCHAR},
+        com_name_short = #{com_name_short,jdbcType=VARCHAR},
+        com_desc = #{com_desc,jdbcType=VARCHAR},
+        address_state = #{address_state,jdbcType=VARCHAR},
+        address_city = #{address_city,jdbcType=VARCHAR},
+        address = #{address,jdbcType=VARCHAR},
+        enclosure_url = #{strPath,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateCompanyInfoZhuLXR" >
+        update `sys_company` set
+        link_user_id = #{link_user_id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

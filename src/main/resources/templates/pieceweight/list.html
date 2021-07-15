@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::commonHeader(${title})">
+</head>
+
+<div th:insert="~{header :: header}"></div>
+<body>
+<section>
+  <div class="main w1000">
+    <div th:insert="~{left :: left(${mark})}"></div>
+
+    <aside>
+      <div class="resources">
+        <div class="resources_tt" th:include="common::varietyTag2"></div>
+        <div class="pozition">
+          <p>当前位置：会员中心 &gt; 系统管理 &gt; 件重设置 </p>
+        </div>
+
+        <table class="heavy_set" cellspacing="0" cellpadding="0" border="0">
+          <thead>
+          <tr>
+            <td>序号</td>
+            <td>规格</td>
+            <td>件重</td>
+            <td>状态</td>
+            <td>操作</td>
+          </tr>
+          </thead>
+          <tbody th:each="pieceWeightInfo:${pieceWeightInfoList}">
+          <tr>
+            <td th:text="${pieceWeightInfo.id}">1</td>
+            <td th:text="${pieceWeightInfo.spec}">Φ22*9M</td>
+            <td th:text="${pieceWeightInfo.weight}" >2.9</td>
+            <td  >
+              <span th:if="${pieceWeightInfo.status}" th:text="已审核" ></span>
+              <span th:unless="${pieceWeightInfo.status}" th:text="未审核" ></span>
+            </td>
+            <td class="cz">
+                  <span class="xg">
+                    <a th:href="'/pieceweight/add?id='+${pieceWeightInfo.id}" target="_blank">修 改</a>
+                  </span>
+              <span class="delete">
+                    <a th:href="'/pieceweight/delete?id='+${pieceWeightInfo.id}">删 除</a>
+                  </span>
+            </td>
+          </tr>
+          </tbody>
+          <tr>
+            <td colspan="5" class="cz2">
+              <span ><a href="/pieceweight/add">新 增</a></span>
+              <span><a href="/pieceweight/review" th:text="审核"> </a></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </aside>
+  </div>
+
+</section>
+</body>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+
+</html>

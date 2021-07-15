@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::commonHeader(${title})">
+</head>
+<body>
+<div>
+    <a href="/index?vid=1">螺纹</a>
+    <a href="/index?vid=2">盘螺</a>
+    <a href="/index?vid=3">高线</a>
+</div>
+  <ul class=""  >
+    <li class=""   >
+      <div  th:each="resourceSales:${resourceSalesList}" >
+        <div class="resourcelist"  th:onclick="'add_purchase_car(\''+${resourceSales.id}+'\')'" >
+          <span th:text="${resourceSales.varietyname}"></span>
+          <span th:text="${resourceSales.material}"></span>
+          <span th:text="${resourceSales.spec}"></span>
+          <span th:text="${resourceSales.originCode}"></span>
+          <span th:text="${resourceSales.cangku}"></span>
+          <span th:text="${resourceSales.piece}"></span>
+          <span th:text="${resourceSales.num}"></span>
+          <span th:text="${resourceSales.price}"></span>
+          <span th:text="${#dates.format(resourceSales.salesEndTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="page">
+
+      <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+','+${vid}+');'">上一页</a>
+
+      <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+          <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+          <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+','+${vid}+');'" th:text="${navigatepageNum}"></a>
+      </p>
+      <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+','+${vid}+');'">下一页</a>
+
+
+      <span>到第</span>
+      <input type="text" id="jump_num" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')">
+      <span>页</span>
+      <button th:onclick="@{'var pageNum=document.getElementById(\'jump_num\').value;if(pageNum>0){queryDeviceRecords(pageNum,'+${vid}+');}'}">确定</button>
+  </div>
+<div></div>
+<br>
+</body>
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</html>
