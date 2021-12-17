@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScCompanyBalanceMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScCompanyBalance" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="input_user" property="inputUser" jdbcType="VARCHAR" />
+    <result column="input_date" property="inputDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_company_balance
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScCompanyBalance" >
+    insert into sc_company_balance (id, company_id, company_name, 
+      balance, pmid,user_id, input_user, 
+      input_date)
+    values (#{id,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=DOUBLE}, #{pmid,jdbcType=INTEGER},#{userId,jdbcType=INTEGER}, #{inputUser,jdbcType=VARCHAR}, 
+      #{inputDate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScCompanyBalance" >
+    update sc_company_balance
+    set company_id = #{companyId,jdbcType=INTEGER},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=DOUBLE},
+      pmid = #{pmid,jdbcType=INTEGER},
+      user_id = #{user_id,jdbcType=INTEGER},
+      input_user = #{inputUser,jdbcType=VARCHAR},
+      input_date = #{inputDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, company_id, company_name, balance, pmid,user_id, input_user, input_date
+    from sc_company_balance
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, company_id, company_name, balance, pmid, input_user, input_date
+    from sc_company_balance
+  </select>
+
+  <select id="getBalanceByComid" resultMap="BaseResultMap">
+    select *
+    from sc_company_balance where  pmid = #{pmid,jdbcType=INTEGER} and  company_id = #{company_id,jdbcType=INTEGER}
+  </select>
+  
+  <update id="updateBalanceByComid" parameterType="com.isechome.ecommerce.entity.ScCompanyBalance" >
+      update sc_company_balance set balance = #{balance,jdbcType=DOUBLE}  where pmid = #{pmid,jdbcType=INTEGER} and  company_id = #{company_id,jdbcType=INTEGER}
+
+  </update>
+
+  <update id="updateBalanceByComidForSettlement" parameterType="com.isechome.ecommerce.entity.ScCompanyBalance" >
+      update sc_company_balance set balance = balance + #{balance,jdbcType=DOUBLE}  where pmid = #{pmid,jdbcType=INTEGER} and  company_id = #{company_id,jdbcType=INTEGER}
+
+  </update>
+
+  
+
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.AdminUserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.AdminUserInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mid" property="mid" jdbcType="INTEGER" />
+    <result column="real_name" property="real_name" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nick_name" jdbcType="VARCHAR" />
+    <result column="user_name" property="user_name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="pay_password" property="pay_password" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="address_user" property="address_user" jdbcType="VARCHAR" />
+    <result column="rights" property="rights" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_date" property="create_date" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="create_user_id" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_adminuser
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.AdminUserInfo" >
+    insert into sys_adminuser (id, mid, real_name, 
+      nick_name, user_name, `password`, 
+      pay_password, mobile, idcard, 
+      email, job, sex, address_user, 
+      rights, `status`, create_date, 
+      create_user_id)
+    values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR}, 
+      #{nickName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{payPassword,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{addressUser,jdbcType=VARCHAR}, 
+      #{rights,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.AdminUserInfo" >
+    update sys_adminuser
+    set mid = #{mid,jdbcType=INTEGER},
+      real_name = #{realName,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      pay_password = #{payPassword,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      address_user = #{addressUser,jdbcType=VARCHAR},
+      rights = #{rights,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, mid, real_name, nick_name, user_name, `password`, pay_password, mobile, 
+    idcard, email, job, sex, address_user, rights, `status`, create_date, create_user_id
+    from sys_adminuser
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, mid, real_name, nick_name, user_name, `password`, pay_password, mobile, 
+    idcard, email, job, sex, address_user, rights, `status`, create_date, create_user_id
+    from sys_adminuser
+  </select>
+  <select id="selectByMid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, mid, real_name, nick_name, user_name, `password`, pay_password, mobile,
+    idcard, email, job, sex, address_user, rights, `status`, create_date, create_user_id
+    from sys_adminuser
+    where mid = #{mid,jdbcType=INTEGER}
+  </select>
+
+      <select id="getadminuserinfobymobile" resultMap="BaseResultMap" >
+        select id, mid, real_name, nick_name, user_name, `password`, pay_password, mobile,
+        idcard, email, job, sex, address_user, rights, `status`, create_date, create_user_id
+        from sys_adminuser
+        where 	mobile  = #{tel ,jdbcType=VARCHAR} limit 1
+    </select>
+
+    
+    <select id="getUserInfoByUsername" resultMap="BaseResultMap"  >
+        select id, mid, real_name, nick_name, user_name, `password`, pay_password, mobile,
+        idcard, email, job, sex, address_user, rights, `status`, create_date, create_user_id
+        from sys_adminuser
+        where user_name = #{username,jdbcType=VARCHAR} and status=1
+    </select>
+</mapper>

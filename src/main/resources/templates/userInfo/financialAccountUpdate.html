@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/resource.js}" type="text/javascript"></script>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>财务出入账信息修改</title>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <aside>
+            <div th:insert="~{left :: left(financialAccount)}"></div>
+        </aside>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+                <div class="pozition"><p>当前位置：会员中心  &gt; 财务管理  &gt; 财务出入账信息修改 </p></div>
+                <form action="/financial/updateFinancialInfo" name="huiFuLY" id="lybform" onsubmit="return checkFinancialForm()" method="POST">
+                    <table class="Information" cellspacing="0" cellpadding="0" border="0">
+
+                        <tbody>
+                        <tr>
+                            <td>公司名称<span>*</span></td>
+                            <td ><input type="text" name="company_name"  id="company_name" th:value="${financialInfo.company_name}"> </td>
+                            <td>金 额<span>*</span></td>
+                            <td ><input type="text" name="money" id="money" th:value="${financialInfo.money}"> </td>
+                        </tr>
+                        <tr>
+                            <td>出 入 账<span>*</span></td>
+                            <td>
+                                <select th:value="${financialInfo.bill}" name="bill" style="width: 70%; color: #3333338c; padding: 8px 20px; margin: 12px auto; display: inline-block;border: 1px solid #ccc; border-radius: 0px;box-sizing: border-box;" >
+                                    <option value="1" th:selected="${financialInfo.bill == 1}">入账</option>
+                                    <option value="2" th:selected="${financialInfo.bill == 2}">出账</option>
+                                    <option value="3" th:selected="${financialInfo.bill == 3}">退款</option>
+                                </select>
+                            </td>
+                            <td>出入账方式<span>*</span></td>
+                            <td >
+                                <select th:value="${financialInfo.bill_type}" name="bill_type" id="crzfs" onchange="billTypeChange()" style="width: 70%; color: #3333338c; padding: 8px 20px; margin: 12px auto; display: inline-block;border: 1px solid #ccc; border-radius: 0px;box-sizing: border-box;">
+                                    <option value="1" th:selected="${financialInfo.bill_type == 1}">现金</option>
+                                    <option value="2" th:selected="${financialInfo.bill_type == 2}">承兑</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr th:style="'display:' + @{(${financialInfo.bill_type == 1} ? 'none' : '')} + ''" id="yhcdts" >
+                            <td>银 行<span>*</span></td>
+                            <td ><input type="text" name="accept_bank" id="accept_bank" th:value="${financialInfo.accept_bank}"> </td>
+                            <td>承兑天数<span>*</span></td>
+                            <td ><input type="text" name="accept_date" id="accept_date" th:value="${financialInfo.accept_date}"> </td>
+                        </tr>
+                        <tr>
+                            <td >备注</td>
+                            <td colspan="3">
+                                <textarea name="remark" th:text="${financialInfo.remark}"></textarea>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div style="text-align: center;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="hidden"  name="id" id="id" th:value="${financialInfo.id}">
+                        <input type="submit" value="保存"  style="background: #FF6632;color: white;width: 300px;height: 30px;border: 0;cursor:pointer;">
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+
+</body>
+</html>

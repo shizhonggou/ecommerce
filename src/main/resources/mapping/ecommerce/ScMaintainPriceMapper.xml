@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScMaintainPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScMaintainPrice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="kind" property="kind" jdbcType="TINYINT" />
+    <result column="variety_name" property="varietyName" jdbcType="VARCHAR" />
+    <result column="material" property="material" jdbcType="VARCHAR" />
+    <result column="specification" property="specification" jdbcType="VARCHAR" />
+    <result column="factory" property="factory" jdbcType="VARCHAR" />
+    <result column="storehouse" property="storehouse" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_maintain_price
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScMaintainPrice" >
+    insert into sc_maintain_price (id, `date`, pmid, 
+      kind, variety_name, material, 
+      specification, factory, storehouse, 
+      price, `status`, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{pmid,jdbcType=INTEGER}, 
+      #{kind,jdbcType=TINYINT}, #{varietyName,jdbcType=VARCHAR}, #{material,jdbcType=VARCHAR}, 
+      #{specification,jdbcType=VARCHAR}, #{factory,jdbcType=VARCHAR}, #{storehouse,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DOUBLE}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScMaintainPrice" >
+    update sc_maintain_price
+    set `date` = #{date,jdbcType=DATE},
+      pmid = #{pmid,jdbcType=INTEGER},
+      kind = #{kind,jdbcType=TINYINT},
+      variety_name = #{varietyName,jdbcType=VARCHAR},
+      material = #{material,jdbcType=VARCHAR},
+      specification = #{specification,jdbcType=VARCHAR},
+      factory = #{factory,jdbcType=VARCHAR},
+      storehouse = #{storehouse,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      `status` = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, `date`, pmid, kind, variety_name, material, specification, factory, storehouse, 
+    price, `status`, create_time
+    from sc_maintain_price
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, `date`, pmid, kind, variety_name, material, specification, factory, storehouse, 
+    price, `status`, create_time
+    from sc_maintain_price
+  </select>
+
+  <update id="updateTodayPriceInvalid" parameterType="com.isechome.ecommerce.entity.ScMaintainPrice" >
+    update sc_maintain_price
+    set `status`=0
+    where pmid=#{pmid} and date=#{date} and kind =#{kind}
+  </update>
+
+  <insert id="insertPriceList" parameterType="java.util.List" useGeneratedKeys="false" >
+    insert into sc_maintain_price
+    ( `date`, pmid, kind, variety_name, material, specification, factory, storehouse,
+    price, `status`, create_time)
+    values
+    <foreach collection="list" item="item" index="index" separator ="," >
+      (#{item.date,jdbcType=DATE},
+      #{item.pmid,jdbcType=INTEGER},
+      #{item.kind,jdbcType=TINYINT},
+      #{item.varietyName,jdbcType=VARCHAR},
+      #{item.material,jdbcType=VARCHAR},
+      #{item.specification,jdbcType=VARCHAR},
+      #{item.factory,jdbcType=VARCHAR},
+      #{item.storehouse,jdbcType=VARCHAR},
+      #{item.price,jdbcType=DOUBLE},
+      #{item.status,jdbcType=TINYINT},
+      #{item.createTime,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
+
+</mapper>

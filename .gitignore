@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+generatorConfig.xml
+
 ### STS ###
 .apt_generated
 .classpath
@@ -31,3 +33,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+###  upload file ###
+/src/main/resources/static/upload

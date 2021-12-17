@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScOrderListDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScOrderListDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_baseid" property="orderBaseid" jdbcType="VARCHAR" />
+    <result column="resource_id" property="resourceId" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="purchase_mid" property="purchaseMid" jdbcType="INTEGER" />
+    <result column="piece" property="piece" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="original_price" property="originalPrice" jdbcType="DOUBLE" />
+    <result column="settlement_weight" property="settlementWeight" jdbcType="DOUBLE" />
+    <result column="settlement_money" property="settlementMoney" jdbcType="DOUBLE" />
+    <result column="extract_piece" property="extractPiece" jdbcType="VARCHAR" />
+    <result column="extract_num" property="extractNum" jdbcType="VARCHAR" />
+    <result column="exist_save_action" property="existSaveAction" jdbcType="TINYINT" />
+    <result column="is_deleted" property="isDeleted" jdbcType="TINYINT" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+   
+    <association property="scshelfResource" javaType="com.isechome.ecommerce.entity.ScShelfResource"> 
+      <result column="variety_name" jdbcType="VARCHAR" property="varietyName" />
+      <result column="material" jdbcType="VARCHAR" property="material" />
+      <result column="specification" jdbcType="VARCHAR" property="specification" />
+      <result column="factory" jdbcType="VARCHAR" property="factory" />
+      <result column="warehouse" jdbcType="VARCHAR" property="warehouse" />
+      <result column="sold_num" jdbcType="DOUBLE" property="soldNum" />
+      <result column="snum" jdbcType="DOUBLE" property="num" />
+      <result column="sprice" jdbcType="DOUBLE" property="price" />
+      <result column="status" jdbcType="INTEGER" property="status" />
+      <result column="type" jdbcType="INTEGER" property="type" />
+      <result column="pmid" jdbcType="INTEGER" property="pmid" />
+    </association>
+
+
+
+     <collection property="logisticsPurchase" javaType="java.util.ArrayList" ofType="com.isechome.ecommerce.entity.LogisticsPurchase">
+      <id column="lid" property="id" jdbcType="INTEGER" />
+      <result column="extract_id" property="extractId"  />
+      <result column="type" property="type" jdbcType="TINYINT" />
+      <result column="kind" property="kind" jdbcType="TINYINT" />
+      <result column="distribute_num" property="distributeNum" jdbcType="DOUBLE" />
+      <result column="actual_num" property="actualNum" jdbcType="DOUBLE" />
+      <result column="lnum" property="num" jdbcType="DOUBLE" />
+      <result column="lprice" property="price" jdbcType="DOUBLE" />
+      <result column="depository" property="depository" jdbcType="VARCHAR"  />
+    </collection>
+  </resultMap>
+    <resultMap id="BaseDetailResultMap" type="com.isechome.ecommerce.entity.ScOrderListDetail">
+        <id column="did" property="id" jdbcType="INTEGER"/>
+        <result column="orderBaseid" property="orderBaseid" jdbcType="VARCHAR"/>
+        <result column="d_piece" property="piece" jdbcType="DOUBLE"/>
+        <result column="d_num" property="num" jdbcType="DOUBLE"/>
+        <result column="d_price" property="price" jdbcType="DOUBLE"/>
+
+        <association property="scOrderListBase" javaType="com.isechome.ecommerce.entity.ScOrderListBase">
+            <id column="bid" property="id"/>
+            <result column="b_piece" property="piece" jdbcType="DOUBLE"/>
+            <result column="b_num" property="num" jdbcType="DOUBLE"/>
+            <result column="b_total_price" property="totalPrice" jdbcType="DOUBLE"/>
+        </association>
+    </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_order_list_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScOrderListDetail" >
+    insert into sc_order_list_detail (id, order_baseid, resource_id, 
+      pmid, purchase_mid, piece, 
+      num, price, original_price, 
+      settlement_weight, settlement_money, extract_piece, 
+      extract_num,exist_save_action,  creat_time, create_user_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderBaseid,jdbcType=VARCHAR}, #{resourceId,jdbcType=INTEGER}, 
+      #{pmid,jdbcType=INTEGER}, #{purchaseMid,jdbcType=INTEGER}, #{piece,jdbcType=DOUBLE}, 
+      #{num,jdbcType=DOUBLE}, #{price,jdbcType=DOUBLE}, #{originalPrice,jdbcType=DOUBLE}, 
+      #{settlementWeight,jdbcType=DOUBLE}, #{settlementMoney,jdbcType=DOUBLE}, #{extractPiece,jdbcType=VARCHAR}, 
+      #{extractNum,jdbcType=VARCHAR},#{existSaveAction,jdbcType=TINYINT},  #{creatTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, order_baseid, resource_id, pmid, purchase_mid, piece, num, price, original_price, 
+    settlement_weight, settlement_money, extract_piece, extract_num,exist_save_action,  creat_time, create_user_id
+    from sc_order_list_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, order_baseid, resource_id, pmid, purchase_mid, piece, num, price, original_price, 
+    settlement_weight, settlement_money, extract_piece, extract_num,exist_save_action, creat_time, create_user_id
+    from sc_order_list_detail
+  </select>
+
+
+  
+  <select id="getDetailByid" resultMap="BaseResultMap"  >
+    select detail.*,res.variety_name,res.num snum, res.material, res.specification, res.factory, res.warehouse,res.price sprice
+    from sc_order_list_detail detail LEFT JOIN sc_shelf_resource res ON res.id= detail.resource_id
+    where detail.id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+  <update id="updateDetailById" parameterType="com.isechome.ecommerce.entity.ScOrderListDetail" >
+    update sc_order_list_detail
+    set piece = #{piece,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DOUBLE},
+      num = #{num,jdbcType=DOUBLE},
+      extract_piece = #{extractPiece,jdbcType=VARCHAR},
+      extract_num = #{extractNum,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="updateMoneyAndWeightByid" >
+    update sc_order_list_detail
+    set settlement_money = #{money,jdbcType=DOUBLE},
+        settlement_weight = #{weight,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+  <select id="getDetaiLogisticsByid" resultMap="BaseResultMap"  >
+   select detail.*,res.variety_name,res.num snum, res.material, res.specification, res.factory, res.warehouse,log.id lid,log.extract_id,log.type,log.kind,log.distribute_num,log.actual_num,log.num lnum,log.depository
+    from (sc_order_list_detail detail LEFT JOIN sc_shelf_resource res ON res.id= detail.resource_id) LEFT JOIN (select * from sc_logistics_purchase order by kind,type,id asc) log ON detail.id=log.order_detailid
+    where detail.id = #{id,jdbcType=INTEGER} and detail.pmid = #{pmid}
+    <if test="pt==0">
+        and detail.purchase_mid = #{purchase_mid}
+    </if>
+
+  </select>
+
+
+  <select id="getExcessResource" resultMap="BaseResultMap"  >
+   select detail.*,res.variety_name,res.num snum, res.material, res.specification, res.factory, res.warehouse
+    from sc_order_list_detail detail LEFT JOIN sc_shelf_resource res ON res.id= detail.resource_id
+    where detail.exist_save_action =2 and detail.is_deleted=0 and detail.pmid = #{pmid}
+  </select>
+
+
+  <select id="selectAllByOrderId" resultMap="BaseResultMap">
+    select id, order_baseid, resource_id, pmid, purchase_mid, piece, num, price, original_price, exist_save_action,
+    settlement_weight, settlement_money, extract_piece, extract_num, creat_time, create_user_id
+    from sc_order_list_detail
+    <where>
+      order_baseid = #{OrderId,jdbcType=INTEGER} and is_deleted=0
+    </where>
+  </select>
+
+  <update id="updateSaveActionByid" parameterType="com.isechome.ecommerce.entity.ScOrderListDetail" >
+    update sc_order_list_detail
+    set exist_save_action = #{exist_save_action,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateSaveActionByrsid" parameterType="com.isechome.ecommerce.entity.ScOrderListDetail" >
+    update sc_order_list_detail
+    set exist_save_action = #{exist_save_action,jdbcType=TINYINT}
+    where resource_id = #{resource_id,jdbcType=INTEGER}  and is_deleted=0 and exist_save_action=#{action,jdbcType=TINYINT}  and pmid= #{pmid,jdbcType=INTEGER}
+  </update>
+
+  <select id="getDetailCountByorderId" resultType="java.lang.Integer">
+    select count(*)
+    from sc_order_list_detail where order_baseid = #{order_id,jdbcType=VARCHAR} and is_deleted=0
+  </select>
+
+  <select id="selectSumbyresourceId" resultType="BigDecimal">
+    select sum(detail.num)
+    from sc_order_list_base base LEFT JOIN sc_order_list_detail detail ON base.order_id=detail.order_baseid  
+    where base.status=#{status,jdbcType=INTEGER} and base.pmid=#{pmid,jdbcType=INTEGER} and detail.is_deleted=0 and detail.resource_id=#{resource_id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectDetailByresourceId"  resultMap="BaseResultMap">
+    select detail.*
+    from sc_order_list_base base LEFT JOIN sc_order_list_detail detail ON base.order_id=detail.order_baseid  
+    where base.status=3 and base.pmid=#{pmid,jdbcType=INTEGER}  and detail.is_deleted=0 and detail.resource_id=#{resource_id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAllDetailByBaseid" resultMap="BaseResultMap"  >
+   select detail.*,res.variety_name,res.num snum, res.material, res.specification, res.factory, res.warehouse,res.price
+    from (sc_order_list_detail detail LEFT JOIN sc_shelf_resource res ON res.id= detail.resource_id) 
+    where 1
+    <if test="order_baseids !=null and order_baseids!=''">
+        and detail.order_baseid in (${order_baseids}) 
+    </if>
+
+  </select>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScOrderListDetail" >
+     update sc_order_list_detail
+    <set>
+      <if test="existSaveAction != null and existSaveAction != ''">
+          exist_save_action =#{existSaveAction} ,
+      </if>
+      <if test="isDeleted != null and isDeleted != ''">
+          is_deleted =#{isDeleted} ,
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectSumbyresourceIdAndPmid" resultType="BigDecimal">
+    select sum(detail.num)
+    from sc_order_list_base base LEFT JOIN sc_order_list_detail detail ON base.order_id=detail.order_baseid  
+    where base.status=#{status,jdbcType=INTEGER} and detail.is_deleted=0 and detail.resource_id=#{resource_id,jdbcType=VARCHAR} and detail.pmid =#{pmid,jdbcType=INTEGER} and base.creat_time > #{create_date,jdbcType=TIMESTAMP}
+  </select>
+
+
+  <update id="deleteByOrderId" parameterType="com.isechome.ecommerce.entity.ScOrderListDetail" >
+     update sc_order_list_detail set is_deleted =1 where order_baseid =  #{orderId,jdbcType=VARCHAR}
+  </update>
+
+ <select id="getDetailCountByAction" resultType="java.lang.Integer">
+    select count(*)
+    from sc_order_list_detail where order_baseid = #{order_id,jdbcType=VARCHAR} and is_deleted=0 and exist_save_action!=2
+  </select>
+
+
+  <update id="updateSaveActionByPmid" parameterType="com.isechome.ecommerce.entity.ScOrderListDetail" >
+    update sc_order_list_detail
+    set exist_save_action = 1
+    where pmid = #{pmid,jdbcType=INTEGER}  and is_deleted=0 and exist_save_action=2
+  </update>
+
+
+  <select id="getSumbyResourceId" resultType="BigDecimal">
+    select sum(detail.num)
+    from sc_order_list_base base LEFT JOIN sc_order_list_detail detail ON base.order_id=detail.order_baseid  
+    where base.status=3  and base.pmid=#{pmid,jdbcType=INTEGER}  and detail.is_deleted=0 and exist_save_action=1 and detail.resource_id=#{resource_id,jdbcType=VARCHAR}
+  </select>
+
+    <select id="getCountOrderByResourceId" resultType="java.lang.Integer">
+    select count(1)
+    from sc_order_list_base base LEFT JOIN sc_order_list_detail detail ON base.order_id=detail.order_baseid
+    where base.status in (1,2)  and base.pmid=#{pmid,jdbcType=INTEGER}  and detail.is_deleted=0 and exist_save_action=1 and detail.resource_id=#{resource_id,jdbcType=VARCHAR}
+  </select>
+
+    <select id="getListOrderByResourceId" resultMap="BaseDetailResultMap">
+    select base.id bid,base.piece b_piece,base.num b_num,base.total_price b_total_price,detail.id did,detail.order_baseid orderBaseid, detail.piece d_piece,detail.num d_num,detail.price d_price
+    from sc_order_list_detail detail LEFT JOIN sc_order_list_base base ON base.order_id=detail.order_baseid
+    where base.status in (1,2)  and base.pmid=#{pmid,jdbcType=INTEGER}  and detail.is_deleted=0 and exist_save_action=1 and detail.resource_id=#{resource_id,jdbcType=VARCHAR}
+  </select>
+
+    <update id="updateOrderDetailDelete">
+    update sc_order_list_detail
+    set `is_deleted` = 1 where id = #{id}
+  </update>
+
+  
+  
+</mapper>

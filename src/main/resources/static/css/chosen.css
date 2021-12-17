@@ -1,0 +1,35 @@
+
+/*搜索提示框*/
+.searchDiv{
+  display: none;
+  position: absolute;
+  /*div覆盖*/
+  z-index: 60;
+  left: 95px;
+  top: 35px;
+  color:#000;
+  background: white;
+  padding: 5px;
+  width: 180px;
+  max-height: 200px;
+  line-height: 1.5;
+  border: 1px solid #2C98DD;
+
+  /*加滚动条*/
+  overflow:auto;
+
+}
+.searchDiv li{
+    line-height: 30px;
+    height: 30px;
+    overflow: hidden;
+
+  white-space:nowrap;
+
+  text-overflow:ellipsis;
+}
+.searchDiv li:hover{
+cursor: pointer;
+background-color: white;
+}
+

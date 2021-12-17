@@ -58,7 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             return s.toUpperCase(Locale.ROOT).equals(es);
                            }
                            else{
-                            return s.toUpperCase(Locale.ROOT).equals(charSequence);
+                          //  return s.toUpperCase(Locale.ROOT).equals(charSequence);
+                           return s.equals(charSequence);
                            }
                         
                     }
@@ -88,10 +89,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.csrf().ignoringAntMatchers("/elasticsearch/**","/druid/*")
                 .csrf()
                 .and().authorizeRequests()
-                .antMatchers("/purchase_car/**","/index/**","/resourcemanage/**","/pieceweight/**","/orderinformation/**").authenticated()
+                .antMatchers("/purchase_car/**","/resourcemanage/**","/pieceweight/**","/orderinformation/**","/warehouse_resource/**","/shelf_resource/**","/scsteelmill/**","/baseprice/**","/scpieceweightmanage/**","/transet/**","/settings/**","/scorderlist/**","/shipmentsimport/**","/khmanage/**","/fpmanage/**","/fhmanage/**","/job/**").authenticated()
                 //.antMatchers("/index","index/").permitAll()
-                .antMatchers("/company/**").authenticated()
-                .antMatchers("/userInfo/**").authenticated()
+                .antMatchers("/company/**","/userInfo/**","/financial/**").authenticated()
 //                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 //                    @Override
 //                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
@@ -131,6 +131,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .tokenValiditySeconds(604800)
                     .tokenRepository(getPersistentTokenRepository())
                 ;
-                
+        //无权限出错页面
+        http.exceptionHandling().accessDeniedPage("/page403");
     }
 }

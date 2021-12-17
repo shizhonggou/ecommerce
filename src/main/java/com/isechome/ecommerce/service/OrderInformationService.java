@@ -1,7 +1,7 @@
 /*
  * @Author: lina
  * @Date: 2021-05-29 11:40:27
- * @LastEditTime: 2021-06-25 16:29:16
+ * @LastEditTime: 2021-08-20 11:08:47
  * @FilePath: \e-commerce\src\main\java\com\isechome\ecommerce\service\OrderInformationService.java
  * @Description: 
  * @Copyright: © 2021, SteelHome. All rights reserved.
@@ -9,42 +9,31 @@
 package com.isechome.ecommerce.service;
 
 
-import com.isechome.ecommerce.entity.ResourceSales;
-import com.isechome.ecommerce.mapper.isechome.ResourceSalesMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.isechome.ecommerce.common.SecurityUserUtil;
+import com.isechome.ecommerce.constant.CommonConstant;
+import com.isechome.ecommerce.entity.*;
+import com.isechome.ecommerce.mapper.ecommerce.LogisticsInformationMapper;
+import com.isechome.ecommerce.mapper.ecommerce.OrderInformationMapper;
+import com.isechome.ecommerce.mapper.ecommerce.ResourceSalesMapper;
+import com.isechome.ecommerce.mapper.isechome.AdminUserInfoMapper;
+import com.isechome.ecommerce.mapper.isechome.CompanyInfoMapper;
 import com.isechome.ecommerce.security.SecuritySysUser;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.isechome.ecommerce.common.SecurityUserUtil;
-import com.isechome.ecommerce.constant.CommonConstant;
-import com.isechome.ecommerce.entity.AdminUserInfo;
-import com.isechome.ecommerce.entity.CompanyInfo;
-import com.isechome.ecommerce.entity.LogisticsInformation;
-import com.isechome.ecommerce.entity.OrderInformation;
-import com.isechome.ecommerce.mapper.isechome.AdminUserInfoMapper;
-import com.isechome.ecommerce.mapper.isechome.CompanyInfoMapper;
-import com.isechome.ecommerce.mapper.isechome.LogisticsInformationMapper;
-import com.isechome.ecommerce.mapper.isechome.OrderInformationMapper;
-
+@Transactional( transactionManager = "ecommerceMybatisPlatformTransactionManager")
 @Service
-@Transactional( transactionManager = "isechomeMybatisPlatformTransactionManager")
 public class OrderInformationService {
     @Autowired
     OrderInformationMapper orderInformationMapper;
@@ -63,7 +52,7 @@ public class OrderInformationService {
     public void index(HttpServletRequest request, Model model) {
         String pageNumStr = request.getParameter("page");
         Integer page = 0;
-        if (pageNumStr == null || pageNumStr == "") {
+        if (pageNumStr == null || pageNumStr.equals("")) {
             page = 1;
         } else {
             page = Integer.parseInt(pageNumStr);
@@ -104,7 +93,7 @@ public class OrderInformationService {
             etime = "";
         }
         SecuritySysUser loginMessage = SecurityUserUtil.getCurrentUser();
-        Integer mid = loginMessage.getCompanyInfo().getId();
+        Integer mid = loginMessage.getSysCompanyInfo().getId();
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("status",status1);
         map.put("varietyName",varietyName);
@@ -159,8 +148,8 @@ public class OrderInformationService {
         Byte status = orderInformation.getStatus();
         // 审核权限
         Integer isshenghe = 0;
-        SecuritySysUser session = SecurityUserUtil.getCurrentUser();  
-        Integer mid = session.getCompanyInfo().getId();
+        SecuritySysUser session = SecurityUserUtil.getCurrentUser();
+        Integer mid = session.getSysCompanyInfo().getId();
         if (status == 1 && mid == sales_mid) {
             isshenghe = 1;
         }
@@ -184,18 +173,26 @@ public class OrderInformationService {
         model.addAttribute("iswancheng", iswancheng);
         model.addAttribute("iswuliu", iswuliu);
         model.addAttribute("mark", "order");
+        Date datenow = new Date();
+        model.addAttribute("datenow", datenow);
     }
 
     //物流添加
     public void addLogistics(HttpServletRequest request){
-        SecuritySysUser session = SecurityUserUtil.getCurrentUser();  
+        SecuritySysUser session = SecurityUserUtil.getCurrentUser();
         Integer userid = session.getId();
-        Date datenow = new Date();
+        String strDate = request.getParameter("creatTime");
+        Date creatTime = new Date();
+        try {
+            creatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Integer orderid = Integer.valueOf(request.getParameter("orderid"));
         String addcar_number = request.getParameter("car_number");
         Double addpiece = Double.parseDouble(request.getParameter("piece"));
         Double addnum = Double.parseDouble(request.getParameter("num"));
-        Integer addshipper_id = Integer.valueOf(request.getParameter("shipper_id"));       
+        Integer addshipper_id = Integer.valueOf(request.getParameter("shipper_id"));
 
         OrderInformation orderInformation = new OrderInformation();
         orderInformation = orderInformationMapper.selectByPrimaryKey(orderid);
@@ -211,7 +208,7 @@ public class OrderInformationService {
         } else if (status == 2) {
             Byte chstatus = 3;
             updateStatus(orderid,  chstatus); //发货中
-        } 
+        }
 
         Double actual_piece= actualPiece + addpiece;
         Double actual_num= actualNum + addnum;
@@ -223,7 +220,7 @@ public class OrderInformationService {
         logisticsInformation.setPiece(addpiece);
         logisticsInformation.setNum(addnum);
         logisticsInformation.setShipperId(addshipper_id);
-        logisticsInformation.setCreatTime(datenow);
+        logisticsInformation.setCreatTime(creatTime);
         logisticsInformation.setCreateUserId(userid);
         logisticsInformationMapper.insert(logisticsInformation);
     }
@@ -241,7 +238,7 @@ public class OrderInformationService {
         Double addpiece = logisticsInformation.getPiece();
         Double addnum = logisticsInformation.getNum();
         Double actual_piece = orderInformation.getActualPiece() - addpiece;
-        Double actual_num = orderInformation.getActualNum() - addnum; 
+        Double actual_num = orderInformation.getActualNum() - addnum;
         if (actual_piece  < 0.00000000001) {
             Byte chstatus = 2;  //待发货
             updateStatus(orderid,  chstatus);
@@ -256,7 +253,7 @@ public class OrderInformationService {
 
     //审核订单
     public String orderShenhe(HttpServletRequest request) {
-        SecuritySysUser session = SecurityUserUtil.getCurrentUser();  
+        SecuritySysUser session = SecurityUserUtil.getCurrentUser();
         Integer userid = session.getId();
         Date datenow = new Date();
         Integer orderid = Integer.parseInt(request.getParameter("id"));
@@ -269,8 +266,8 @@ public class OrderInformationService {
         Double salses_num = resourceSales.getNum();
         Double sold_num = resourceSales.getSoldNum();
         Double num_dif = salses_num - sold_num - order_num;
-        if (num_dif  < 0) {            
-       
+        if (num_dif  < 0) {
+
             return "2";
         } else {
             Double SoldNum = sold_num + order_num;
@@ -395,8 +392,8 @@ public class OrderInformationService {
         HttpSession session = request.getSession();
         OrderInformation orderInformation = new OrderInformation();
         SecuritySysUser loginMessage = SecurityUserUtil.getCurrentUser();
-        Integer purchaseMid = loginMessage.getCompanyInfo().getId();
-        Integer userId =loginMessage.getAdminUserInfo().getId();
+        Integer purchaseMid = loginMessage.getSysCompanyInfo().getId();
+        Integer userId =loginMessage.getSysAdminUserInfo().getId();
         Byte orderType = CommonConstant.LUOWEN_VID;
         Byte status = 1;
         Byte whereFrom = 1;

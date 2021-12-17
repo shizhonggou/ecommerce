@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::commonHeader(${title})">
+</head>
+
+<div th:insert="~{header :: header}"></div>
+<body>
+<section>
+  <div class="main w1000">
+    <div th:insert="~{left :: left(${mark})}"></div>
+    <aside>
+      <div class="resources">
+        <div class="resources_tt" th:include="common::varietyTag2"></div>
+        <div class="pozition">
+          <p>当前位置：会员中心 &gt; 系统管理 &gt; 基价设置 </p>
+        </div>
+        <div class="navbar" id="basepricestatus">
+          <p th:if="${reviewFlag eq true}" >基价维护(已审核)</p>
+          <p th:if="${reviewFlag eq false}" >基价维护（未审核）</p>
+        </div>
+        <form id="basepriceform" method="get" action="" >
+          <table cellspacing="0" cellpadding="0" border="0" class="membertab2">
+            <tr>
+              <td width="33.33%"><span>螺纹钢(HRB400E Φ16-25)(元/吨)</span><br><input id="basepricelwg" name="basepricelwg" type="number" th:value="${T(com.isechome.ecommerce.common.StringUtils).valueFormat( basePriceInfo[0] )}"  ></td>
+              <td width="33.33%"><span>高线(HPB300 F6-10)(元/吨)</span><br><input id="basepricegx" name="basepricegx" type="number" th:value="${T(com.isechome.ecommerce.common.StringUtils).valueFormat( basePriceInfo[1] )}"  ></td>
+              <td width="33.34%"><span>盘螺(HRB400E F8-12)(元/吨)</span><br><input id="basepricepl" name="basepricepl" type="number" th:value="${T(com.isechome.ecommerce.common.StringUtils).valueFormat( basePriceInfo[2] )}"   ></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="2" class="settingaction" >
+                <div style="position:absolute;z-index:-1;width:0;height:0;overflow:hidden;">
+                  <input type="text" id="aaa" />
+                  <input type="password" id="aba" />
+                </div>
+                <input id="basepricepwd" name="basepricepwd" type="text" autocomplete="off" onfocus="this.type='password'" placeholder="输入交易密码">
+                <div th:if="${pricePower eq true}" class="price_bt" style="display: inline-block"><input id="basepricereview" name="basepricereview" type="button" value="审核"></div>
+                <div th:if="${pricePower eq false}" class="price_bt" style="display: inline-block"><input id="basepricesave" name="basepricesave" type="button" value="保存"></div>
+              </td>
+
+              <!--td>历史基价查询</td-->
+            </tr>
+            <tr>
+              <td></td>
+<!--              <td colspan="2"><a href="baseprice/history">历史基价查询</a></td>-->
+              <td colspan="2">历史基价查询</td>
+            </tr>
+          </table>
+        </form>
+        <table class="heavy_set" cellspacing="0" cellpadding="0" border="0">
+          <thead>
+            <tr>
+              <td>日期</td>
+              <td>品种</td>
+              <td>录入价格</td>
+              <td>审核价格</td>
+              <td>是否有效</td>
+              <td>审核状态</td>
+              <td>录入时间</td>
+              <td>审核时间</td>
+              <td>录入人</td>
+              <td>审核人</td>
+            </tr>
+          </thead>
+          <tbody class="pricelog">
+            <tr th:each="list:${scTodayBasePriceInfoList}">
+              <td th:text="${#dates.format(list.date, 'yyyy-MM-dd')}"></td>
+              <td th:if="${list.type eq 1}">螺纹</td>
+              <td th:if="${list.type eq 2}">高线</td>
+              <td th:if="${list.type eq 3}">盘螺</td>
+              <td th:text="${T(com.isechome.ecommerce.common.StringUtils).valueFormat(list.price)}"></td>
+              <td th:text="${T(com.isechome.ecommerce.common.StringUtils).valueFormat(list.reviewPrice)}" ></td>
+              <td th:if="${list.status eq 0}">无效</td>
+              <td th:if="${list.status eq 1}">有效</td>
+              <td th:if="${list.reviewStatus eq 1}">已审核</td>
+              <td th:if="${list.reviewStatus eq 0}">无效</td>
+              <td th:if="${list.reviewStatus eq -1}">未审核</td>
+              <td th:text="${#dates.format(list.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+              <td th:text="${#dates.format(list.reviewDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+              <td th:text="${list.adminName}"></td>
+              <td th:text="${list.reviewName}"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="page">
+          <a th:href="'javascript:queryBasePriceRecords('+${pageInfo.prePage}+',\'/baseprice/settings?page=\');'">上一页</a>
+          <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+            <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+            <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryBasePriceRecords('+${navigatepageNum}+',\'/baseprice/settings?page=\');'" th:text="${navigatepageNum}"></a>
+          </p>
+          <a th:href="'javascript:queryBasePriceRecords('+${pageInfo.nextPage}+',\'/baseprice/settings?page=\');'">下一页</a>
+          <span>到第</span>
+          <input type="text" id="jump_num" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <span>页</span>
+          <button type="button" onclick="jumpbasepricepage('/baseprice/settings?page=');">确定</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</section>
+</body>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+
+</html>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ResourceSalesMapper">
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ResourceSales">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="varietyName" jdbcType="VARCHAR" property="varietyname" />
+    <result column="vid" jdbcType="TINYINT" property="vid" />
+    <result column="Material" jdbcType="VARCHAR" property="material" />
+    <result column="Spec" jdbcType="VARCHAR" property="spec" />
+    <result column="origin_code" jdbcType="VARCHAR" property="originCode" />
+    <result column="cangku" jdbcType="VARCHAR" property="cangku" />
+    <result column="piece" jdbcType="DOUBLE" property="piece" />
+    <result column="sold_num" jdbcType="DOUBLE" property="soldNum" />
+    <result column="num" jdbcType="DOUBLE" property="num" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="sales_start_time" jdbcType="TIMESTAMP" property="salesStartTime" />
+    <result column="sales_end_time" jdbcType="TIMESTAMP" property="salesEndTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="where_from" jdbcType="TINYINT" property="whereFrom" />
+    <result column="sales_mid" jdbcType="INTEGER" property="salesMid" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ResourceSales">
+    insert into resource_sales (id, varietyName, Material, 
+      Spec, origin_code, cangku, 
+      piece, sold_num, num, price, 
+      sales_start_time, sales_end_time, `status`, 
+      where_from, sales_mid, creat_time, 
+      create_user_id)
+    values (#{id,jdbcType=INTEGER}, #{varietyname,jdbcType=VARCHAR}, #{material,jdbcType=VARCHAR}, 
+      #{spec,jdbcType=VARCHAR}, #{originCode,jdbcType=VARCHAR}, #{cangku,jdbcType=VARCHAR}, 
+      #{piece,jdbcType=DOUBLE}, #{soldNum,jdbcType=DOUBLE}, #{num,jdbcType=DOUBLE}, #{price,jdbcType=DOUBLE}, 
+      #{salesStartTime,jdbcType=TIMESTAMP}, #{salesEndTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{whereFrom,jdbcType=TINYINT}, #{salesMid,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertExcel"  parameterType="java.util.List">  
+    insert into resource_sales   
+      (varietyName, vid, Material, Spec, origin_code, cangku, 
+      piece, num, price, sales_start_time, sales_end_time,
+      status,sales_mid, creat_time, create_user_id)   
+    values  
+    <foreach collection="list"  item="item" index="index" separator=",">  
+      (#{item.varietyname},#{item.vid},#{item.material},#{item.spec},#{item.originCode},
+      #{item.cangku},#{item.piece},#{item.num},#{item.price},#{item.salesStartTime},
+      #{item.salesEndTime},#{item.status},#{item.salesMid},#{item.creatTime},#{item.createUserId})
+    </foreach>      
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, varietyName, vid, Material, Spec, origin_code, cangku, piece, sold_num, num, 
+    price, sales_start_time, sales_end_time, `status`, where_from, sales_mid, creat_time, 
+    create_user_id
+    from resource_sales
+    <where>
+      sales_mid = #{mid} and status = #{status}
+      <if test="varietyName != null and varietyName!=''">
+        and varietyName like '%${varietyName}%'
+      </if>
+      <if test="Material!=null and Material!=''">
+        and Material like '%${Material}%'
+      </if>
+      <if test="Spec!=null and Spec!=''">
+        and Spec like '%${Spec}%'
+      </if>
+      <if test="origin_code!=null and origin_code!=''">
+        and origin_code like '%${origin_code}%'
+      </if>
+      order by creat_time desc,id asc
+    </where>
+  </select>
+  <update id="resourceUpdate">
+    update resource_sales
+    <set>
+      <if test="piece != null">piece=#{piece},</if>
+      <if test="price != null">price=#{price},</if>
+      <if test="num != null">num=#{num},</if>
+      <if test="sales_start_time != null">sales_start_time=#{sales_start_time},</if>
+      <if test="sales_end_time != null">sales_end_time=#{sales_end_time}</if>
+    </set>
+     where id=#{id}
+  </update>
+  <update id="updateStatusById">
+    update resource_sales
+    <set>
+      status=#{status}
+    </set>
+     where id=#{id}
+  </update>
+  <update id="updateSoldNumById">
+    update resource_sales
+    <set>
+      sold_num=#{SoldNum}
+    </set>
+     where id=#{id}
+  </update>
+  <update id="updateStatusByEndTime">
+    update resource_sales
+    <set>
+      status='4'
+    </set>
+     where status='3' and sales_end_time &lt; now() 
+  </update>
+
+  <select id="getSalesResourceList" resultMap="BaseResultMap" parameterType="java.lang.Byte">
+    select id, varietyName, vid, Material, Spec, origin_code, cangku, piece, sold_num, num,
+    price, sales_start_time, sales_end_time, `status`, where_from, sales_mid, creat_time,
+    create_user_id
+    from resource_sales
+    <where>
+      `status` = 3 and sales_start_time &lt;= now() and sales_end_time &gt; now()
+      <if test="vid>0">
+        and vid=#{vid,jdbcType=TINYINT}
+      </if>
+      <if test="material!=null">
+        and Material like '%${material}%'
+      </if>
+      <if test="spec!=null">
+        and Spec like '%${spec}%'
+      </if>
+      <if test="originCode!=null">
+        and origin_code like '%${originCode}%'
+      </if>
+      <if test="cangku!=null">
+        and cangku like '%${cangku}%'
+      </if>
+
+      order by id desc
+    </where>
+  </select>
+
+  <select id="getSalesResourceListBySearch" resultMap="BaseResultMap" parameterType="java.lang.Byte">
+    select id, varietyName, vid, Material, Spec, origin_code, cangku, piece, sold_num, num,
+    price, sales_start_time, sales_end_time, `status`, where_from, sales_mid, creat_time,
+    create_user_id
+    from resource_sales
+    <where>
+      `status` = 3 and sales_start_time &lt;= now() and sales_end_time &gt;= now()
+      <if test="vid>0">
+        and vid=#{vid,jdbcType=TINYINT}
+      </if>
+      <if test="searchwhere!=null">
+        and ( varietyName like '%${searchwhere}%' or Material like '%${searchwhere}%' or Spec like '%${searchwhere}%' )
+      </if>
+
+      order by id desc
+    </where>
+  </select>
+
+  <select id="getSalesResourceById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select id, varietyName, vid, Material, Spec, origin_code, cangku, piece, sold_num, num,
+    price, sales_start_time, sales_end_time, `status`, where_from, sales_mid, creat_time,
+    create_user_id
+    from resource_sales
+    <where>
+     id=#{id,jdbcType=INTEGER}
+    </where>
+  </select>
+
+</mapper>

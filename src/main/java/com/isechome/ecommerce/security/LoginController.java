@@ -1,7 +1,7 @@
 package com.isechome.ecommerce.security;
 
 import com.isechome.ecommerce.common.ResponseUtils;
-import com.isechome.ecommerce.security.mapper.SecurityUserMapper;
+import com.isechome.ecommerce.security.mapper.isechome.SecurityUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -27,8 +27,10 @@ public class LoginController {
     @CrossOrigin
 //    @ApiOperation(value = "swagger端测试登录入口")
     @PostMapping("/login")
-    public RespBean login(String username, String password){
-    // System.out.println( "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+    public RespBean login(String username, String password, String token){
+   System.out.println( "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+
+    System.out.println(token);
         return RespBean.ok("登录成功!");
     }
 

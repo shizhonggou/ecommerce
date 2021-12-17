@@ -1,6 +1,8 @@
 package com.isechome.ecommerce.controller;
 
-import com.isechome.ecommerce.common.common;
+
+
+import com.isechome.ecommerce.common.Common;
 import com.isechome.ecommerce.service.PieceWeightService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +58,7 @@ public class PieceWeightController {
     public void savePieceWeight(HttpServletRequest request, Model model, HttpServletResponse response) throws IOException {
         String saveMessage = pieceWeightService.savePieceWeight( request , model);
         response.setContentType("text/html;charset=UTF-8");
-        common pulFun = new common();
+        Common pulFun = new Common();
         PrintWriter out=new PrintWriter(response.getOutputStream());
         pulFun.alert(saveMessage, out );
         pulFun.goURL("/pieceweight/list", out );

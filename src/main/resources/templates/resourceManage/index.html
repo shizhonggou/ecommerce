@@ -98,10 +98,10 @@
                 <input type="text" th:name="@{'price_'+${list.id}}" th:id="@{'price_'+${list.id}}" th:value="${#numbers.formatInteger(list.price,0)}" th:oninput="'sel(\''+${list.id}+'\')'"/>
             </td>
             <td >
-                <input type="text" th:name="@{'salesStartTime_'+${list.id}}" style="width:150px;text-align:left;" class="Wdate" th:onclick="@{'WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', onpicked:function(){sel('+${list.id}+');}})'}" th:value="${#dates.format(list.salesStartTime, 'yyyy-MM-dd HH:mm:ss')}" autocomplete="off"/>
+                <input type="text" th:name="@{'salesStartTime_'+${list.id}}" th:id="@{'salesStartTime_'+${list.id}}" style="width:150px;text-align:left;" class="Wdate" th:onclick="@{'WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', onpicked:function(){sel('+${list.id}+');}})'}" th:value="${#dates.format(list.salesStartTime, 'yyyy-MM-dd HH:mm:ss')}" autocomplete="off"/>
             </td>
             <td>
-                <input type="text"th:name="@{'salesEndTime_'+${list.id}}" style="width:150px;text-align:left;" class="Wdate" th:onclick="@{'WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', onpicked:function(){sel('+${list.id}+');}})'}" th:value="${#dates.format(list.salesEndTime, 'yyyy-MM-dd HH:mm:ss')}" autocomplete="off" />
+                <input type="text" th:name="@{'salesEndTime_'+${list.id}}" th:id="@{'salesEndTime_'+${list.id}}" style="width:150px;text-align:left;" class="Wdate" th:onclick="@{'WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', onpicked:function(){sel('+${list.id}+');}})'}" th:value="${#dates.format(list.salesEndTime, 'yyyy-MM-dd HH:mm:ss')}" autocomplete="off" />
             </td>
         </tr>
     </tbody>
@@ -141,7 +141,9 @@
 </div>
 </form>
 <div style="clear:both"></div>
+</div>
 </section>
+</div>
 </aside>
 </div>
 </section>
@@ -218,6 +220,20 @@
             return false;
         }
         $("#allsel").val(allsel);
+        var selarr = allsel.split(',');
+        var act = "<{$act}>";
+        if (act != "xj") {
+            for (var i = 0; i < selarr.length; i++) {
+                var salesStartTime = $("#salesStartTime_" + selarr[i]).val();
+                var salesEndTime = $("#salesEndTime_" + selarr[i]).val();
+                var StartTime = new Date(salesStartTime);
+                var EndTime = new Date(salesEndTime);
+                if (StartTime > EndTime) {
+                    alert("开始时间需小于结束时间");
+                    return false;
+                }
+            }
+        }
         $.ajax({
             type: "POST",//方法类型
             dataType: "json",//预期服务器返回的数据类型
@@ -274,6 +290,26 @@
         if (allsel == "") {
             alert("请选择资源！");
             return false;
+        }
+        var selarr = allsel.split(',');
+        var act = "<{$act}>";
+        if (act != "xj") {
+            for (var i = 0; i < selarr.length; i++) {
+                var dateNow = new Date();
+                var salesStartTime = $("#salesStartTime_" + selarr[i]).val();
+                var salesEndTime = $("#salesEndTime_" + selarr[i]).val();
+                var StartTime = new Date(salesStartTime);
+                var EndTime = new Date(salesEndTime);
+                if (StartTime > EndTime) {
+                    alert("开始时间需小于结束时间");
+                    return false;
+                }
+                
+                if (EndTime < dateNow) {
+                    alert("结束时间需大于当前时间");
+                    return false;
+                }
+            }
         }
         var checkstr = checkPayWord();
         if (checkstr == "successed") {
@@ -356,6 +392,7 @@
                     alert("文件类型不正确或为空！");
                 } else {
                     alert("有"+res+"条数据导入失败!");
+                    location.reload();
                 }
             }
             ,error: function(message){

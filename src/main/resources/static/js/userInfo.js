@@ -25,7 +25,7 @@ function checkForm() {
     var regP = new RegExp(/\s+/g);
     //获取用户的用户名信息
 	var uname=document.getElementById("real_name").value.replace(/\s*/g,"");
-	var nick_name=document.getElementById("nick_name").value.replace(/\s*/g,"");
+	//var nick_name=document.getElementById("nick_name").value.replace(/\s*/g,"");
 	// 校验用户名 只能是 数字字母 下划线
 	var regUN = /^[0-9a-zA-Z_]{1,}$/;
 	var user_name=document.getElementById("user_name").value.replace(/\s*/g,"");
@@ -46,16 +46,16 @@ function checkForm() {
 	var regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$/;
 	var email=document.getElementById("email").value.replace(/\s*/g,"");
 	var job=document.getElementById("job").value.replace(/\s*/g,"").replace(/\s*/g,"");
-	var address_user=document.getElementById("address_user").value.replace(/\s*/g,"");
+	//var address_user=document.getElementById("address_user").value.replace(/\s*/g,"");
 
 	if (uname == '' || uname ==null){
 	    alert("请输入姓名");
         return false;
 	}
-	if (nick_name == '' || nick_name ==null) {
+	/*if (nick_name == '' || nick_name ==null) {
         alert("请输入昵称");
         return false;
-	}
+	}*/
 	if (user_name == '' || user_name ==null) {
         alert("请输入用户名");
         return false;
@@ -91,13 +91,13 @@ function checkForm() {
         alert("请输入正确的手机号码");
         return false;
     }
-    if (idcard == '' || idcard ==null) {
+    /*if (idcard == '' || idcard ==null) {
         alert("请输入身份证号码");
         return false;
     } else if (!regIdcard.test(idcard)){
         alert("请输入正确的身份证号码");
         return false;
-    }
+    }*/
     if (email != "" && email !=null) {
         if(!regEmail.test(email)) {
                 alert("请输入正确的邮箱地址");
@@ -108,11 +108,11 @@ function checkForm() {
     /*if (job == '' || job ==null) {
         alert("请输入职位");
         return false;
-    }*/
+    }
     if (address_user == '' || address_user ==null) {
         alert("请输入地址");
         return false;
-    }
+    }*/
     return true;
 }
 function checkCompanyInfoForm () {
@@ -120,7 +120,7 @@ function checkCompanyInfoForm () {
 //    var regZW = /^[\u4E00-\u9FA5]+$/;
     var com_name = document.getElementById("com_name").value.replace(/\s*/g,"");
     var com_name_short=document.getElementById("com_name_short").value.replace(/\s*/g,"");
-    var com_desc=document.getElementById("com_desc").value.replace(/\s*/g,"");
+    //var com_desc=document.getElementById("com_desc").value.replace(/\s*/g,"");
     var address_state=document.getElementById("address_state").value.replace(/\s*/g,"");
     var address_city=document.getElementById("address_city").value.replace(/\s*/g,"");
     var address=document.getElementById("address").value.replace(/\s*/g,"");
@@ -134,10 +134,10 @@ function checkCompanyInfoForm () {
             alert("请输入公司简称");
             return false;
         }
-    if(com_desc == '' || com_desc == null) {
+    /*if(com_desc == '' || com_desc == null) {
             alert("请输入公司描述");
             return false;
-        }
+        }*/
     if(address_state == '' || address_state == null) {
             alert("请输入公司省份");
             return false;
@@ -174,3 +174,116 @@ function checkCompanyInfoForm () {
     	}
     }
     <!-- 权限   end -->
+    <!--  出入账方式 承兑 银行 显示隐藏 -->
+    function billTypeChange() {
+        var radio = document.getElementsByName("bill_type");
+        var yhcdts = document.getElementById("yhcdts");
+        if (radio[0].checked) {
+            //第一个radio被选中后触发的事件
+            yhcdts.style.display = 'none';
+        } else {
+            //第二个radio被选中后触发的事件
+            yhcdts.style.display = '';
+        }
+    }
+    function checkFinancialForm() {
+        //校验空格
+        //var regP = new RegExp(/\s+/g);
+        //获取用户的用户名信息
+    	var company_name=document.getElementById("company_name").value.replace(/\s*/g,"");
+    	var regMoney = /^\d+(\.\d{1,2})?$/;
+    	var money=document.getElementById("money").value.replace(/\s*/g,"");
+    	// 出入账方式 = 2 承兑用
+    	var crzfs=document.getElementById("crzfs").value.replace(/\s*/g,"");
+    	var accept_bank=document.getElementById("accept_bank").value.replace(/\s*/g,"");
+    	var accept_date=document.getElementById("accept_date").value.replace(/\s*/g,"");
+    	if (company_name == '' || company_name ==null){
+    	    alert("请输入公司全称");
+            return false;
+    	}
+    	if (money == '' || money ==null) {
+            alert("请输入金额");
+            return false;
+    	} else if (!regMoney.test(money)) {
+            alert("请检查输入的金额是否正确");
+            return false;
+    	}
+    	if (crzfs == '2') {
+    	    if (accept_bank == '' || accept_bank ==null){
+                alert("请输入银行名称");
+                return false;
+            }
+            if (accept_date == '' || accept_date ==null){
+                alert("请输入承兑天数");
+                return false;
+            } else if (!(/(^[1-9]\d*$)/.test(accept_date))){
+                alert("承兑天数应为正整数");
+                return false;
+            }
+
+    	}
+
+    }
+    // 录入财务信息 校验
+    function checkFinancialForm() {
+            //校验空格
+            //var regP = new RegExp(/\s+/g);
+            //获取用户的用户名信息
+        	var company_name=document.getElementById("cameName").value.replace(/\s*/g,"");
+        	var regMoney = /^\d+(\.\d{1,2})?$/;
+        	var money=document.getElementById("money").value.replace(/\s*/g,"");
+        	// 出入账方式 = 2 承兑用
+        	var crzfs=document.getElementById("crzfs");
+        	var accept_bank=document.getElementById("accept_bank").value.replace(/\s*/g,"");
+        	var accept_date=document.getElementById("accept_date").value.replace(/\s*/g,"");
+        	if (company_name == '' || company_name ==null){
+        	    alert("请输入公司名称");
+                return false;
+        	}
+        	if (money == '' || money ==null) {
+                alert("请输入金额");
+                return false;
+        	} else if (!regMoney.test(money)) {
+                alert("请检查输入的金额是否正确");
+                return false;
+        	}
+        	if (crzfs.checked == true) {
+        	    if (accept_bank == '' || accept_bank ==null){
+                    alert("请输入银行名称");
+                    return false;
+                }
+                if (accept_date == '' || accept_date ==null){
+                    alert("请输入承兑天数");
+                    return false;
+                } else if (!(/(^[1-9]\d*$)/.test(accept_date))){
+                    alert("承兑天数应为正整数");
+                    return false;
+                }
+
+        	}
+
+        }
+        // 修改余额 校验
+        function checkBalanceForm() {
+                    //校验空格
+                    //var regP = new RegExp(/\s+/g);
+                    //获取用户的用户名信息
+                	var company_name=document.getElementById("company_name").value.replace(/\s*/g,"");
+                	var regMoney = /^\d+(\.\d{1,2})?$/;
+                	var balance=document.getElementById("balance").value.replace(/\s*/g,"");
+                	if (company_name == '' || company_name ==null){
+                	    alert("请输入公司全称");
+                        return false;
+                	}
+                	if (balance == '' || balance ==null) {
+                        alert("请输入金额");
+                        return false;
+                	} else if (!regMoney.test(balance)) {
+                        alert("请检查输入的金额是否正确");
+                        return false;
+                	}
+
+
+                }
+
+

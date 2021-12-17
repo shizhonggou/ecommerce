@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.InvoiceInformationManagementMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.InvoiceInformationManagement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mid" property="mid" jdbcType="INTEGER" />
+    <result column="rise" property="rise" jdbcType="VARCHAR" />
+    <result column="taxnum" property="taxnum" jdbcType="VARCHAR" />
+    <result column="address_mail" property="addressMail" jdbcType="VARCHAR" />
+    <result column="address_company" property="addressCompany" jdbcType="VARCHAR" />
+    <result column="open_bank" property="openBank" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="isdefault" property="isdefault" jdbcType="INTEGER" />
+    <result column="invoice_code" property="invoiceCode" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_invoice_information_management
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.InvoiceInformationManagement" >
+    insert into sc_invoice_information_management (id, mid, rise, 
+      taxnum, address_mail, address_company,open_bank, 
+      account, phone, isdefault, invoice_code, remark, 
+      pmid)
+    values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{rise,jdbcType=VARCHAR}, 
+      #{taxnum,jdbcType=VARCHAR}, #{addressMail,jdbcType=VARCHAR}, #{addressCompany,jdbcType=VARCHAR}, #{openBank,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{isdefault,jdbcType=INTEGER}, #{invoiceCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{pmid,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.InvoiceInformationManagement" >
+    update sc_invoice_information_management
+    set mid = #{mid,jdbcType=INTEGER},
+      rise = #{rise,jdbcType=VARCHAR},
+      taxnum = #{taxnum,jdbcType=VARCHAR},
+      address_mail = #{addressMail,jdbcType=VARCHAR},
+      address_company = #{addressCompany,jdbcType=VARCHAR},
+      open_bank = #{openBank,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      isdefault = #{isdefault,jdbcType=INTEGER},
+      invoice_code = #{invoiceCode,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      pmid = #{pmid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, mid, rise, taxnum, address_mail,address_company, open_bank, account, phone, isdefault, remark, pmid,invoice_code
+    from sc_invoice_information_management
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, mid, rise, taxnum, address_mail,address_company, open_bank, account, phone, isdefault, invoice_code, remark, pmid
+    from sc_invoice_information_management where mid = #{id,jdbcType=INTEGER}
+  </select>
+  <update id="updatefpinfo" >
+    update sc_invoice_information_management
+    set rise = #{rise,jdbcType=VARCHAR},
+      taxnum = #{taxnum,jdbcType=VARCHAR},
+      address_mail = #{addressMail,jdbcType=VARCHAR},
+      address_company = #{addressCompany,jdbcType=VARCHAR},
+      open_bank = #{openBank,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      isdefault = #{isdefault,jdbcType=INTEGER},
+      invoice_code = #{invoiceCode,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updatefpinfodf" >
+    update sc_invoice_information_management
+    set
+     isdefault = #{dfm,jdbcType=INTEGER}
+    where mid = #{mid,jdbcType=INTEGER} and pmid =  #{pmid,jdbcType=INTEGER}
+  </update>
+  <insert id="insertfpinfo" >
+    insert into sc_invoice_information_management (mid, rise, 
+      taxnum, address_mail,address_company, open_bank, 
+      account, phone, isdefault, invoice_code, remark, 
+      pmid)
+    values (#{mid,jdbcType=INTEGER}, #{rise,jdbcType=VARCHAR}, 
+      #{taxnum,jdbcType=VARCHAR}, #{addressMail,jdbcType=VARCHAR},#{addressCompany,jdbcType=VARCHAR}, #{openBank,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{isdefault,jdbcType=INTEGER}, #{invoiceCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{pmid,jdbcType=INTEGER})
+  </insert>
+
+  <select id="selectBymid" resultMap="BaseResultMap" >
+    select id, mid, rise, taxnum, address_mail,address_company, open_bank, account, phone, remark,  invoice_code, pmid,isdefault
+    from sc_invoice_information_management 
+    <where>
+      <if test="mid != null and mid!=''" >
+         and mid=#{mid}
+      </if>
+      <if test="pmid != null and pmid!=''" >
+         and pmid=#{pmid}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByInId" resultMap="BaseResultMap" >
+    select id, mid, rise, taxnum, address_mail,address_company, open_bank, account, phone, remark, invoice_code, pmid,isdefault
+    from sc_invoice_information_management 
+    <where>
+      <if test="ids != null and ids!=''" >
+         and id in (${ids})
+      </if>
+    </where>
+  </select>
+</mapper>

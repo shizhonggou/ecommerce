@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>任务调度管理</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <script type="text/javascript" th:src="@{/js/layui/layui.all.js}"></script>
+    <link th:href="@{/js/layui/css/layui.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="layui-form" style="margin: 2%">
+    <div class="layui-form-item">
+        <label class="layui-form-label">任务id</label>
+        <div class="layui-input-inline">
+            <input type="text" name="taskId" lay-verify="required" placeholder="请输入任务id（例：TB00001）" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">cron表达式</label>
+        <div class="layui-input-inline">
+            <input type="text" name="cron" lay-verify="required" placeholder="请输入cron表达式（例：0 * * * * ?）" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">job引用地址</label>
+        <div class="layui-input-inline">
+            <input type="text" name="className" lay-verify="required" placeholder="请输入job引用地址" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-inline">
+            <input type="text" name="description" lay-verify="required" placeholder="请输入描述" autocomplete="off"
+                   class="layui-input">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <div class="layui-input-block layui-right">
+            <button type="submit" class="layui-btn" lay-submit lay-filter="LAY-front-submit" id="LAY-back-submit">确认
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

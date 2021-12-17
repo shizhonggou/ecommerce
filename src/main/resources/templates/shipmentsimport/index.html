@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>提单发货量导入</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/ajax.js}"></script>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/layui/css/layui_xb.css}" rel="stylesheet" type="text/css">
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <div th:insert="~{left :: left(${mark})}"></div>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+                <div class="pozition"><p>当前位置：会员中心 &gt; 订单管理 &gt; 提单发货导入</p></div>
+
+                <div id="con_one_2">
+                    <div class="logistics" >
+                        <form name="form1" id="form1" action="#" method="post">
+                            <table cellspacing="0" cellpadding="0" border="0" style="text-align: center;">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <button type="button" class="layui-btn" id="upload" style="float: left;margin-left: 20px;margin-top: 10px;margin-bottom: 10px;height: 30px;line-height: 30px;background-color: #f7836a;">
+                                            <i class="layui-icon">&#xe67c;</i>上传文件
+                                        </button>
+                                        <div class="batch" style="display: inline-block;">
+                                            <!-- <a class="bt" href="#">添加明细</a> -->
+                                            <!-- <a href="javascript:void(0)" class="bt" id="upload">入库资源导入</a> -->
+                                            <a href="/download/gyl.xlsx">点击下载模板</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+<script>
+    layui.use(['upload','form','layer'], function(){
+        var upload = layui.upload;
+        var form = layui.form;
+        var uploadInit = upload.render({
+            elem: '#upload' //绑定元素
+            ,url: 'importExcel'
+            ,data: {
+                "_csrf": $("input[name='_csrf']").val(),
+            }
+            ,accept: 'file'
+            ,acceptMime: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
+            ,exts: 'xlsx|xls'
+            ,size: 2048
+            ,auto: true
+            ,choose: function(obj){
+                // var files = obj.pushFile();
+                // //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                // obj.preview(function(index, file, result){
+                //     var options = $("#uptype option:selected");
+                //     var uptype1 = options.text();
+                //     var name_arr = file.name.split('.');
+                //     console.log(name_arr);
+                //     delete files[index];
+                // //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+                // });
+            }
+            ,before: function(obj){
+                // this.data._token = $("input[name='_token']").val();
+                // var options = $("#uptype option:selected");
+                // var uptype1 = options.val();
+                // this.data.uptype = uptype1;
+                // if(uptype1 == 1) {
+                //     this.data.date = $("#rdate").val();
+                //     this.data.enddate = $("#enddate").val();
+                // } else {
+                //     this.data.date = $("#ydate").val();
+                // }
+                layer.load(1);
+            }
+            ,done: function(res){
+                layer.closeAll('loading');
+                console.log(res);
+                if(res.Success==1) {
+                    layer.alert('导入成功', {closeBtn: 0}, function(){
+                        location.reload();
+                    });
+                 } else {
+                    layer.alert(res.Message, {closeBtn: 0, icon: 2}, function(){
+                        location.reload();
+                    });
+                }
+                
+            }
+            ,error: function(){
+                layer.closeAll('loading');
+                layer.alert('请求失败', {closeBtn: 0, icon: 2}, function(){
+                    location.reload();
+                });
+            }
+        });
+    });
+</script>
+</html>

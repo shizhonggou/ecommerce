@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/resource.js}" type="text/javascript"></script>
+    <script th:src="@{/js/chosen.js}" type="text/javascript"></script>
+    <link th:href="@{/css/chosen.css}" rel="stylesheet" type="text/css"/>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>财务出入账信息录入</title>
+</head>
+<body onload="onload();">
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <aside>
+            <div th:insert="~{left :: left(financialInput)}"></div>
+        </aside>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+                <div class="pozition"><p>当前位置：会员中心  &gt; 财务管理  &gt; 财务入账信息录入 </p></div>
+                <form action="/financial/financialInputSave" name="huiFuLY" id="lybform" onsubmit="return checkFinancialForm()" method="POST">
+                    <table class="Information" cellspacing="0" cellpadding="0" border="0">
+
+                        <tbody>
+                        <tr>
+                            <td>公司名称<span>*</span></td>
+                            <td style="position:relative;" id="searchtd">
+                                <div class="searchBox">
+                                    <input type="text" autocomplete="off"  id="cameName" value="" name="company_name" placeholder="请输入公司名称" onkeyup="getCameraNames()" />
+                                    <input type="hidden" name="companyid" id="companyid" value="">
+                                    <input type="hidden" id="parameterName" th:value="${_csrf.parameterName}">
+                                    <input type="hidden" id="token" th:value="${_csrf.token}">
+                                </div>
+                                <!--搜索提示框 -->
+                                <div class="searchDiv" style="left: 0px; top: 50px;">
+                                </div>
+                                <div  id="dataList"  style="display:none;" >
+                                    <p th:each="item:${tmpcompay}" th:id="${item.id}" th:text="${item.comname}"></p>
+                                </div>
+                            </td>
+                            <td>金 额<span>*</span></td>
+                            <td ><input type="text" name="money" id="money"> </td>
+                        </tr>
+                        <tr>
+                            <td>出 入 账<span>*</span></td>
+                            <td>
+                                <input type="radio" name="bill" value="1"  checked="checked" ><label>   入金</label> &nbsp;&nbsp;
+                                <input type="radio" name="bill" value="2"><label>   出金</label> &nbsp;&nbsp;
+                                <input type="radio" name="bill" value="3"><label>   退款</label>
+                            </td>
+                            <td>出入账方式<span>*</span></td>
+                            <td >
+                                <input type="radio" name="bill_type" value="1" onclick="billTypeChange()"  checked="checked"><label>   现金</label> &nbsp;&nbsp;
+                                <input type="radio" name="bill_type" value="2" onclick="billTypeChange()" id="crzfs"><label>   承兑</label>
+                            </td>
+                        </tr>
+                        <tr id="yhcdts" style="display:none;">
+                            <td>银 行<span>*</span></td>
+                            <td ><input type="text" name="accept_bank" id="accept_bank"> </td>
+                            <td>承兑天数<span>*</span></td>
+                            <td ><input type="text" name="accept_date" id="accept_date"> </td>
+                        </tr>
+                        <tr>
+                            <td >备注</td>
+                            <td colspan="3">
+                                <textarea name="remark"></textarea>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div style="text-align: center;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="submit" value="保存"  style="background: #FF6632;color: white;width: 300px;height: 30px;border: 0;cursor:pointer;">
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

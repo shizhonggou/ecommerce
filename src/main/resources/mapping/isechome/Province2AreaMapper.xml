@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.isechome.Province2AreaMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.Province2Area" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ProviceId" property="proviceid" jdbcType="INTEGER" />
+    <result column="ProviceName" property="provicename" jdbcType="VARCHAR"  typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="Area" property="area" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Province2Area
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.Province2Area" >
+    insert into Province2Area (ID, ProviceId, ProviceName, 
+      Area)
+    values (#{id,jdbcType=INTEGER}, #{proviceid,jdbcType=INTEGER}, #{provicename,jdbcType=VARCHAR}, 
+      #{area,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.Province2Area" >
+    update Province2Area
+    set ProviceId = #{proviceid,jdbcType=INTEGER},
+      ProviceName = #{provicename,jdbcType=VARCHAR},
+      Area = #{area,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ID, ProviceId, ProviceName, Area
+    from Province2Area
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, ProviceId, ProviceName, Area
+    from Province2Area
+  </select>
+  <select id="selectByProviceId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ID, ProviceId, ProviceName, Area
+    from Province2Area
+    where ProviceId = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByProviceName" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from Province2Area
+    where ProviceName like concat('%', #{proviceName,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, '%') limit 1
+  </select>
+
+    <select id="selectallsf" resultMap="BaseResultMap" >
+    select ID, ProviceId, ProviceName, Area
+    from Province2Area
+    where ProviceId != 0 group by ProviceId
+  </select>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScPurchasDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScPurchasDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="base_id" property="baseId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="extract_id" property="extractId" jdbcType="VARCHAR" />
+    <result column="purchase_num" property="purchaseNum" jdbcType="DOUBLE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_purchaseorder_management_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScPurchasDetail" >
+    insert into sc_purchaseorder_management_detail (id, base_id, order_id, 
+      extract_id, purchase_num)
+    values (#{id,jdbcType=INTEGER}, #{baseId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, 
+      #{extractId,jdbcType=VARCHAR}, #{purchaseNum,jdbcType=DOUBLE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScPurchasDetail" >
+    update sc_purchaseorder_management_detail
+    set base_id = #{baseId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      extract_id = #{extractId,jdbcType=VARCHAR},
+      purchase_num = #{purchaseNum,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, base_id, order_id, extract_id, purchase_num
+    from sc_purchaseorder_management_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, base_id, order_id, extract_id, purchase_num
+    from sc_purchaseorder_management_detail
+  </select>
+
+
+
+  <select id="selectDSumbyorderId" resultType="BigDecimal">
+    select sum(detail.purchase_num)
+    from sc_purchaseorder_management_base base LEFT JOIN sc_purchaseorder_management_detail detail ON base.id=detail.base_id  
+    where base.resource_id=#{resource_id,jdbcType=INTEGER} and detail.order_id=#{order_id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteDbyorderId" >
+    delete from sc_purchaseorder_management_detail
+    where base_id = #{base_id,jdbcType=INTEGER} and  order_id=#{order_id,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteBybaseId" >
+    delete from sc_purchaseorder_management_detail
+    where base_id = #{base_id,jdbcType=INTEGER} 
+  </delete>
+
+  <select id="selectByBaseId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select id, base_id, order_id, extract_id, purchase_num
+    from sc_purchaseorder_management_detail where base_id = #{base_id,jdbcType=INTEGER}
+  </select>
+
+</mapper>

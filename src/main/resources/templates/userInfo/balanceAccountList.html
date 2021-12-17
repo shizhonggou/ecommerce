@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <script th:src="@{/js/resource.js}" type="text/javascript"></script>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>余额信息管理</title>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <aside>
+            <div th:insert="~{left :: left(balanceAccount)}"></div>
+        </aside>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+                <div class="pozition"><p>当前位置：会员中心  &gt; 财务管理 &gt; 余额信息管理 </p></div>
+                <form name="form1" id="form1" th:action="@{'/financial/balanceAccount'}" method="post">
+                    <table class="management" cellspacing="0" cellpadding="0" border="0">
+                        <thead>
+                        <tr style="background: #f6f6f6;">
+                            <td style="width: 8%;">ID </td>
+                            <td >公司名称</td>
+                            <td >余额</td>
+                            <td >录入人</td>
+                            <td >日期</td>
+                            <td th:if="${userLoginID} eq '1'" >操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="accountList_item:${accountList}" align="center">
+                            <td th:text="${accountList_item.id}"></td>
+                            <td th:text="${accountList_item.company_name}"></td>
+                            <td th:text="${accountList_item.balance}"></td>
+                            <td th:text="${accountList_item.input_user}"></td>
+                            <td th:text="${#dates.format(accountList_item.input_date, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td class="cz" th:if="${userLoginID} eq '1'"><span class="xg">
+                            <a th:href="@{'/financial/selecteBalanceInfo?id='+${accountList_item.id}}" target="_blank">修改</a></span><span class="delete">
+                            <a th:href="@{'/financial/deleteBalanceForID?id='+${accountList_item.id}}"  onClick="return confirm('确定删除吗?');">删除</a>
+                        </span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="page">
+                        <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+');'">上一页</a>
+                        <p th:each="navigatepageNum:${pageInfo.navigatepageNums}">
+                            <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now"
+                               th:text="${navigatepageNum}"></a>
+                            <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}"
+                               th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+');'"
+                               th:text="${navigatepageNum}"></a>
+                        </p>
+                        <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+');'">下一页</a>
+                        <span>到第</span>
+                        <input type="text" id="jump_num" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                        <span>页</span>
+                        <button type="button" onclick="jumppage();">确定</button>
+                    </div>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" name="page" id="page"/>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>
+<div th:insert="~{footer :: footer}"></div>
+
+<script type="text/javascript">
+ // 翻页
+    function jumppage() {
+        var pageNum = document.getElementById("jump_num").value;
+        if (pageNum > 0) {
+            queryDeviceRecords(pageNum);
+        }
+    }
+
+    function find(pageNum) {
+        document.getElementById('form1').submit();
+    }
+
+    function queryDeviceRecords(pageNum) {
+        $("#page").val(pageNum);
+        document.getElementById('form1').submit();
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScplatformsidesettingMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.Scplatformsidesetting" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="background_type" property="backgroundType" jdbcType="VARCHAR" />
+    <result column="review_type" property="reviewType" jdbcType="TINYINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="adminid" property="adminid" jdbcType="INTEGER" />
+    <result column="review_date" property="reviewDate" jdbcType="TIMESTAMP" />
+    <result column="review_id" property="reviewId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="PmIdDescriptionMap" type="com.isechome.ecommerce.entity.Scplatformsidesetting" >
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="selectColumn">
+    id, pmid, token, `status`, logo_url, description, background_type, review_type,
+    create_date, adminid, review_date, review_id
+    </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from `sc_platform_side_setting`
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.Scplatformsidesetting" >
+    insert into `sc_platform_side_setting` (id, pmid, token, 
+      `status`, logo_url, description, 
+      background_type, review_type, create_date, 
+      adminid, review_date, review_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{logoUrl,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{backgroundType,jdbcType=VARCHAR}, #{reviewType,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{adminid,jdbcType=INTEGER}, #{reviewDate,jdbcType=TIMESTAMP}, #{reviewId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.Scplatformsidesetting" >
+    update `sc_platform_side_setting`
+    set pmid = #{pmid,jdbcType=INTEGER},
+      token = #{token,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      logo_url = #{logoUrl,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      background_type = #{backgroundType,jdbcType=VARCHAR},
+      review_type = #{reviewType,jdbcType=TINYINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      adminid = #{adminid,jdbcType=INTEGER},
+      review_date = #{reviewDate,jdbcType=TIMESTAMP},
+      review_id = #{reviewId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="selectColumn">
+  </include>
+    from `sc_platform_side_setting`
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select <include refid="selectColumn">
+  </include>
+    from `sc_platform_side_setting`
+  </select>
+    <select id="selectbytoken" resultMap="BaseResultMap">
+    select <include refid="selectColumn">
+    </include>
+    from `sc_platform_side_setting`
+    where token = #{token,jdbcType=VARCHAR}
+  </select>
+      <select id="selectnewpmid" resultMap="BaseResultMap">
+    select <include refid="selectColumn">
+      </include>
+    from `sc_platform_side_setting`
+   order by id asc limit 1
+  </select>
+
+  <select id="selectPmIdAndDescription" resultMap="PmIdDescriptionMap">
+    select pmid,description
+    from `sc_platform_side_setting`
+  </select>
+  <select id="selectLogo" resultMap="BaseResultMap">
+    select logo_url 
+    from `sc_platform_side_setting`
+    where pmid = #{pmid,jdbcType=INTEGER} limit 1
+  </select>
+</mapper>

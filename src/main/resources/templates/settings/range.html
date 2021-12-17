@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::commonHeader(${title})">
+</head>
+
+<div th:insert="~{header :: header}"></div>
+<body>
+<section>
+    <div class="main w1000">
+        <div th:insert="~{left :: left(${mark})}"></div>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+                <div class="pozition">
+                    <p>当前位置：会员中心 &gt; 系统管理 &gt; 级差设置 </p>
+                </div>
+
+                <div class="ss">
+                    <div class="rangequery">
+                        <dl>
+                            <form name="form1" id="form1" th:action="@{'/settings/range?kind='+${kind}}" method="post">
+                                <dd>日期选择：</dd>
+                                <dd><input name="date" id="date" th:value="${date}" onclick="WdatePicker()" type="text" size="12"></dd>
+                                <dd><input type="submit" value="查询" class="bt"></dd>
+                            </form>
+                            <dd>数据保存日期：</dd>
+                            <dd>
+                                <input name="savedate" id="savedate" th:value="${savedate}" onclick="WdatePicker()" type="text">
+                                <input type="hidden" th:value="${kind}" id="kind">
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="rangequery">
+                        <dl>
+                            <form name="form2" id="form2" th:action="@{'/settings/range?kind='+${kind}}" method="post">
+                                <div style="position:absolute;z-index:-1;width:0;height:0;overflow:hidden;">
+                                    <input type="text" id="aaa" />
+                                    <input type="password" id="aba" />
+                                </div>
+                                <input id="settingspwd" name="settingspwd" type="text" autocomplete="off" onfocus="this.type='password'" placeholder="输入交易密码">
+                                <div th:if="${settingsStatus eq false}" class="price_range" style="display: inline-block"><input  type="button" value="审核" class="disabledbt" disabled></div>
+                                <div th:if="${settingsStatus eq true}" class="price_range" style="display: inline-block"><input id="settingsreview" name="settingsreview" type="button" value="审核"></div>
+                                <div  class="price_range" style="display: inline-block"><input  type="button" id="update_today_resource_price" value="修改今日资源价格" ></div>
+                            </form>
+                        </dl>
+                    </div>
+                </div>
+                <div class="order">
+                    <div class="process">
+                        <div class="tab1" id="tab1">
+                            <div class="menurange">
+                                <ul>
+                                    <li  onclick="range_menu(1)" th:if="${kind eq 1}" class="off"> 钢厂升贴水<br><span th:text="${statusMessage}"></span></li>
+                                    <li  onclick="range_menu(1)" th:if="${kind ne 1}">钢厂升贴水</li>
+                                    <li  onclick="range_menu(2)" th:if="${kind eq 2}" class="off">材质级差<br><span th:text="${statusMessage}"></span></li>
+                                    <li  onclick="range_menu(2)" th:if="${kind ne 2}">材质级差</li>
+                                    <li  onclick="range_menu(3)" th:if="${kind eq 3}" class="off">规格级差<br><span th:text="${statusMessage}"></span></li>
+                                    <li  onclick="range_menu(3)" th:if="${kind ne 3}">规格级差</li>
+                                    <li  onclick="range_menu(4)" th:if="${kind eq 4}" class="off">长度级差<br><span th:text="${statusMessage}"></span></li>
+                                    <li  onclick="range_menu(4)" th:if="${kind ne 4}">长度级差</li>
+                                    <li  onclick="range_menu(5)" th:if="${kind eq 5}" class="off">仓库级差<br><span th:text="${statusMessage}"></span></li>
+                                    <li  onclick="range_menu(5)" th:if="${kind ne 5}">仓库级差</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <table class="heavy_set" cellspacing="0" cellpadding="0" border="0">
+                            <thead>
+                            <tr>
+                                <td th:if="${kind eq 1}" >钢厂</td>
+                                <td th:if="${kind eq 2}" >材质</td>
+                                <td th:if="${kind eq 3}" >品名</td>
+                                <td th:if="${kind eq 3}" >规格</td>
+                                <td th:if="${kind eq 4}" >长度</td>
+                                <td th:if="${kind eq 5}" >仓库</td>
+                                <td>级差</td>
+                                <td>操作</td>
+                            </tr>
+                            </thead>
+                            <tbody id="rangecontents" class="rangecontents">
+                                <tr th:each="list:${scSettingRangeInfoList}">
+                                    <td th:if="${kind eq 3}" >
+                                        <input type="text" name="varietyName" th:value="${list.varietyName}" >
+                                    </td>
+                                    <td >
+                                        <input type="text" name="description" th:value="${list.description}" >
+                                    </td>
+                                    <td >
+                                        <input type="text" name="jiajianjia" th:value="${T(com.isechome.ecommerce.common.StringUtils).valueFormat(list.jiajianjia)}" >
+                                    </td>
+                                    <td >
+                                        <div  class="price_range" style="display: inline-block"><input  type="button" onclick="delete_this_tr(this)" value="删 除" ></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="ss">
+                    <div class="query textcenter">
+                        <dl>
+                            <div  class="price_range" style="display: inline-block"><input  type="button" th:onclick="'addTR('+${kind}+' );'" value="新增一行" ></div>
+                            <div  class="price_range" style="display: inline-block"><input  type="button" id="save_jiajianjia" value="保存" ></div>
+                        </dl>
+                    </div>
+                </div>
+<!--                <div class="page">-->
+<!--                    <a th:href="'javascript:queryBasePriceRecords('+${pageInfo.prePage}+');'">上一页</a>-->
+<!--                    <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >-->
+<!--                        <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>-->
+<!--                        <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryBasePriceRecords('+${navigatepageNum}+');'" th:text="${navigatepageNum}"></a>-->
+<!--                    </p>-->
+<!--                    <a th:href="'javascript:queryBasePriceRecords('+${pageInfo.nextPage}+');'">下一页</a>-->
+<!--                    <span>到第</span>-->
+<!--                    <input type="text" id="jump_num">-->
+<!--                    <span>页</span>-->
+<!--                    <button type="button" onclick="jumpbasepricepage();">确定</button>-->
+<!--                </div>-->
+            </div>
+        </aside>
+    </div>
+
+</section>
+</body>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+<script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+<script th:inline="javascript">
+    //新增一行
+    function addTR( kind ){
+        if (kind == 3 ) {
+            var newRow='<tr> <td> <select name="varietyName"><option value ="螺纹">螺纹</option><option value ="盘螺">盘螺</option><option value ="高线">高线</option></select></td> <td > <input type="text" name="description" > </td> <td > <input type="text" name="jiajianjia" onkeyup="clearNoNum(this)" > </td> <td > <div  class="price_range" style="display: inline-block"><input  type="button" onclick="delete_this_tr(this)" value="删 除" ></div> </td> </tr>';
+        }else if( 1 == kind ){
+            var factorylist = /*[[${scSteelMillList}]]*/ {};
+            var factorytdStr = '<select name="description">';
+            for( var i = 0; i < factorylist.length; i++ ){
+                factorytdStr += '<option value ='+factorylist[i].steelNameShort+'>'+factorylist[i].steelNameShort+'</option>';
+            }
+            factorytdStr += '</select>';
+            var newRow='<tr> <td >'+factorytdStr+'</td> <td > <input type="text" name="jiajianjia" onkeyup="clearNoNum(this)"> </td> <td > <div  class="price_range" style="display: inline-block"><input  type="button" onclick="delete_this_tr(this)" value="删 除" ></div> </td> </tr>';
+        }else{
+            var newRow='<tr> <td > <input type="text" name="description" > </td> <td > <input type="text" name="jiajianjia" onkeyup="clearNoNum(this)" > </td> <td > <div  class="price_range" style="display: inline-block"><input  type="button" onclick="delete_this_tr(this)" value="删 除" ></div> </td> </tr>';
+        }
+        $('#rangecontents').append(newRow);
+    }
+
+    function clearNoNum(obj){
+        obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+        obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数
+        if(obj.value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+            obj.value= parseFloat(obj.value);
+        }
+    }
+</script>
+</html>

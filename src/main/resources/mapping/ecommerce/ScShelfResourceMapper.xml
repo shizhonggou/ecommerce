@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScShelfResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScShelfResource" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="v_id" property="vid" jdbcType="INTEGER" />
+    <result column="w_id" property="wId" jdbcType="INTEGER" />
+    <result column="variety_name" property="varietyName" jdbcType="VARCHAR" />
+    <result column="material" property="material" jdbcType="VARCHAR" />
+    <result column="specification" property="specification" jdbcType="VARCHAR" />
+    <result column="hd" property="hd" jdbcType="DOUBLE" />
+    <result column="kd" property="kd" jdbcType="DOUBLE" />
+    <result column="cd" property="cd" jdbcType="DOUBLE" />
+    <result column="xd" property="xd" jdbcType="DOUBLE" />
+    <result column="factory" property="factory" jdbcType="VARCHAR" />
+    <result column="warehouse" property="warehouse" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="DOUBLE" />
+    <result column="sold_num" property="soldNum" jdbcType="DOUBLE" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="system_type" property="systemType" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+
+    <collection property="scOrderListDetail" javaType="java.util.ArrayList"  ofType="com.isechome.ecommerce.entity.ScOrderListDetail">
+      <id column="did" property="id" jdbcType="INTEGER" />
+      <result column="dorder_baseid" property="orderBaseid" jdbcType="VARCHAR" />
+      <result column="dresource_id" property="resourceId" jdbcType="INTEGER" />
+      <result column="purchase_mid" property="purchaseMid" jdbcType="INTEGER" />
+      <result column="dpiece" property="piece" jdbcType="DOUBLE" />
+      <result column="dnum" property="num"  jdbcType="DOUBLE" />
+       <result column="dprice" property="price"  jdbcType="DOUBLE" />
+      <result column="original_price" property="originalPrice"  jdbcType="DOUBLE" />
+      <result column="dsettlement_weight" property="settlementWeight"  jdbcType="DOUBLE" />
+      <result column="dsettlement_money" property="settlementMoney"  jdbcType="DOUBLE" />
+      <result column="extract_piece" jdbcType="VARCHAR" property="extractPiece" />
+      <result column="extract_num" jdbcType="VARCHAR" property="extractNum" />
+      <result column="exist_save_action" jdbcType="TINYINT" property="existSaveAction" />
+      <result column="dcreat_time" property="creatTime" jdbcType="TIMESTAMP" />
+      <result column="dcreate_user_id" property="createUserId" jdbcType="INTEGER" />
+    </collection>
+
+
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_shelf_resource
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScShelfResource" >
+    insert into sc_shelf_resource (id, w_id, variety_name, 
+      material, specification, hd, 
+      kd, cd, xd, factory, 
+      warehouse, price, num, 
+      sold_num, `date`, `status`, 
+      `type`, system_type, pmid, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{wId,jdbcType=INTEGER}, #{varietyName,jdbcType=VARCHAR}, 
+      #{material,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR}, #{hd,jdbcType=DOUBLE}, 
+      #{kd,jdbcType=DOUBLE}, #{cd,jdbcType=DOUBLE}, #{xd,jdbcType=DOUBLE}, #{factory,jdbcType=VARCHAR}, 
+      #{warehouse,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{num,jdbcType=DOUBLE}, 
+      #{soldNum,jdbcType=DOUBLE}, #{date,jdbcType=DATE}, #{status,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{systemType,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScShelfResource" >
+    update sc_shelf_resource
+    set w_id = #{wId,jdbcType=INTEGER},
+      variety_name = #{varietyName,jdbcType=VARCHAR},
+      material = #{material,jdbcType=VARCHAR},
+      specification = #{specification,jdbcType=VARCHAR},
+      hd = #{hd,jdbcType=DOUBLE},
+      kd = #{kd,jdbcType=DOUBLE},
+      cd = #{cd,jdbcType=DOUBLE},
+      xd = #{xd,jdbcType=DOUBLE},
+      factory = #{factory,jdbcType=VARCHAR},
+      warehouse = #{warehouse,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      num = #{num,jdbcType=DOUBLE},
+      sold_num = #{soldNum,jdbcType=DOUBLE},
+      `date` = #{date,jdbcType=DATE},
+      `status` = #{status,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
+      system_type = #{systemType,jdbcType=INTEGER},
+      pmid = #{pmid,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, v_id,w_id, variety_name, material, specification, hd, kd, cd, xd, factory, 
+    warehouse, price, num, sold_num, `date`, `status`, `type`, system_type, pmid, create_time
+    from sc_shelf_resource
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, w_id, variety_name, material, specification, hd, kd, cd, xd, factory, 
+    warehouse, price, num, sold_num, `date`, `status`, `type`, system_type, pmid, create_time
+    from sc_shelf_resource
+  </select>
+
+  <select id="getScTodayResourceByPmid" resultMap="BaseResultMap" >
+    select id, w_id,v_id, variety_name, material, specification, hd, kd, cd, xd, factory,
+    warehouse, price, num, sold_num, `date`, `status`, `type`, system_type, pmid, create_time
+    from sc_shelf_resource
+    where pmid = #{pmid} and `date`= #{today} and `status` = 1 and `type` = 1 and system_type = 1
+  </select>
+
+  <update id="updateSoldNumById" parameterType="com.isechome.ecommerce.entity.ScShelfResource" >
+      update sc_shelf_resource set sold_num = sold_num+ #{sold_num,jdbcType=DOUBLE}  where id = #{id,jdbcType=INTEGER} 
+  </update>
+  
+
+  <select id="getExcessResource" resultMap="BaseResultMap"  >
+   select res.id,res.v_id,res.variety_name,res.num, res.material, res.specification, res.factory, res.warehouse,detail.id did,detail.order_baseid dorder_baseid,detail.purchase_mid,detail.piece as dpiece,detail.num as dnum,detail.extract_piece,detail.exist_save_action,
+   detail.extract_num,detail.creat_time dcreat_time 
+    from sc_shelf_resource res  LEFT JOIN sc_order_list_detail detail ON res.id= detail.resource_id LEFT JOIN sc_order_list_base base ON base.order_id=detail.order_baseid
+   
+   <where>
+      detail.exist_save_action!=1 and detail.is_deleted=0 and base.status=3 and detail.pmid = #{pmid}  and res.pmid=#{pmid}  
+      <if test="varietyName != null and varietyName != ''">
+        AND res.variety_name like concat('%', #{varietyName}, '%')
+      </if>
+      <if test="material != null and material != ''">
+        AND  res.material like concat('%', #{material}, '%')
+      </if>
+      <if test="specification != null and specification != ''">
+        AND  res.specification like concat('%', #{specification}, '%')
+      </if>
+      <if test="factory != null and factory != ''">
+        AND  res.factory like concat('%', #{factory}, '%')
+      </if>
+      <if test="warehouse != null and warehouse != ''">
+        AND  res.warehouse like concat('%', #{warehouse}, '%')
+      </if>
+      <if test="orderId != null and orderId!=''">
+        and base.order_id like '%${orderId}%'
+      </if>
+      <if test="company != null and company!=''">
+        and base.purchase_mid like '%${company}%'
+      </if>
+      <if test="comids != null and comids!=''">
+        and base.purchase_mid in (${comids}) 
+      </if>
+      <if test="stime != null and stime!=''">
+        and res.date = #{stime} and date(base.creat_time)=#{stime}
+      </if>
+      <if test="stime == null or stime==''">
+        and res.date = curdate() and date(base.creat_time)=curdate()
+      </if>
+
+
+
+      order by res.id desc,detail.id asc
+    </where>
+  </select>
+
+  <update id="updateSoldNumByRid" parameterType="com.isechome.ecommerce.entity.ScShelfResource" >
+      update sc_shelf_resource set sold_num = #{sold_num,jdbcType=DOUBLE}  where id = #{id,jdbcType=INTEGER} 
+  </update>
+
+
+  <select id="selectAllByPmid" resultMap="BaseResultMap" >
+    select id, w_id, variety_name, material, specification, hd, kd, cd, xd, factory, 
+    warehouse, price, num, sold_num, `date`, `status`, `type`, system_type, pmid, create_time
+    from sc_shelf_resource where date = curdate() and status=1 and pmid=#{pmid,jdbcType=INTEGER} order by v_id asc
+  </select>
+</mapper>

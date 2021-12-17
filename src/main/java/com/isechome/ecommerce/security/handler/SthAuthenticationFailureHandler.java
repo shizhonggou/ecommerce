@@ -17,7 +17,7 @@ public class SthAuthenticationFailureHandler implements AuthenticationFailureHan
         RespBean respBean;
         if (exception instanceof BadCredentialsException ||
                 exception instanceof UsernameNotFoundException) {
-            respBean = RespBean.error("账户名或者密码输入错误!");
+            respBean = RespBean.error("用户名或者密码输入错误!");
         } else if (exception instanceof LockedException) {
             respBean = RespBean.error("账户被锁定，请联系管理员!");
         } else if (exception instanceof CredentialsExpiredException) {

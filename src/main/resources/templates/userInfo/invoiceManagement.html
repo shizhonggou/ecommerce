@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/resource.js}" type="text/javascript"></script>
+    <script th:src="@{/js/systemsettings.js}" ></script>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/js/chosen.js}" type="text/javascript"></script>
+    <link th:href="@{/css/chosen.css}" rel="stylesheet" type="text/css"/>
+  
+
+    <title>开票管理</title>
+    <style>
+        .tdauto{
+            display: block;
+            width: 100px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+    
+<body th:onload="${issource==1}?'onload();':''">
+   
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <aside>
+            <div th:insert="~{left :: left(invoiceManagement)}"></div>
+        </aside>
+        <aside>
+            <div class="resources">
+                <!-- <div class="resources_tt" th:include="common::varietyTag2"></div> -->
+                <div class="pozition"><p>当前位置：会员中心  &gt; 会员管理  &gt; 开票管理 </p></div>
+              
+                <div class='ss'>
+                    <form name="form1" id="form1"  method="post" th:action="@{index(status=${kpstatus})}" >
+                        <table cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                        <tbody>
+                           
+                            <tr>
+                                <td style="width: 45%;" ><p>订单号&nbsp;：</p><input type="text" name="orderId" id="orderId" th:value="${orderId}" size="18" style="width:180px;"> </td>
+                                <td class="td1" th:colspan="${kpstatus eq '2'} ? '2':'1'"  th:if="${kpstatus ne '0'}"><p>申请时间：</p><input type="text" name="stime" id="stime" style="width:140px" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd '})" th:value="${stime}" autocomplete="off" size="18"><p> - </p><input type="text" name="etime" id="etime" style="width:140px" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd '})" th:value="${etime}" autocomplete="off" size="18">  </td>
+
+                                <td   th:colspan="${issource==1} ? '1':'2'" th:if="${kpstatus eq '0'}">
+                                  
+                                    <input type="hidden" id="parameterName" th:value="${_csrf.parameterName}">
+                                    <input type="hidden" id="token" th:value="${_csrf.token}">
+                                    <input type="submit" value="搜索" style="    width: 105px;height: 30px;background: #ff6630;text-align: center; color: #ffffff;border:none;outline: none;"/>
+                                    <!-- <a href="javascript:find();" onclick="dosearch();">搜索</a> -->
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td th:if="${issource==1}" style="position:relative;" id="searchtd">
+                                    <div class="searchBox">
+                                       <p>公司名称：</p>  <input type="text" autocomplete="off"  id="cameName" th:value="${companyName}" name="companyname" placeholder="请输入公司名称" onkeyup="getCameraNames()"  style="width:180px;" />
+                                       <input type="hidden" name="companyid" id="companyid" value="">
+                                    </div>
+                                    <!--搜索提示框 -->
+                                    <div class="searchDiv">
+                                    </div>
+                                    <div  id="dataList"  style="display:none;" >
+                                        <p th:each="item:${tmpcompay}" th:id="${item.id}" th:text="${item.comname}"></p>
+                                    </div>
+                                </td>
+                                <td  style="width: 55%;" th:colspan="${issource==1} ? '1':'2'" th:if="${kpstatus eq '2' }">
+                                    <p>发票号&nbsp;：</p><input type="text" name="sinvoicenum" id="invoicenum" th:value="${invoicenum}" size="18" style="width:180px;">
+                                    <!-- <a href="javascript:find();" onclick="dosearch();">搜索</a> -->
+                                </td>
+                                <td   th:colspan="${issource==1} ? '1':'2'" th:if="${kpstatus ne '0' or (issource==0 and kpstatus ne '0')}">
+                                  
+                                    <input type="hidden" id="parameterName" th:value="${_csrf.parameterName}">
+                                    <input type="hidden" id="token" th:value="${_csrf.token}">
+                                    <input type="submit" value="搜索" style="    width: 105px;height: 30px;background: #ff6630;text-align: center; color: #ffffff;border:none;outline: none;"/>
+                                    <!-- <a href="javascript:find();" onclick="dosearch();">搜索</a> -->
+                                </td>
+                            </tr>
+                            <input type="hidden" name="page" id="page"/>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        </tr></tbody>
+                        </table>
+                    </form>
+                    </div>
+            </div>
+            <section>
+                <div class="order">
+                <div class="process">
+                <div class="tab1" id="tab1">
+                <div class="menu">                                                                                              
+                    <ul>
+                        <li onclick="setTab(0)" th:if="${kpstatus eq '0' and issource==0}" class="off" >待申请</li>
+                        <li onclick="setTab(0)" th:if="${kpstatus ne '0' and issource==0}">待申请</li>
+                        <li onclick="setTab(1)" th:if="${kpstatus eq '1'}" class="off" th:text="${issource==0 ? '已申请':'待开票'}"  ></li>
+                        <li onclick="setTab(1)" th:if="${kpstatus ne '1'}" th:text="${issource==0 ? '已申请':'待开票'}"></li>
+                        <li onclick="setTab(2)" th:if="${kpstatus eq '2'}" class="off">已开票</li>
+                        <li onclick="setTab(2)" th:if="${kpstatus ne '2'}">已开票</li>
+                      
+                    </ul>
+                </div>
+                <div class="menudiv">
+                <div id="con_one_1">
+                <div class="confirmed_order">
+                    <table cellspacing="0" cellpadding="0" border="0" >
+                    <thead>
+                        <tr class="tt" th:if="${kpstatus=='0'}">
+                            <td style="width: 30px;">选择</td><td>品名</td><td>材质</td><td>规格</td><td>产地</td><td>仓库</td><td>件数</td><td>重量</td><td>价格</td><td>总价</td>
+                        </tr>
+                        <tr class="tt" th:if="${kpstatus ne '0' }">
+                            <td style="width: 30px;" th:if="${kpstatus eq '1' && issource==1 }">选择</td>
+                            <td>订单号</td>
+                            <td>开票金额</td>
+                            <td th:if="${kpstatus eq '2' }">开票人</td>
+                            <td th:if="${kpstatus eq '2' }">开票时间</td>
+                            <td>申请开票人</td>
+                            <td>申请开票时间</td>
+                            <td th:if="${issource==1 }">申请公司</td>
+                            <td th:if="${issource==1 or (kpstatus eq '2' and issource==0)  }">开票名称</td>
+                            <td th:if="${issource==1 or (kpstatus eq '2' and issource==0)  }">发票号</td>
+                            <td th:if="${issource==1 or (kpstatus eq '2' and issource==0)  }">发票附件</td>
+                            <td th:if="${kpstatus eq '1' && issource==1 }">操作</td>
+                        </tr>
+
+                    </thead>
+                    <tbody th:if="${kpstatus=='0'}">
+                        <span th:each="list:${orderlist}">
+                        <tr class="tittle" >
+                            <td colspan="11"><input type="checkbox" name="check" style="margin-left:0px;" th:value="${list.id}"/>订单号: <span th:text="${list.orderId}"></span>
+                               
+                                <p style="float: right;padding-right: 20px;">结算金额: <span  th:text="${#numbers.formatDecimal(list.settlementMoney,0,2)}"></span></p>
+                                <p style="float: right;padding-right: 60px;">订单时间: <span  th:text="${#dates.format(list.creatTime, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                            </td>
+                           
+                        </tr>
+                        <tr class="tt" th:each="detail:${list.ScOrderListDetail}" th:if="${detail !=null}">
+                           
+                            <td style="width: 30px;"></td>
+                            <td th:text="${detail.ScShelfResource.varietyName}"></td>
+                            <td th:text="${detail.ScShelfResource.material}"></td>
+                            <td th:text="${detail.ScShelfResource.specification}"></td>
+                            <td th:text="${detail.ScShelfResource.factory}"></td>
+                            <td th:text="${detail.ScShelfResource.warehouse}"></td>
+            
+                            <td th:text="${#numbers.formatInteger(detail.piece,0)}"></td>
+                            <td th:text="${detail.settlementWeight}"></td>
+                            <td th:text="${#numbers.formatInteger(detail.originalPrice,0)}"></td>
+                            
+                            <td  th:text="${detail.settlementMoney !=null}?${detail.settlementMoney}:''"  ></td>
+            
+                           
+                        </tr>
+                       
+                        </span>
+                        <tr class="bb" >
+                            <td colspan="2" align="left">
+                               <input type="checkbox" th:onclick="javascript:selectAll(this,'check')">全选
+                            </td>
+                            <td colspan="9" >
+                                <input type="radio" name="kptype" value="1" checked=true/>增值税发票&nbsp;
+                                <input type="radio" name="kptype" value="2"/>普通发票&nbsp;
+                            <span class="bt1"><a href="javascript:void(0)" th:onclick="getInvoice('kaipiaoinfo','','');" >开 票</a></span>
+                            </td>	
+                        </tr>
+                    </tbody>
+                    <form th:action="@{saveInvoice(status=${kpstatus})}"  method="post" onsubmit="return dosub();return false;">
+                        <tbody th:if="${kpstatus ne '0'}">
+                            <!-- <span th:each="list:${orderlist}"> -->
+                         
+                            <tr class="tt" th:each="item,state:${listinfo}">
+                                <td style="width: 30px;" th:if="${kpstatus eq '1' && issource==1 }" ><input type="checkbox" name='kpcheck' th:value="${item.id}"/></td>
+                                <td >
+                                    <p style="height:15px;line-height:15px;" th:each="orderitem:${T(com.isechome.ecommerce.common.StringUtils).splitStr(item.orderId,',')}" th:text="${orderitem}" th:onclick="goOrderDetail([[${orderitem}]])"></p>
+                                </td> 
+                                <td th:text="${item.invoiceMoney}"></td>
+                                <td th:if="${kpstatus eq '2' }" th:text="${item.drawerName}"></td>
+                                <td th:if="${kpstatus eq '2' }" th:text="${#dates.format(item.updateTime, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td th:text="${item.createUserName}"></td>
+                                <td th:text="${#dates.format(item.createTime, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td th:if="${issource==1 }" th:text="${item.ComName}"></td>
+                                <td th:if="${issource==1 or (kpstatus eq '2' and issource==0)  }"  th:onclick="getInvoice('kaipiaodetail',[[${item.invoiceBaseid}]],[[${item.invoiceType}]]);">
+                                    <span th:title="${item.invoicerise}" th:text="${item.invoicerise}"  class="tdauto"></span>
+                                </td>
+                                <td th:if="${issource==1 or (kpstatus eq '2' and issource==0)  }" >
+                                    <input th:if="${issource==1 and kpstatus eq '1'}" type="text" th:name="'invoiceNum'+${item.id}" th:value="${item.invoiceNum}" size="8" th:id="'invoiceNum'+${item.id}"/>
+                                    <a th:href="@{'/invoicemanagement/OrderDetailPdf?id='+${item.id}+'&Orderids='+${item.orderId}}"
+                                   target='_blank' th:if="${kpstatus eq '2'}"  th:text="${item.invoiceNum}"  )></a>
+                                   <!-- <a href="http://ecrm-test.steelhome.cn/scorderlist/printPdf?id=119" target='_blank' th:if="${kpstatus eq '2'}"  th:text="${item.invoiceNum}"  )></a> -->
+                                    <!-- <span th:if="${kpstatus eq '2'}"  th:text="${item.invoiceNum}" ></span> -->
+                                  
+                                </td>
+                                <td th:if="${issource==1 or (kpstatus eq '2' and issource==0)}"  style="height:60px;">
+                                    <div class="border_line" style="height: 100%; display: flex;align-items: center;justify-content: center;" >
+                                       <a th:href="${item.invoiceUrl}" download th:id="'inputFileAgent'+${state.index}" th:style="${item.invoiceUrl == null || item.invoiceUrl ==''} ? 'display:none;':''">下载附件 </a>
+                                        <input type="hidden" th:name="'imgsrc'+${item.id}"  th:value="${item.invoiceUrl}"  th:id="'imgsrc'+${state.index}"/>
+                                        <!-- <input type="hidden" name="imgsrc"  value="a.img"  th:id="'imgsrc'+${state.index}"/> -->
+                                    </div>
+                                </td>
+                                <td th:if="${kpstatus eq '1' && issource==1 }">
+                                    <input type="button" th:onclick="|document.getElementById('inputFile${state.index}').click()|" value="上传发票" style=" width:55px;height: 25px;background: #ff6630;text-align: center; color: #ffffff;border:none;outline: none;font-size: 12px;"/>
+                                    <input type="file" th:id="'inputFile'+${state.index}" name="inputFile" style="display:none" th:onchange="|UploadFile(this,'inputFileAgent${state.index}','imgsrc${state.index}')|" />
+                                </td>
+                            </tr>
+                           
+                            <!-- </span> -->
+                            <tr class="bb" th:if="${kpstatus eq '1' && issource==1 }">
+                                <td colspan="2" align="left">
+                                   <input type="checkbox" th:onclick="javascript:selectAll(this,'kpcheck')">全选
+                                </td>
+                                <td colspan="9" >
+                                <span class="bt1"><input type="submit" value="开票" style=" width: 105px;height: 30px;background: #ff6630;text-align: center; color: #ffffff;border:none;outline: none;"/></span>
+                                </td>	
+                            </tr>
+                        </tbody>
+                    </form>
+                  
+                    </table>
+                    </div></div></div>
+                    <div class="page">
+                        <a th:href="'javascript:queryBasePriceRecords('+${pageInfo.prePage}+',\'/invoiceManagement/index?status='+${kpstatus}+'&page=\');'">上一页</a>
+                        <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+                            <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+                            <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryBasePriceRecords('+${navigatepageNum}+',\'/invoiceManagement/index?status='+${kpstatus}+'&page=\');'" th:text="${navigatepageNum}"></a>
+                        </p>
+                        <a th:href="'javascript:queryBasePriceRecords('+${pageInfo.nextPage}+',\'/invoiceManagement/index?status='+${kpstatus}+'&page=\');'">下一页</a>
+                        <span>到第</span>
+                        <input type="text" id="jump_num" value="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                        <span>页</span>
+                        <button type="button" th:onclick="javascript:jumpbasepricepage('/invoiceManagement/index?status=[(${kpstatus})]&page=');" >确定</button>
+                    </div>
+                </div>
+
+                
+
+
+
+                <div id="kpContent1" class="white_content" th:if="${issource==0 }" style="display: none;">
+                    <div class="my_cart">
+                        <h3>我的开票信息<a href="javascript:void(0)" onclick="hide('kpContent1')">×</a></h3>
+                        <div class="my_cart_list">
+                            <table cellpadding="0" cellspacing="0" border="0" class="cart_list">
+                                <thead>
+                                <tr>
+                                    <th>选择</th>
+                                    <th>名称</th>
+                                    <th>税号</th>
+                                    <!-- <th>邮寄地址</th> -->
+                                    <th>公司地址</th>
+                                    <th>开户银行</th>
+                                    <th>银行账号</th>
+                                    <th>电话</th>
+                                    <!-- <th>备注说明</th> -->
+                                  
+                                </tr>
+                                </thead>
+                                <tbody  id="kaipiaoinfo" th:fragment="article_type">
+                                    <tr th:each="invoiceitem:${invoicelist}">
+                                        <td ><input type="radio" name="kp" th:value="${invoiceitem.id}" th:checked="${invoiceitem.isdefault=='1'} ? true:false"></td>
+                                        <td th:text="${invoiceitem.rise}"></td>
+                                        <td th:text="${invoiceitem.taxnum}"></td>
+                                        <!-- <td th:text="${invoiceitem.addressMail}"></td> -->
+                                        <td th:text="${invoiceitem.addressCompany}"></td>
+                                        <td th:text="${invoiceitem.openBank}"></td>
+                                        <td th:text="${invoiceitem.account}"></td>
+                                        <td th:text="${invoiceitem.phone}"></td>
+                                        <!-- <td th:text="${invoiceitem.remark}"></td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- <div class="xuanze"><input type="radio" value="" checked="checked" >　全选</div> -->
+                        <div class="mycart_bt">
+                            <ul>
+                                <a href="javascript:void(0)" onclick="doInvoice();"><li style="width: 50%;">确认开票</li></a>
+                                <a href="javascript:void(0)" onclick="addInvoice();"><li style="width: 50%;">新增发票</li></a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="kpInfo" class="white_content" th:if="${issource==1 or (kpstatus eq '2' and issource==0)  }" style="display: none;">
+                    <div class="my_cart" style="width: 400px;margin-left: -200px;">
+                        <h3>开票信息<a href="javascript:void(0)" onclick="hide('kpInfo')">×</a></h3>
+                        <div class="my_cart_list">
+                            <table cellpadding="0" cellspacing="0" border="0" class="cart_list" id="kaipiaodetail" th:fragment="article_detail" >
+                                <tbody  th:if="${invoiceinfo!=null}" >
+                                    <tr>
+                                        <td>发票类型：</td> <td th:text="${type==1}?'普通发票':'增值税发票'" align="left"></td> 
+                                    </tr>
+                                    <tr>
+                                        <td>名　　称：</td> <td th:text="${invoiceinfo.rise}" align="left"></td> 
+                                    </tr>
+                                    <tr>
+                                        <td>税　　号：</td><td th:text="${invoiceinfo.taxnum}" align="left"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>邮寄地址：</td><td th:text="${invoiceinfo.addressMail}" align="left"></td>
+                                    </tr>
+                                    <tr >
+                                        <td>公司地址：</td><td th:text="${invoiceinfo.addressCompany}" align="left"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>开户银行：</td> <td th:text="${invoiceinfo.openBank}" align="left"></td>
+                                     </tr>
+                                     <tr >
+                                        <td>银行账号：</td><td th:text="${invoiceinfo.account}" align="left"></td>
+                                     </tr>
+                                     <tr >
+                                        <td>电　　话：</td> <td th:text="${invoiceinfo.phone}" align="left"></td>
+                                     </tr>
+                                     <tr>
+                                        <td>备注说明：</td> <td th:text="${invoiceinfo.remark}" align="left"></td>
+                                     </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                      
+                    </div>
+                </div>
+                <div id="OrderContent" class="white_content"  style="display: none;">
+                    <div class="my_cart" style="width: 400px;margin-left: -200px;">
+                        <h3>合并的订单号<span style="font-size: 12px;">（点击进入订单详细）</span><a href="javascript:void(0)" onclick="hide('OrderContent')">×</a></h3>
+                        <div class="my_cart_list">
+                            <table cellpadding="0" cellspacing="0" border="0" class="cart_list">
+                                <tbody  id="OrderInfo" th:fragment="article_order">
+                                    <tr th:each="orderitem:${orderlist}">
+                                       <td align="right">订单号：</td> <td align="left" ><a th:href="@{'/scorderlist/detail?id='+${orderitem.id}}" th:text="${orderitem.orderId}" target="_blank" ></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                       
+                    </div>
+                </div>
+               
+            </div>
+            </div>
+            </section>
+        </aside>
+    </div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+
+<script>
+
+function setTab(status) {
+    window.location.href = "index?status="+status;
+}
+
+function selectAll(obj,name){
+		
+    var check=obj.checked;
+//	var tbody=document.getElementById("content"+index).getElementsByTagName("tbody");
+    var inputs=document.getElementsByName(name);
+    console.log(inputs);
+    if(check){
+        console.log(check);
+        for(var i=0;i<inputs.length;i++){
+            console.log(inputs[i]);
+            inputs[i].checked=true;
+        }
+    }else{
+        for(var i=0;i<inputs.length;i++){
+            inputs[i].checked=false;
+        }
+    }
+		
+}
+function yzkpdd(){
+    var orderId="";
+    var checks=document.getElementsByName("check");
+    for(var j=0;j<checks.length;j++){
+        if(checks[j].checked){
+            orderId+=checks[j].value+",";
+        }
+    }
+    
+    return orderId;
+}
+function getInvoice(htmlid,id,type){
+    if(htmlid=="kaipiaoinfo"){
+        var orderId= yzkpdd();
+        if(orderId==""){
+            alert("请选择开票的订单");
+            return false;
+        }else{
+            show1('kpContent1');
+        }
+    }else if(htmlid=="kaipiaodetail"){
+        console.log(document.getElementById("kpInfo"));
+        show1("kpInfo");
+    }else{
+        if(id.indexOf(",") != -1 ){
+            show1("OrderContent");
+        }else{
+            window.open("/scorderlist/detail?orderId="+id);
+            return false;
+        }
+       
+    }
+    var url = 'getinvoice';
+    $.ajax({
+        url: url,
+        type: 'POST',
+        dataType: "html",
+        async:false, 
+        data: {
+            "id":id,
+            "type":type,
+            "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+        },
+        success: function (res) {
+            console.log("请求成功");
+            $('#'+htmlid).replaceWith(res);
+            
+        }
+    });
+   
+    
+}
+function show1(id){
+ //   console.log(document.getElementById(id));
+    document.getElementById(id).style.display="block";
+}
+
+function hide(tag){
+    var SonContent=document.getElementById(tag);
+    SonContent.style.display='none';
+}
+
+function doInvoice(){
+    
+    var radios=document.getElementsByName('kp');
+    var kpid="";
+   
+    for(var i=0;i<radios.length;i++){
+        if(radios[i].checked){
+            kpid=radios[i].value;
+        }
+    }
+    if(kpid==""){
+        alert("请选择开票信息");
+        return false;
+    }else{
+        var orderId= yzkpdd();
+        orderId=orderId.substring(0, orderId.length - 1);
+        var kptypes=document.getElementsByName("kptype");
+        var kptype="0";
+        for(var j=0;j<kptypes.length;j++){
+            if(kptypes[j].checked){
+                kptype=kptypes[j].value;
+            }
+        }
+        window.location.href="saveInvoice?kpid="+kpid+"&orderId="+orderId+"&status=[[${kpstatus}]]&kptype="+kptype;
+    }
+}
+
+function dosub(){
+    var checks=document.getElementsByName("kpcheck");
+    var orderId="";
+    
+   
+    for(var j=0;j<checks.length;j++){
+        if(checks[j].checked){
+           
+            var invoiceNum=document.getElementById("invoiceNum"+checks[j].value).value;
+            if(invoiceNum==""){
+                alert("请输入发票号");
+                return false;
+            }else if(invoiceNum.length>16){
+                alert("发票号最长只能为16位");
+                return false;
+            }
+            orderId+=checks[j].value+",";
+        }
+    }
+    if(orderId==""){
+        alert("请选择开票的订单");
+        return false;
+    }
+    return true;
+}
+function addInvoice(){
+    window.location.href="/fpmanage/fpList";
+}
+function UploadFile(obj,prvid,inputid){
+		var url = 'upload';
+		var myFormData = new FormData();
+        var file_name=obj.files[0]['name'];
+        var type=file_name.substring(file_name.lastIndexOf("."),file_name.length);
+        if (!/\.(gif|jpg|jpeg|png|pdf|GIF|JPG|PNG|PDF)$/.test(type)) {    
+            alert("请上传图片或PDF文件");    
+            return false; 
+        }    
+		myFormData.append('myfile',obj.files[0]);
+		myFormData.append('type',"ajax");
+		myFormData.append('[[${_csrf.parameterName}]]',"[[${_csrf.token}]]");
+		$.ajax({
+            url: url,
+            type: 'POST',
+			contentType:false,  // 不用任何编码 因为formdata对象自带编码 django能够识别该对象
+            processData:false,  // 告诉浏览器不要处理我的数据 直接发就行
+			async:false, 
+			dataType: "text",
+            data: myFormData,
+            success: function (res) {
+				console.log(res);
+				alert("上传成功");
+                document.getElementById(prvid).style.display="block";
+				document.getElementById(prvid).href=res;
+                // document.getElementById(prvid).style.width="80px";
+                // document.getElementById(prvid).style.height="50px";
+				document.getElementById(inputid).value=res;
+            }
+        })
+	}
+
+
+function goOrderDetail(id){
+    window.open("/scorderlist/detail?orderId="+id);
+}
+// $(document).ready(function(){ 
+//     chose_get_ini('#selectid');  
+//     //change 事件  
+//     $('#selectid').change(function(){ 
+//         // alert(chose_get_text('#selectid'));
+//         //回填值
+//         document.getElementById("companyname").value=chose_get_text('#selectid');
+//         // alert(chose_get_value('#selectid'));  
+//         // //console.log(chose_get_value('#cse'));  
+//         // alert(chose_get_value('#selectid') + ' : '+ chose_get_text('#selectid'));  
+//     });  
+// });
+   
+</script>
+
+</body>
+</html>

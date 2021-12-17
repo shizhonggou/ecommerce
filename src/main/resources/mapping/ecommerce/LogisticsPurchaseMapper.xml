@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.LogisticsPurchaseMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_detailid" property="orderDetailid" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="resource_id" property="resourceId" jdbcType="INTEGER" />
+    <result column="extract_id" property="extractId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="kind" property="kind" jdbcType="TINYINT" />
+    <result column="distribute_num" property="distributeNum" jdbcType="DOUBLE" />
+    <result column="actual_num" property="actualNum" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="depository" property="depository" jdbcType="VARCHAR" />
+    <result column="purchase_amount" property="purchaseAmount" jdbcType="DOUBLE" />
+    <result column="purchase_user_id" property="purchaseUserId" jdbcType="INTEGER" />
+    <result column="purchase_time" property="purchaseTime" jdbcType="TIMESTAMP" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+    <result column="supplier_mid" property="supplierMid" jdbcType="INTEGER" />
+    <result column="audit_user_id" property="auditUserId" jdbcType="INTEGER" />
+    <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="lpResultMap" type="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="distribute_num" property="distributeNum" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="DOUBLE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_logistics_purchase
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    insert into sc_logistics_purchase (id, order_detailid, order_id, 
+      resource_id, extract_id, `type`, 
+      kind, distribute_num, actual_num, 
+      num, price, depository, 
+      purchase_amount, purchase_user_id, purchase_time, supplier_name,supplier_mid
+      audit_user_id, audit_time, create_user_id, 
+      creat_time)
+    values (#{id,jdbcType=INTEGER}, #{orderDetailid,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, 
+      #{resourceId,jdbcType=INTEGER}, #{extractId,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+      #{kind,jdbcType=TINYINT}, #{distributeNum,jdbcType=DOUBLE}, #{actualNum,jdbcType=DOUBLE}, 
+      #{num,jdbcType=DOUBLE}, #{price,jdbcType=DOUBLE}, #{depository,jdbcType=VARCHAR}, 
+      #{purchaseAmount,jdbcType=DOUBLE}, #{purchaseUserId,jdbcType=INTEGER}, #{purchaseTime,jdbcType=TIMESTAMP},
+       #{supplierName,jdbcType=VARCHAR},   #{supplierMid,jdbcType=INTEGER},  
+      #{auditUserId,jdbcType=INTEGER}, #{auditTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}, 
+      #{creatTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, order_detailid, order_id, resource_id, extract_id, `type`, kind, distribute_num, 
+    actual_num, num, price, depository, purchase_amount, purchase_user_id, purchase_time, supplier_name,supplier_mid
+    audit_user_id, audit_time, create_user_id, creat_time
+    from sc_logistics_purchase
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectUnassignedList" resultMap="lpResultMap" parameterType="java.lang.Integer">
+    select lp.id,lp.distribute_num,lp.num,lp.type
+    from sc_logistics_purchase lp,sc_shelf_resource sr,sc_warehouse_resource wr where
+    lp.resource_id=sr.id and sr.w_id=wr.id and lp.type='5' and lp.kind='1' and wr.id=#{id}
+  </select>
+
+  <update id="updateByMatchResource" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    update sc_logistics_purchase
+    set  distribute_num =#{distributeNum}
+    <if test="type != null and type != ''">
+      ,type =#{type}
+    </if>
+    where id = #{id}
+  </update>
+  <select id="selectByExtractId" resultMap="BaseResultMap" >
+    select id, order_detailid, order_id, resource_id, extract_id, `type`, kind, distribute_num,
+    actual_num, num, price, depository, purchase_amount, purchase_user_id, purchase_time,supplier_name,supplier_mid,
+    audit_user_id, audit_time, create_user_id, creat_time
+    from sc_logistics_purchase
+    where extract_id = #{extract_id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByOrderDetailId" resultMap="BaseResultMap" >
+    select id, order_detailid, order_id, resource_id, extract_id, `type`, kind, distribute_num,
+    actual_num, num, price, depository, purchase_amount, purchase_user_id, purchase_time,supplier_name,supplier_mid,
+    audit_user_id, audit_time, create_user_id, creat_time
+    from sc_logistics_purchase
+    where order_detailid = #{order_detailid,jdbcType=INTEGER} order by id asc
+  </select>
+
+  <select id="selectSumByOrderDetailId" resultType="BigDecimal">
+    select sum(actual_num) actual_num_sum
+    from sc_logistics_purchase
+    where order_detailid = #{order_detailid,jdbcType=INTEGER}
+  </select>
+
+  <update id="updateByExtractIdAndType" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    update sc_logistics_purchase
+    <set>
+      <if test="actualNum != null and actualNum != ''">
+        actual_num =#{actualNum},
+      </if>
+    </set>
+    where extract_id = #{extractId,jdbcType=VARCHAR} and type=#{type}
+  </update>
+
+  <update id="updateByExtractId" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    update sc_logistics_purchase
+    <set>
+      <if test="type != null and type != ''">
+        type =#{type},
+      </if>
+      <if test="distributeNum != null and distributeNum != ''">
+        distribute_num =#{distributeNum},
+      </if>
+    </set>
+    where extract_id = #{extractId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByOrderId" resultMap="BaseResultMap" >
+    select id, order_detailid, order_id, resource_id, extract_id, `type`, kind, distribute_num,
+    actual_num, num, price, depository, purchase_amount, purchase_user_id, purchase_time,supplier_name,supplier_mid,
+    audit_user_id, audit_time, create_user_id, creat_time
+    from sc_logistics_purchase
+    where order_id = #{orderid,jdbcType=INTEGER}
+  </select>
+
+
+  <insert id="insertLogistics" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    insert into sc_logistics_purchase (order_detailid, order_id, 
+      resource_id, extract_id, `type`,kind,  actual_num, 
+      num, price, depository, create_user_id, 
+      creat_time)
+    values (#{orderDetailid,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, 
+      #{resourceId,jdbcType=INTEGER}, #{extractId,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{kind,jdbcType=TINYINT}, 
+      #{actualNum,jdbcType=DOUBLE}, #{num,jdbcType=DOUBLE}, #{price,jdbcType=DOUBLE}, #{depository,jdbcType=VARCHAR}, 
+      #{createUserId,jdbcType=INTEGER},  NOW())
+  </insert>
+
+
+  <update id="updateLogisticsById" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    update sc_logistics_purchase
+    set `type` = #{type,jdbcType=TINYINT},
+      kind = #{kind,jdbcType=TINYINT},
+      num = #{num,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAllExtractId" resultMap="BaseResultMap">
+    select extract_id from sc_logistics_purchase
+    where actual_num>0 and extract_id in 
+    <foreach collection="array" index="index" item="extract_id" open="(" separator="," close=")">
+      #{extract_id}
+    </foreach>
+  </select>
+  
+
+  <delete id="deletePurchaseByIds" parameterType="java.lang.Integer" >
+    delete from sc_logistics_purchase
+    where order_detailid=#{detail_id,jdbcType=INTEGER}  
+    
+    <if test="ids != null and ids.length>0">
+      and id not in
+      <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+              #{item}
+        </foreach>
+
+    </if>
+
+
+  </delete>
+
+
+  <update id="updatePurchaseById" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    update sc_logistics_purchase
+    set `type` = #{type,jdbcType=TINYINT},purchase_amount= #{purchaseAmount,jdbcType=DOUBLE},supplier_mid=#{supplierMid,jdbcType=INTEGER},supplier_name=#{supplierName,jdbcType=VARCHAR},audit_user_id= #{auditUserId,jdbcType=INTEGER},audit_time=NOW()
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+  <select id="getPurchaseIdBymoney"  resultType="java.lang.Integer">
+    select sc_logistics_purchase.id  from sc_order_list_base LEFT JOIN sc_logistics_purchase ON sc_order_list_base.order_id=sc_logistics_purchase.order_id
+    where sc_order_list_base.pmid= #{pmid,jdbcType=INTEGER} and  sc_logistics_purchase.type=4 and  supplier_mid=#{supplier_mid,jdbcType=INTEGER} and   purchase_amount=#{purchase_amount,jdbcType=DOUBLE}
+  </select>
+
+  <update id="purchaseMoneyMach" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    update sc_logistics_purchase set `type` = #{type,jdbcType=TINYINT} where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  
+
+  <select id="getSumNumByResid" resultType="BigDecimal">
+    select sum(sc_logistics_purchase.num) num_sum
+    from   sc_order_list_detail left join sc_logistics_purchase on sc_order_list_detail.id=sc_logistics_purchase.order_detailid 
+    where   sc_logistics_purchase.type=1  and	sc_logistics_purchase.resource_id = #{resource_id,jdbcType=INTEGER} 
+  </select>
+
+  <update id="updatePurchaseNumById" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    update sc_logistics_purchase
+    set  num =#{num}
+    where id = #{id}
+  </update>
+
+
+  <update id="updatePurchaseByResourceId" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    update sc_logistics_purchase type =2 where resource_id=#{resource_id,jdbcType=INTEGER} and type=3
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.LogisticsPurchase" >
+    update sc_logistics_purchase
+    <set>
+      <if test="type != null and type != ''">
+          type =#{type} ,
+      </if>
+      <if test="kind != null and kind != ''">
+          kind =#{kind} ,
+      </if>
+      <if test="distributeNum != null and distributeNum != ''">
+          distribute_num =#{actualNum} ,
+      </if>
+      <if test="actualNum != null and actualNum != ''">
+          actual_num =#{actualNum} ,
+      </if>
+      <if test="num != null and num != ''">
+          num =#{num} ,
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getPurchaseCountByDId" resultType="java.lang.Integer">
+    select count(*)
+    from sc_logistics_purchase where order_detailid = #{id,jdbcType=VARCHAR} 
+  </select>
+  
+</mapper>

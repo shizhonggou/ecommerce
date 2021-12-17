@@ -1,8 +1,8 @@
 package com.isechome.ecommerce.security;
-
-
-import com.isechome.ecommerce.security.entity.AdminUserInfo;
-import com.isechome.ecommerce.security.entity.CompanyInfo;
+import com.isechome.ecommerce.entity.BalanceInfo;
+import com.isechome.ecommerce.security.entity.Scplatformsidesetting;
+import com.isechome.ecommerce.security.entity.SysAdminuser;
+import com.isechome.ecommerce.security.entity.SysCompany;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,15 +12,28 @@ import java.util.List;
 
 @Data
 public class SecuritySysUser implements UserDetails {
-
     private Integer id;
+
     private String username;
     private String password;
-    private String pay_password;
+    private Long rights;
+    private String workTime;
+    private SysAdminuser SysAdminuser;
+    private SysCompany SysCompany;
+    private BalanceInfo BalanceInfo;
+    private Scplatformsidesetting Scplatformsidesetting;
+    private Integer pmid;
+    private String logoUrl;
 
-    private CompanyInfo companyInfo;
-    private AdminUserInfo adminUserInfo;
     List<GrantedAuthority> authorities;
+
+    public String getWorkTime() {
+        return workTime;
+    }
+
+    public void setWorkTime(String workTime) {
+        this.workTime = workTime;
+    }
 
     public Integer getId() {
         return id;
@@ -45,41 +58,69 @@ public class SecuritySysUser implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getPay_password() {
-        return pay_password;
+    public Long getRights() {
+        return rights;
     }
 
-    public void setPay_password(String pay_password) {
-        this.pay_password = pay_password;
+    public void setRights(Long rights) {
+        this.rights = rights;
+    }
+    
+    public SysCompany getSysCompanyInfo() {
+        return SysCompany;
     }
 
-    public CompanyInfo getCompanyInfo() {
-        return companyInfo;
+    public void setSysCompanyInfo(SysCompany SyscompanyInfo) {
+        this.SysCompany = SyscompanyInfo;
     }
 
-    public void setCompanyInfo(CompanyInfo companyInfo) {
-        this.companyInfo = companyInfo;
+    public SysAdminuser getSysAdminUserInfo() {
+        return SysAdminuser;
     }
 
-    public AdminUserInfo getAdminUserInfo() {
-        return adminUserInfo;
+    public void setSysAdminUserInfo(SysAdminuser SysadminUserInfo) {
+        this.SysAdminuser = SysadminUserInfo;
     }
 
-    public void setAdminUserInfo(AdminUserInfo adminUserInfo) {
-        this.adminUserInfo = adminUserInfo;
+    public String getLogoUrl() {
+        return logoUrl;
     }
 
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl == null ? null : logoUrl.trim();
+    }
+
+    public BalanceInfo getBalanceInfo() {
+        return BalanceInfo;
+    }
+
+    public void setBalanceInfo(BalanceInfo BalanceInfo) {
+        this.BalanceInfo = BalanceInfo;
+    }
+
+    public Scplatformsidesetting getScplatformsidesetting() {
+        return Scplatformsidesetting;
+    }
+
+    public void setScplatformsidesetting(Scplatformsidesetting Scplatformsidesetting) {
+        this.Scplatformsidesetting = Scplatformsidesetting;
+    }
+
+    public Integer getPmid() {
+        return pmid;
+    }
+
+    public void setPmid(Integer pmid) {
+        this.pmid = pmid;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
-        //List<GrantedAuthority> authorities = new ArrayList<>();
         return authorities;
     }
 
     public void setAuthorities(List<GrantedAuthority> auth){
         authorities = auth;
     }
-
     @Override
     public boolean isEnabled(){
         return true;
@@ -99,4 +140,5 @@ public class SecuritySysUser implements UserDetails {
     public boolean isCredentialsNonExpired(){
         return true;
     }
+    
 }

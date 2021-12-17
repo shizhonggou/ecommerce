@@ -1,0 +1,172 @@
+<!--
+ * @Author: lina
+ * @Date: 2021-08-19 09:34:33
+ * @LastEditTime: 2021-11-05 09:38:31
+ * @FilePath: \e-commerce\src\main\resources\templates\transet\worktime.html
+ * @Description: 
+ * @Copyright: © 2021, SteelHome. All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>交易设置</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <script type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<section>
+<div class="main w1000">
+<div th:insert="~{left :: left(${mark})}"></div>
+<aside>
+<div class="resources">
+<div class="resources_tt" th:include="common::varietyTag2"></div>
+
+<div class="pozition">
+    <p>当前位置：会员中心 &gt; 系统管理 &gt; 交易设置 </p>
+</div>
+    
+<section>
+<form action="saveworktime" onsubmit="return checkForm()" method="POST" enctype="multipart/form-data">
+    <table class="Information" cellspacing="0" cellpadding="0" border="0">
+        <tbody>
+        <tr>
+            <td>开盘时间：</td>
+            <td >
+                <input type="text" id="start_time"  name="start_time" style="width:70%;padding:0px 0px;height:33px;" class="Wdate" onclick="WdatePicker({dateFmt:'H:m'})" th:value="${#dates.format(scWorkTime.startTime, 'HH:mm')}" autocomplete="off"/>
+            </td>
+            <td>停盘时间：</td>
+            <td>
+                <input type="text" id="end_time"  name="end_time" style="width:70%;padding:0px 0px;height:33px;" class="Wdate" onclick="WdatePicker({dateFmt:'H:m'})" th:value="${#dates.format(scWorkTime.endTime, 'HH:mm')}" autocomplete="off"/>
+            </td>
+        </tr>
+        <tr>
+            <td>入账延迟时间：</td>
+            <td>
+                <input type="text" id="delay_time"  name="delay_time" style="width:70%;padding:0px 0px;height:33px;" class="Wdate" onclick="WdatePicker({dateFmt:'H:m'})" th:value="${#dates.format(scWorkTime.delayTime, 'HH:mm')}" autocomplete="off"/>
+            </td>
+            <td></td><td></td>
+        </tr>
+        <tr>
+            <td>现货销售封库：</td>
+            <td colspan="3">
+                当天现货销量达到 <input type="text" id="excessive_stop"  name="excessive_stop" style="width:18%;padding:0px 0px;height:33px;" th:value="${excessive_stop}"/> 吨，停止销售。今日已售<font th:text="${saleNum}"></font>吨。
+                <font color="red">（设置０时，为无限制）</font>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="text-align: center;">
+        <input type="hidden" name="id" id="id" th:value="${scWorkTime.id}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="submit" value="保存"  style="background: #FF6632;color: white;width: 100px;height: 30px;border: 0;cursor:pointer;">
+    </div>
+</form>
+
+<div class="steel_list w830">
+    <div class="ss">
+        <div class="zhu" th:if="${trantype eq 1}">交易已开始 如需停止交易请点击停盘</div>
+       <div class="zhu" th:if="${trantype eq 2}">交易已停止 如需开启交易请点击开盘</div>
+       <div class="suspension">
+           <a href="#" th:if="${trantype eq 1}" class="now" onclick="ModifyStatus('2');">停盘</a>
+           <a href="#" th:if="${trantype eq 1}" class="nonow" >开盘</a>
+           <a href="#" th:if="${trantype eq 2}" class="nonow" >停盘</a>
+           <a href="#" th:if="${trantype eq 2}" class="now" onclick="ModifyStatus('1');" >开盘</a>
+        </div>
+    </div> 
+    <table class="steel_list_table w830" cellspacing="0" cellpadding="0" border="0">
+        <thead>
+            <tr>
+                <td>姓名</td>
+                <td>开/停盘</td>
+                <td>超量停盘数量</td>
+                <td>时间</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="list:${scSysStatusLogList}">
+                <td th:text="${list.createUserName}"></td>
+                <td th:if="${list.type eq 1}">开盘</td>
+                <td th:if="${list.type eq 2}">停盘</td>
+                <td th:text="${list.excessiveStop}"></td>
+                <td th:text="${#dates.format(list.creatTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="page">
+
+        <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+');'">上一页</a>
+
+        <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+            <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+            <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+');'" th:text="${navigatepageNum}"></a>
+        </p>
+        <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+');'">下一页</a>
+
+
+        <span>到第</span>
+        <input type="text" id="jump_num">
+        <span>页</span>
+        <button type="button" onclick="jumppage();">确定</button>
+    </div>
+</div>
+</section>
+</div>
+</aside>
+</div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+<script>
+// 翻页
+function jumppage() {
+    var pageNum = document.getElementById("jump_num").value;
+    if(pageNum>0){
+        window.location.href="worktime?page="+Math.floor(pageNum);
+    }
+}
+
+function queryDeviceRecords(pageNum) {
+    window.location.href="worktime?page="+pageNum;
+}
+
+function ModifyStatus(status) {
+    if (status == "1") {
+        if (!confirm("确定开盘？")) {
+            return false;
+        }
+    } else if (status == "2") {
+        if (!confirm("确定停盘？")) {
+            return false;
+        }
+    }
+    $.ajax({ 
+        type: "post", 
+        url: "/transet/modifystatus",   
+        dataType: "json",
+        data: {
+            'status':status,
+            "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+        },
+        success: function (data) {
+            // console.log(data);
+            if (data.success == "1") {
+                location.reload();
+            }
+        },
+        error: function(request, status, error){
+            console.log(error);
+        }
+    });
+}
+</script>
+</html>

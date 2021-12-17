@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::commonHeader(我的采购车)">
+    
+</head>
+<script th:src="@{/js/ajax.js}" ></script>
+<script th:inline="javascript">
+    var preferential_amount = [[${preferential_amount}]];
+</script>
+<div th:insert="~{header :: header}"></div>
+
+<section>
+
+    <div class="search_group w1000">
+        
+    </div>
+
+</section>
+<section>
+    <div class="position w1000" style="line-height:31px;padding: 5px">当前位置：我的采购车</div>
+    <div class="steel_list_table w1000">
+            <div>
+                <!--h3 style="text-align: center;background-color: #FF7A4D;padding: 8px 8px 8px 8px;color: #FFFFFF;">我的购物车</h3-->
+                <div>
+                    <table cellpadding="0" cellspacing="0" border="0" class="cart_list" style="font-size: 12px;">
+                        <thead>
+                        <tr>
+                            <th width="5%"></th>
+                            <th width="14%">商品信息</th>                    
+                            <th width="14%">购买量(吨)/总量(吨)</th>
+                            <th width="14%">重量(件)</th>
+                            <th width="8%">议价单价</th>
+                            <th width="14%">是否多次提货</th>
+                            <th width="8%">价格</th>
+                            <th width="10%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="purchase_car">
+                            <tr th:each="listcart:${scShoppingCarts}">
+                                <td>
+                                    <input type="checkbox" th:value="${listcart.id}" value=""  name="gwc_id[]" checked="checked">
+                                    <input type="hidden" th:value="${listcart.resources_id}" value=""  name="resources_id[]">
+                                    <input type="hidden" th:value="${listcart.v_id}" value="" th:id="'gwc_vid'+${listcart.id}+''" id=""  name="vid[]">
+                                    <input type="hidden" th:value="${listcart.z_weight}" value="" th:id="'z_weight'+${listcart.id}+''" id="">
+                                    <input type="hidden" th:value="${listcart.d_weight}" value="" th:id="'d_weight'+${listcart.id}+''" id="">
+                                    <input type="hidden" th:value="${listcart.num}" value="" th:id="'num'+${listcart.id}+''" id="">
+                                    <input type="hidden" th:value="${listcart.price}" value="" name="price[]">
+                                </td>
+                                <td>
+                                    <dd th:text="${listcart.variety_name}+'/'+${listcart.material}+'/'+${listcart.specification}"></dd>
+									<dd th:text="'仓库：'+${listcart.warehouse}"></dd>
+									<dd th:text="'产地：'+${listcart.factory}"></dd>
+                                </td>
+                                <td>
+                                    <input style="width:80px" type="text" th:oninput="'check_num2(this,'+${listcart.id}+')'"  th:id="'gwc_weight'+${listcart.id}+''" name="gwc_weight[]" th:value="${listcart.weight}" th:onblur="'check_lw_num(this,'+${listcart.id}+')'">
+                                    /<font th:text="${listcart.num}"></font>
+                                </td>
+                                <td th:if="${listcart.v_id} eq 1">
+                                    <input style="width: 50%;" type="text" th:oninput="'check_piece2(this,'+${listcart.id}+')'" th:id="'gwc_weight2'+${listcart.id}+''" name="gwc_jianshu[]" th:value="${listcart.weight2}">
+                                    /<font th:text="${listcart.z_weight}"></font>
+                                </td>
+                                <td th:if="${listcart.v_id} ne 1">
+                                    
+                                </td>
+                                <td><input style="width:80%;" type="text" name="bargain[]" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" th:value="${listcart.price}" value=""></td>
+                                <td><input type="text" name="dcfh_vaule[]" th:onkeyup="'checkvalue(this,'+${listcart.id}+')'" style="width:80%;"></td>
+                                <td style="font-size:16px;color:#ff0000" th:text="${listcart.price}"></td>
+                                <td class="caozuo"><a href="javascript:void(0);"  th:onclick="'del_purchase_car(this,'+${listcart.id}+')'" >删除</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="xuanze">
+                                        <input type="checkbox" value="" checked="checked" id="gwc_check_all" onclick="gwc_check_all(this)">
+                                    </div>
+                                </td>
+                                <td colspan="1">
+                                    <a  href='javascript: void(0);'  onclick="qk_gwc()">清空采购车</a>
+                                </td>
+                                <!--td colspan="2">
+                                    <input type="checkbox" value="0" id="is_split_lading" name="is_split_lading" onclick="is_dc_fahuo(this)">&nbsp;是否多次提货
+                                </td-->
+                                
+                                <td colspan="3">
+                                    <input type="radio" value="1" id="ticket1" name="ticket" onclick="check_ticket(1)">　一票制
+                                    <input type="radio" value="2" id="ticket2" name="ticket" checked="checked" onclick="check_ticket(2)">　两票制
+                                </td>
+                                <td colspan="2">
+                                    到站：
+                                    <select id="dz_code" disabled="disabled">
+                                        <option value="" selected>无</option>
+                                        <option th:each="dzmitem:${dzmList}" value="" th:value="${dzmitem.id}" th:text="${dzmitem.daozhanCangkuName}"></option>
+                                    </select>
+                                </td>
+                                <td style="background-color: #FF7A4D;" onclick="scdd()">
+                                    <a  href='javascript: void(0);'  ><font style="color: aliceblue;">生成订单</font></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="12">
+                                    <font color="red" style="font-size: 13px;">（注：单条资源可以设置多次提货，在每条资源是否多次提货那一列对应的输入框内依次输入提货数量用逗号分隔，例：1,2,3   ;默认为一次提货，最多5次;螺纹按照件数填写，盘螺及高线按照吨数填写。）</font>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+<script th:src="@{/js/shoppingcart.js}" ></script>
+</html>

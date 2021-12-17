@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/resource.js}" type="text/javascript"></script>
+    <script th:src="@{/js/systemsettings.js}" ></script>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/js/chosen.js}" type="text/javascript"></script>
+    <link th:href="@{/css/chosen.css}" rel="stylesheet" type="text/css"/>
+    <title>新增到站码运费</title>
+</head>
+<body th:onload="onload();">
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <aside>
+            <div th:insert="~{left :: left(fhmanage)}"></div>
+        </aside>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+                <div class="pozition"><p>当前位置：会员中心  &gt; 到站码运费管理 &gt; 新增</p></div>
+                <form action="/fhmanage/fhAddAction" name="huiFuLY" id="lybform" onsubmit="return checkForm()" method="POST">
+                    <table class="Information" cellspacing="0" cellpadding="0" border="0">
+
+                        <tbody>
+                            <input th:if="${pingTaiID} ne ${COMID}" type="hidden" th:value="${COMID}" name="company_name" id="company_name2" >
+                        <tr><dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF')"> 
+                            <td>公司名称： </td> 
+                            <td style="position:relative;" id="searchtd">
+                                <div class="searchBox">
+                                    <input type="text" autocomplete="off"  id="cameName" value="" name="cameName" placeholder="请输入公司名称" onkeyup="getCameraNames()"  style="width:180px;" />
+                                    <input type="hidden" name="company_name" id="companyid" value="">
+                                    <input type="hidden" id="parameterName" th:value="${_csrf.parameterName}">
+                                    <input type="hidden" id="token" th:value="${_csrf.token}">
+                                </div>
+                                <!--搜索提示框 -->
+                                <div class="searchDiv">
+                                </div>
+                                <div  id="dataList"  style="display:none;" >
+                                <p th:each="item:${tmpcompay}" th:id="${item.id}" th:text="${item.comname}"></p>
+                                </div>  
+                        </td>
+                        </dd>
+                      
+                            <td>发货仓库<span>*</span></td>
+                            <td ><select name="cangkuname" style ="height: 27px;min-width: 173px; text-indent: 10px;color: #666666;">
+                                <span   th:each="list:${cangkunamearr}">
+                                <option th:value ="${list.description}" th:text="${list.description}"></option>
+                                </span>
+                              </select></td>
+                        </tr>
+                        <tr>
+                            <td>到站<span>*</span></td>
+                            <td ><input type="text" name="daozhanCangkuName" id="daozhanCangkuName"> </td>
+                            <dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTER') or hasAuthority('ROLE_GYLQX_MASTERXS'))"> <td>运  费<span>*</span></td>
+                            <td ><input type="text" name="yunfei" id="yunfei"> </td>
+                            </dd>
+                            
+                        </tr>
+                        <tr>
+                            <td>备注说明</td>
+                            <td ><input type="text" name="remark" id="remark"> </td>
+                   
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <div style="text-align: center;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="hidden" name="mid" id="mid" th:value="${COMID}" >
+                        <input type="hidden" name="pmid" id="pmid" th:value="${pingTaiID}" >
+                       
+                        <input type="submit" value="保存"  style="background: #FF6632;color: white;width: 300px;height: 30px;border: 0;cursor:pointer;">
+                        
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+<script>
+  function checkForm(){
+      if ($("#company_name").val() == "") {
+          alert("公司不能为空");
+          return false;
+      }
+      if ($("#cangkuname").val() == "") {
+          alert("仓库不能为空");
+          return false;
+      }
+
+      if ($("#yunfei").val() == "") {
+          alert("运费不能为空");
+          return false;
+      }
+
+      if ($("#daozhanCangkuName").val() == "") {
+          alert("到站仓库不能为空");
+          return false;
+      }
+
+
+
+  }
+
+</script>
+</body>
+</html>

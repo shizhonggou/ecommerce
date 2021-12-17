@@ -204,6 +204,7 @@ span.red{ color:#ff0000;}
 .steel_list_table caption,.steel_jingjia_xx caption{ background:#ffffff; border:1px solid #dddddd; border-top:2px solid #cc0000; border-bottom:none; height:40px; line-height:40px; text-align:left; text-indent:20px; color:#ff0000; font-weight:bold;}
 
 .steel_list_table td{ background:#ffffff; border-top:1px solid #dddddd; font-size:14px; text-align:center; height:40px;}
+.steel_list_table td  dd{ line-height: 21px; font-size: 12px; text-align:left; padding-left: 10px;padding:1px}
 
 .steel_list_table thead td{ background:#f6f6f6;}
 
@@ -295,13 +296,13 @@ span.red{ color:#ff0000;}
 .my_cart_list{ width:100%; height:280px; overflow-y:auto;}
 .cart_list{ width:100%; font-size:12px; text-align:center; min-height:80px;}
 
-.cart_list thead th{ background:#f3f3f3; height:40px;}
+.cart_list thead th{ background:#f3f3f3; height:40px; }
 
-.cart_list tbody td{ height:40px; line-height:40px;}
-.cart_list tbody tr:nth-child(2n) td{ background:#f3f3f3;}
+.cart_list tbody td{ height:40px; line-height:40px;padding: 5px; font-size: 12px;}
+/*.cart_list tbody tr:nth-child(2n) td{ background:#f3f3f3;}*/
 
 .cart_list tbody td input[type="checkbox"]{ position:relative; top:4px;}
-.cart_list tbody td input[type="text"]{ width:50px; heihgt:22px; text-align:center; border:1px solid #cccccc; background:#ffffff;}
+.cart_list tbody td input[type="text"]{  height:25px; text-align:center; border:1px solid #cccccc; background:#ffffff;font-size: 12px}
 
 .my_cart .xuanze{ height:40px; line-height:40px; text-indent:18px;}
 .my_cart .xuanze input[type="checkbox"]{ position:relative; top:3px;}
@@ -325,7 +326,7 @@ span.red{ color:#ff0000;}
 .nav_tree dl.dl2 dt{ background:url(../images/gwc.png) no-repeat 0 center; text-indent:30px;}
 .nav_tree dl.dl3 dt{ background:url(../images/xt.png) no-repeat 0 center; text-indent:30px;}
 .nav_tree dl.dl4 dt{ background:url(../images/icon09.png) no-repeat 0 center; text-indent:30px;}
-
+.nav_tree dl.dl5 dt{ background:url(../images/cwgl.png) no-repeat 0 center; text-indent:30px;}
 
 .resources{float:left; width:830px; margin-left: 20px;}
 .resources_tt{}
@@ -334,7 +335,7 @@ span.red{ color:#ff0000;}
 
 .pozition{border: solid 1px #e5e5e5; margin-top:5px; }
 .pozition p{ font-size: 12px;background:url(../images/icon05.png) no-repeat 10px center; padding-left:30px }
-.ss{ margin:5px 0; font-size:12px;border: solid 1px #e5e5e5;}
+.s1{ margin:5px 0; font-size:12px;border: solid 1px #e5e5e5;}
 .ss table{width:100%}
 .ss td{ padding:5px 25px; }
 .ss input,.ss select{ border:1px solid #dedede; height:28px; line-height:28px; padding:0 5px;}
@@ -420,6 +421,7 @@ table.heavy_set {border:1px solid #dddddd;}
 table.heavy_set thead{background:#F0FFFF; height:40px;line-height: 40px; text-align:center;}
 table.heavy_set tbody td{ text-align:center;border-top:1px solid #dddddd; padding:8px 0; }
 table.heavy_set tbody td input[type="text"]{ height:27px;text-indent: 10px;color: #666666; }
+table.heavy_set tbody td select{ height:27px;min-width: 173px;;text-indent: 10px;color: #666666; }
 table.heavy_set tbody td input[type="submit"]{ width:80px; height:27px; background:#F7836A; border:none; color:#ffffff; }
 table.heavy_set .cz {width:300px;}
 table.heavy_set .cz span{margin-right:20px; }
@@ -432,6 +434,7 @@ table.heavy_set .cz2 span a{  width: 100px; margin-top:5px; background:#007FFF; 
 
 .Information{width:830px; margin-left:0px; margin-top:20px; margin-bottom: 20px}
 .Information input[type="text"]{  width:70%;  color:#3333338c; padding:8px 20px; margin:12px auto;display: inline-block; border: 1px solid #ccc;  border-radius: 0px;  box-sizing: border-box;}
+.Information input[type="time"],input[type="password"]{  color:#3333338c; padding:8px 20px; margin:12px auto;display: inline-block; border: 1px solid #ccc;  border-radius: 0px;  box-sizing: border-box;}
 .Information textarea{width:87%; height:100px; color:#3333338c; padding:8px 20px; margin:12px auto;display: inline-block; border: 1px solid #ccc;  border-radius: 0px;  box-sizing: border-box;}
 .Information td{padding:5px 0}
 .save{width:300px;height:36px;line-height: 36px;  text-align:center; background:#FF6632; color:#fff; margin:10px auto}
@@ -466,3 +469,56 @@ table.management .cz .delete a{width:70px;height:25px; line-height: 25px; text-a
 .foot{min-width: 1000px; width:100%; margin:40px 0  0 0 ;  padding-top:10px; text-align:center; background:#464646 ; background-size:auto 100%; height:140px; color:#Ffffff; font-size:12px; line-height:24px;border-top:10px solid #F7836A;}
 .foot a{ color:#ffffff;}
 .foot p a{ padding:0 30px;}
+
+.suspension{ display:table; margin:0 auto;}
+.suspension a{ display:inline-block; width:120px; height:120px; margin:50px; border-radius:50%; background:#cccccc; color:#Ffffff; text-align:Center; line-height:120px; font-size:20px; font-weight:bold; font-family:"simhei";}
+.suspension a.nonow{ background :#cccccc;}
+.suspension a.now{ background:#ffcc00;}
+.zhu {color: #ff6600;font-size: 14px;text-align: center;padding: 30px 0;}
+
+/* 基价设置 */
+.navbar{ background:url(../images/navbar01.jpg) repeat-x 0 0; border:1px solid #e5e5e5; font:bold 14px/33px "simsun"; text-indent:20px;position: relative;margin-top:5px;}
+.navbar .left{float:left;}
+td.settingaction input[type="text"],input[type="password"]{ padding: 0px 0px;color:#3333338c;margin: 0 auto; margin-right: 16px;display: inline-block; border: 1px solid #ccc;  border-radius: 3px;  box-sizing: border-box;}
+.membertab2{ width:100%; color:#666666; font-size:12px;}
+.membertab2 li{ border-bottom:1px solid #efefef; width:100%; padding:10px 0;}
+.membertab2 li div{ display:table; margin:0 auto;}
+.membertab2 input{ height:28px; line-height:28px; border:1px solid #DEDEDE; color:#666666; padding:0 5px; box-shadow:0 2px 3px rgba(0,0,0,0.05) inset;}
+
+table.membertab2 td input[type="radio"]{ position:relative; top:10px;}
+
+.price_bt{ display:table; margin:0 auto;}
+.price_bt input{ width:120px; margin:16px; height:34px; border:none; border-radius:3px; line-height:34px; color:#ffffff; background:#999999; text-align:center; cursor:pointer; box-shadow:none;}
+.price_bt input:hover{ background:#666666;}
+.price_bt input:active{ box-shadow:0 2px 4px 0 rgba(0,0,0,0.2) inset;}
+.price_bt input:first-child{ background:#ff9900;}
+.price_bt input:hover:first-child{ background:#ff6600;}
+.price_bt input:active:first-child{ box-shadow:0 2px 4px 0 rgba(0,0,0,0.2) inset;}
+
+table.heavy_set tbody.pricelog td {padding: 2px 0;}
+
+/* 极差设置 */
+.rangequery input{ height:26px; line-height:26px;}
+.rangequery{ background:#ffffff; padding:10px; overflow:hidden; border-bottom:6px solid #f5f5f5;}
+.textcenter{text-align:center;}
+.rangequery dd{ float:left;}
+.rangequery input,.query select{ border:1px solid #e5e5e5; height:30px; line-height:30px; margin-right:10px;}
+.rangequery input[type="submit"]{ height:34px; border:none; border-radius:3px; line-height:34px; color:#ffffff; background:#ff9900; text-align:center; cursor:pointer; box-shadow:none;}
+.rangequery dl input[type="text"],input[type="password"]{  color:#3333338c; padding:0px 0px;margin: 0 auto; margin-right: 16px;display: inline-block; border: 1px solid #ccc;  border-radius: 3px;  box-sizing: border-box;}
+
+.rangequery select{ height:26px; line-height:26px;}
+.rangequery dd a.bt{ background:#54B1ED; display:inline-block; padding:0 20px; color:#ffffff; line-height:26px;}
+.rangequery dd input[type="submit"]{ background:#54B1ED; display:inline-block; padding:0 20px; color:#ffffff; line-height:26px; height:26px; border:none; box-shadow:none;}
+.rangequery dd input[type="submit"]:hover{ background:#46AAEC;}
+
+table.heavy_set tbody.rangecontents td {padding: 2px 0;}
+.order .process .tab1 .menurange{margin-top:10px; margin-left:0px;}
+.order .process .tab1 .menurange li{float:left;width:156px;text-align:center;line-height:30px;height:60px; padding-bottom:15px; cursor:pointer;color:#666;font-size:12px;  overflow:hidden;background:#fff;}
+.order .process .tab1 .menurange li.off{background:#FFFFFF;color:#FF7A4D;font-weight:bold; border-bottom:solid 2px #FF7A4D}
+
+.price_range{ display:table; margin:0 auto;}
+.price_range input{ width:120px;  height:30px; border:none; border-radius:3px; line-height:30px; color:#ffffff; text-align:center; cursor:pointer; box-shadow:none;background:#ff9900;}
+.price_range input.disabledbt{background:gray; }
+
+/* 我的购物车 */
+.Shopping_list{}

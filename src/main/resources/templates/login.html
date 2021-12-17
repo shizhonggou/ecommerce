@@ -170,18 +170,18 @@ onload=function(){
 		<input type="password" id="password" name="password" placeholder="请输入密码">
 		<input type="submit" value="登录" onclick="login();">
 			<span class="ff"><a href="/register/reg">快速注册</a></span>
-
+            <span class="ff"><a href="/register/wjmm">忘记密码</a></span>
 		</div>
 		
 		
 		<div id="con_one_2" style="display:none;">
 			<input type="tel" id="tel" placeholder="您的手机号码">
 			<span class="yz2"><input type="button" id="smsMsg1" name="smsMsg1"   value="获取验证码" onclick="sendSmsMsg();" style="background-color: #FF7A4D;color: white;padding: 12px 20px;margin: 12px auto;border: none;border-radius: 0px;cursor: pointer;"></span>
-			<input type="text" id="mobileVcode" placeholder="请输入验证码" style="   width: 60%; float: left;padding: 12px 20px;margin: 12px auto;display: inline-block;border: 1px solid #ccc;border-radius: 0px;box-sizing: border-box;">
+			<input type="text" id="mobileVcode" placeholder="请输入验证码" style="width: 60%; float: left;padding: 12px 20px;margin: 12px auto;display: inline-block;border: 1px solid #ccc;border-radius: 0px;box-sizing: border-box;">
 			<input type="submit" value="登录"  onclick="smslogin();">
 
 		<span class="ff"><a href="/register/reg">快速注册</a></span>	
- 
+        <span class="ff"><a href="/register/wjmm">忘记密码</a></span>
 			
 			</div>
 		
@@ -192,7 +192,7 @@ onload=function(){
 </section>
 
 <div th:insert="~{footer :: footer}"></div>
-
+<div th:include="common::commonFooter"></div>
 <body>
 <script type="text/javascript">
     function login() {
@@ -264,9 +264,12 @@ onload=function(){
                            data: {"tel": tel, "mobileVcode": mobileVcode,"[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"},
                           
                            success: function(data) {
+                             //  alert (111);
                                if(data.Success==1){
 								usname= data.username;
-								pwd=data.password;                    
+								pwd=data.password;   
+                              //  alert (usname);
+		                      //  alert(pwd);                 
 			$.ajax({
             url: "/login",
             type: "POST",

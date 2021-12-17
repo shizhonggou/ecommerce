@@ -47,4 +47,5 @@ function send_request() {//初始化、指定处理函数、发送请求的函�
         return false;   
     }   
     return http_request; 
-}   
+}
+

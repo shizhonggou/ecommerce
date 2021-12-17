@@ -1,16 +1,17 @@
 package com.isechome.ecommerce.controller;
 
-import com.isechome.ecommerce.entity.ResourceSales;
+import com.isechome.ecommerce.common.AjaxResult;
+import com.isechome.ecommerce.entity.ScShoppingCartResoueces;
 import com.isechome.ecommerce.service.ResourceSalesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
@@ -27,6 +28,7 @@ import java.util.List;
 public class PurchaseCarController {
     @Autowired
     private ResourceSalesService resourceSalesService;
+    private ModelAndView modelAndView;
 
     /**
      * @Description:加入购物车
@@ -36,10 +38,21 @@ public class PurchaseCarController {
      * @return: java.util.List<com.isechome.ecommerce.entity.ResourceSales>
      **/
     @RequestMapping("add_purchase_car")
+    //@PreAuthorize("hasRole('ROLE_GYLQX_YSH')")
     @ResponseBody
-    public List<ResourceSales> add_purchase_car(HttpServletRequest request ) {
-        List<ResourceSales> gwc = resourceSalesService.add_purchase_car( request );
-        return gwc;
+    public AjaxResult add_purchase_car(HttpServletRequest request ) {
+        AjaxResult aResult = new AjaxResult();
+        if(request.getParameter("is_pljr") != null && request.getParameter("is_pljr").equals("1")){
+            if(!request.getParameter("resids").equals("")){
+                String[] resid_arr = request.getParameter("resids").split(",");
+                for (String resid : resid_arr) {
+                    aResult = resourceSalesService.add_purchase_car( resid );
+                }
+            }
+        }else{
+            aResult = resourceSalesService.add_purchase_car( request.getParameter("resids") );
+        }
+        return aResult;
     }
 
     /**
@@ -51,9 +64,9 @@ public class PurchaseCarController {
      **/
     @RequestMapping("clear_purchase_car")
     @ResponseBody
-    public void clear_purchase_car( HttpServletRequest request ) {
-        HttpSession session = request.getSession();
-        session.setAttribute("purchase_car",null );
+    public AjaxResult clear_purchase_car( HttpServletRequest request ) {
+        resourceSalesService.del_purchase_car( request );
+        return AjaxResult.success();
     }
 
     /**
@@ -65,8 +78,9 @@ public class PurchaseCarController {
      **/
     @RequestMapping("del_purchase_car")
     @ResponseBody
-    public Integer del_purchase_car( HttpServletRequest request ) {
-       return resourceSalesService.del_purchase_car( request );
+    public AjaxResult del_purchase_car( HttpServletRequest request ) {
+       resourceSalesService.del_purchase_car( request );
+       return AjaxResult.success();
     }
 
     /**
@@ -78,9 +92,28 @@ public class PurchaseCarController {
      **/
     @RequestMapping("update_purchase_car_num")
     @ResponseBody
-    public void update_purchase_car_num( HttpServletRequest request ) {
+    public AjaxResult update_purchase_car_num( HttpServletRequest request ) {
         resourceSalesService.update_purchase_car_num( request );
+        return AjaxResult.success();
     }
 
+    @RequestMapping(value = "mycart")
+    public ModelAndView mycart(HttpServletRequest request) {
+        modelAndView = resourceSalesService.getShoppingCartList(request);
+        modelAndView.setViewName("purchase_car/mycart");
+        return modelAndView;
+    }
 
+    @RequestMapping(value = "clean_mycart")
+    @ResponseBody
+    public AjaxResult clean_mycart(HttpServletRequest request) {
+        resourceSalesService.del_purchase_car(request);
+        return AjaxResult.success();
+    }
+
+    @RequestMapping(value = "create_order")
+    @ResponseBody
+    public AjaxResult create_order(HttpServletRequest request) {
+        return resourceSalesService.create_order(request);
+    }
 }

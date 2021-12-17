@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>采购单管理</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/chosen.css}" rel="stylesheet" type="text/css"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+   
+   
+
+    <style>
+        
+        .gbtn{padding: 6px 10px;color: #fff;}
+        .ebtn{background: #007FFF;padding: 6px 10px;color: #fff;}
+        .sbtn{background: #F7836A;padding: 6px 10px;color: #fff;}
+        .confirmed_order a:hover{color: #fff;}
+        .tt input{    height: 20px;line-height: 20px;width: 70px;}
+        .chosen-container a:hover{color: #333;}
+       
+        .chosen-container a{width: 180px;}
+        .chosen-container a:hover{color: #333;background: #fff;}
+        .ss td {padding: 5px 5px;}
+        .searchDiv{width: 220px;left: 70px;}
+    </style>
+ 
+
+    <script>
+        $(document).click(function(e){
+            var divTop = $('#searchtd_com');   // 设置目标区域
+            if(!divTop.is(e.target) && divTop.has(e.target).length === 0){
+                searchDivOff2();
+            }
+            var divTop = $('#searchtd_sup');   // 设置目标区域
+            if(!divTop.is(e.target) && divTop.has(e.target).length === 0){
+                searchDivOff2();
+            }
+        })
+        //隐藏提示框
+        function searchDivOff2() {
+            $('.searchDiv').css('display', 'none');
+        }
+        var dataArr2 = [];
+        var noresult='<li style="color:#8f8f8f;pointer-events: none;" >未搜索到相关内容</li>';
+
+        //调用ajax返回名字模糊查询集合
+        function getCameraNames2(index){
+            //替换输入内容中所有的空字符
+
+           
+            var keyVal = $("#comName_"+index).val().replace(/(^\s*)|(\s*$)/g, "");
+
+
+
+            var parameterName=document.getElementById("parameterName").value;
+            var token=document.getElementById("token").value;
+          
+            //如果搜索框输入为空
+            if(keyVal == null || keyVal == ""){
+                searchDivOff2();
+            }else if(keyVal=="公司" || keyVal=="有限公司" || keyVal=="集团"){
+                alert("请输入有效的关键词");
+                return false;
+            }else{
+            //显示搜索提示框
+                $('#searchDiv_'+index).css('display','block');
+                //清空搜索提示框中的内容
+                $('#searchDiv_'+index).html("");
+                js_search2(keyVal,index);
+
+                if(dataArr2[index].length < 2000 && $('#searchDiv_'+index).children().length==0){//全部搜索未搜索到内容
+                    $('#searchDiv_'+index).append(noresult);
+                }else if(dataArr2[index].length >= 2000 && $('#searchDiv_'+index).children().length==0){
+                    var url = '/invoiceManagement/getCompay?'+parameterName+'='+token;
+                    $.ajax({
+                        type : "post",
+                        async : false, //同步执行
+                        url : url,
+                        data :{
+                            "name":keyVal
+                        },
+                        
+                        dataType : "json", //返回数据形式为json
+                        success : function(result) {
+                            //判断返回的list是否为空，若不为空
+                            if (result!=null && result!="") {
+                                for(var i in result){
+                                    $('#searchDiv_'+index).append('<li id="'+i+'">'+result[i]+'</li>');
+                                }
+                                
+                            }else{
+                                $('#searchDiv_'+index).append(noresult);
+                            }
+                        },
+                        // error : function(errorMsg) {
+                        // 	alert("不好意思,设备搜索提示请求失败啦!");
+                        // }
+                    })
+                }
+                
+                
+            }
+        }
+
+        //点击提示框自动填充到搜索框
+        $(document).on("click", "body .searchDiv>li", function () {
+            var id=$(this).parent().attr("id");
+            var id_arr=id.split("_");
+            $('#comName_'+id_arr[1]).val($(this).text());
+            $('#companyid_'+id_arr[1]).val($(this).attr("id"));
+            searchDivOff2();
+        })
+
+
+       
+
+
+
+        function onload2() { //初始化dataArr2的数据
+            var dataList=document.getElementsByName("dataList[]");
+            for(var j = 0; j < dataList.length; j++){
+                var ids=dataList[j].id;
+                var id_arr=dataList[j].id.split("_");
+                dataArr2[id_arr[1]]=[];
+
+                var childs = dataList[j].children; //在IE下注释也算节点,不能用于
+                for (var i = 0; i < childs.length; i++) {
+                    var tmp={};
+                    tmp['id']=childs[i].id;
+                    tmp['name']=childs[i].innerText;
+                    dataArr2[id_arr[1]].push(tmp);
+                }
+            }
+        }
+        function js_search2(str,index){
+            dataArr2[index].forEach(function (item) {
+                if (item['name'].indexOf(str) != -1) {
+                    $('#searchDiv_'+index).append('<li id="'+item['id']+'">'+item['name']+'</li>');
+                }
+            })
+
+        }
+
+
+    </script>
+</head>
+<body onload="onload2();">
+<div th:insert="~{header :: header}"></div>
+
+<section>
+    <div class="main w1000">
+        <div th:insert="~{left :: left(${mark})}"></div>
+        <aside>
+        <div class="resources">
+        <div class="resources_tt" th:include="common::varietyTag2"></div>
+    
+        <div class="pozition">
+            <p>当前位置：会员中心 &gt; 采购单管理 &gt; 
+            <span th:if="${type eq 2}">未审核采购单</span>
+            <span th:if="${type eq 4}">未付款采购单</span>
+            <span th:if="${type eq 5}">资源未分配采购单</span>
+            <span th:if="${type eq 1}">已完成采购单</span>
+            <span th:if="${type eq 3}">审核不通过</span>
+            </p>
+        </div>
+    
+        <div class="ss">
+        <form name="form1" id="form1" th:action="@{'/scorderlist/cgindex?type='+${type}}" method="post">
+            <table cellspacing="0" cellpadding="0" border="0">
+            <tbody>
+                <tr>
+                    <td><p>品名：</p><input type="text" name="varietyName" id="varietyName" th:value="${varietyName}" size="18"></td>
+                    <td><p>材质：</p><input type="text" name="Material" id="Material" th:value="${Material}" size="18"></td>
+                    <td><p>规格：</p><input type="text" name="Spec" id="Spec" th:value="${Spec}" size="18"></td>
+                </tr>
+                <tr>
+                    <td><p>产地：</p><input type="text" name="origin_code" id="origin_code" th:value="${origin_code}" size="18"></td>
+                    <td colspan="2"><p>时间：</p><input type="text" name="stime" id="stime" style="width:180px" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" th:value="${stime}" autocomplete="off" size="18"><p> - </p><input type="text" name="etime" id="etime" style="width:180px" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" th:value="${etime}" autocomplete="off" size="18"> </td>
+            
+                <input type="hidden" name="page" id="page"/>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </tr>
+
+            <tr>
+                <td><p>仓库：</p><input type="text" name="warehouse" id="warehouse" th:value="${warehouse}" size="18"></td>
+                <td  style="position:relative;" id="searchtd_sup" colspan="2" >
+                    <div class="searchBox" th:if="${type ne 3}">
+                       <p>供货商：</p>  <input type="text" autocomplete="off"  id="comName_sup" th:value="${supplierName}" name="suppliername" placeholder="请输入公司名称" onkeyup="getCameraNames2('sup')"  style="width:200px;" />
+                       <input type="hidden" name="companyid_sup" id="companyid_sup" th:value="${suppliermid}">
+                    </div>
+                   
+                    <div class="searchDiv" id="searchDiv_sup">
+                    </div>
+                    <div  id="dataList_sup"  style="display:none;" name="dataList[]"  >
+                        <p th:each="item:${tmpcompay}" th:id="${item.id}"  th:text="${item.comname}" ></p>
+                    </div>
+
+                    <a th:if="${type eq 2}" href="/scorderlist/addpurchase">新增采购</a>
+                    <a href="javascript:find();" style="width: 85px;">搜索</a>
+                </td>
+
+                <input type="hidden" id="parameterName" th:value="${_csrf.parameterName}">
+                <input type="hidden" id="token" th:value="${_csrf.token}">
+            </tr>
+        </tbody>
+        </table>
+        </form>
+        </div>
+        </div>
+        <section>
+        <div class="order">
+        <div class="process">
+       <div class="tab1" id="tab1">
+        <div class="menu">                                                                                              
+            <ul>
+                <li onclick="setTab(2)" th:if="${type eq 2}" class="off">未审核采购单</li>
+                <li onclick="setTab(2)" th:if="${type ne 2}">未审核采购单</li>
+                <li onclick="setTab(4)" th:if="${type eq 4}" class="off">未付款采购单</li>
+                <li onclick="setTab(4)" th:if="${type ne 4}">未付款采购单</li>
+                <li onclick="setTab(5)" th:if="${type eq 5}" class="off">未分配采购单</li>
+                <li onclick="setTab(5)" th:if="${type ne 5}">未分配采购单</li>
+                <li onclick="setTab(1)" th:if="${type eq 1}" class="off">已完成采购单</li>
+                <li onclick="setTab(1)" th:if="${type ne 1}">已完成采购单</li>
+                <li onclick="setTab(3)" th:if="${type eq 3}" class="off">审核未通过</li>
+                <li onclick="setTab(3)" th:if="${type ne 3}">审核未通过</li>
+            </ul>
+        </div>
+         <div class="menudiv">
+        <div id="con_one_1">
+        <div class="confirmed_order">
+            <table cellspacing="0" cellpadding="0" border="0">
+            <thead>
+                <tr class="tt">
+                    <td>品名</td><td>材质</td><td>规格</td><td>产地</td><td>仓库</td><td>资源价格</td>
+                    <td>采购重量</td>
+                    <td th:if="${type eq 5}" >资源未分配</td>
+                    <td th:if="${type eq 1}" >资源分配</td>
+                    <td th:if="${type eq 2 or type eq 4}">总价</td>
+                    <td  style="width: 90px;" th:if="${type ne 3}" >采购资金</td>
+                    <td style="width: 120px;"    th:if="${type ne 3}" >供货商</td>
+                    <td style="width: 120px;"    th:if="${type eq 2}" >审核</td>
+                </tr>
+            </thead>
+            <tbody th:each="purchas:${purchaseList}" th:id="'tbody_'+${purchas.id}">
+               
+                <tr class="tittle">
+                    <td colspan="11">
+                        <p style="float: left;padding-right: 60px;">生成时间: <span  th:text="${#dates.format(purchas.createTime, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                        <p style="padding-left: 60px;"><span  th:text="${purchas.kind eq 1} ?'超量资源':'手工录入'"></span></p>
+                    </td>
+                </tr>
+
+                <tr class="tt"  th:id="'tr_'+${purchas.id}" >
+                    <td th:text="${purchas.ScShelfResource.varietyName}"></td>
+                    <td th:text="${purchas.ScShelfResource.material}"></td>
+                    <td th:text="${purchas.ScShelfResource.specification}"></td>
+                    <td th:text="${purchas.ScShelfResource.factory}"></td>
+                    <td th:text="${purchas.ScShelfResource.warehouse}"></td>
+                    <td th:text="${purchas.price}"></td>
+                    <td th:text="${purchas.purchaseNum}"></td>
+
+                    <td th:if="${type eq 2 or type eq 4}" th:text="${#numbers.formatDecimal(purchas.price * purchas.purchaseNum,0,2)}"></td>
+
+
+
+                    <td th:if="${type eq 5} and ${distribute_num} ne null" th:text="${#numbers.formatDecimal( purchas.purchaseNum-purchas.distributeNum ,1,2)}"></td>
+                    <td th:if="${type eq 5} and ${distribute_num} eq null" th:text="${#numbers.formatDecimal( purchas.purchaseNum ,1,2)}"></td>
+                   
+
+                    <td th:if="${type eq 1}" th:text="${#numbers.formatDecimal( purchas.distributeNum ,1,2)}"></td>
+
+
+                    <td th:if="${type eq 2 }"  ><input type="text" th:value="${purchas.purchaseAmount}"  th:id="'purchase_amount_'+${purchas.id}" /></td>
+                    <td th:if="${type ne 2  and type ne 3}" th:text="${purchas.purchaseAmount}" ></td>
+
+                    <td th:if="${type eq 4} or ${type eq 5} or ${type eq 1}" th:text="${purchas.supplierName}"></td>
+
+                    <td th:if="${type eq 2} " style="position:relative;"   th:id="'searchtd_'+${purchas.id}"  >
+                        <div class="searchBox">
+                           <input type="text" autocomplete="off"  th:id="'comName_'+${purchas.id}" th:value="${purchas.supplierName}" name="suppliername" placeholder="请输入公司名称"  th:onkeyup="'getCameraNames2(\''+${purchas.id}+'\');'"   style="width:180px;" />
+                           <input type="hidden" th:name="'companyid_'+${purchas.id}" th:id="'companyid_'+${purchas.id}" th:value="${purchas.supplierMid}" />
+    
+                        </div>
+                       
+                        <div class="searchDiv" style="left:0;"  th:id="'searchDiv_'+${purchas.id}">
+    
+                        </div>
+                        <div th:id="'dataList_'+${purchas.id}" style="display:none;" name="dataList[]"  >
+                            <p th:each="item:${tmpcompay}" th:id="${item.id}"  th:text="${item.comname}" ></p>
+                        </div>
+                    </td>
+                   
+                    <td th:if="${type eq 2}">
+                        <dd sec:authorize="hasAuthority('ROLE_GYLQX_MASTERCGSH')">
+                            <a href="javascript:void(0)" th:onclick="'shenhe(2,\''+${purchas.id}+'\');'" class="ebtn">通过</a> 
+                            <a href="javascript:void(0)" th:onclick="'shenhe(3,\''+${purchas.id}+'\');'" class="sbtn">不通过</a> 
+                        </dd>
+
+                        <dd sec:authorize="!hasAuthority('ROLE_GYLQX_MASTERCGSH')">
+                            <a href="javascript:void(0)" th:onclick="'shenhe(1,\''+${purchas.id}+'\');'" class="ebtn">保存</a>
+                        </dd>
+                    </td>
+                <tr>
+    
+    
+            </tbody>
+            </table>
+            <input type="hidden" id="parameterName" th:value="${_csrf.parameterName}">
+                                                                          <input type="hidden" id="token" th:value="${_csrf.token}">
+            </div></div></div>
+            <div class="page">
+                <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+');'">上一页</a>
+                <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+                    <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+                    <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+');'" th:text="${navigatepageNum}"></a>
+                </p>
+                <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+');'">下一页</a>
+                <span>到第</span>
+                <input type="text" id="jump_num">
+                <span>页</span>
+                <button type="button" onclick="jumppage();">确定</button>
+            </div>
+    
+        </div>
+    </div>
+    </div>
+    </section>
+    </aside>
+    </div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+<script>
+   // 翻页
+   function jumppage() {
+        var pageNum = document.getElementById("jump_num").value;
+        if(pageNum>0){
+            queryDeviceRecords(pageNum);
+        }
+    }
+
+    function find(pageNum) {
+        document.getElementById('form1').submit();
+    }
+    
+    function queryDeviceRecords(pageNum) {
+        $("#page").val(pageNum);
+        document.getElementById('form1').submit();
+    }
+    function shenhe(status,id){
+        var purchase_amount=$("#purchase_amount_"+id).val();
+        var purchase_company_name=$("#comName_"+id).val();
+        var purchase_company_id=$("#companyid_"+id).val();
+        var flag=status==1?true:false;
+
+        if(status!=3){
+            if($.trim(purchase_amount)=="" || purchase_amount<0 ){
+                alert("请填写采购资金！");
+                return false;
+            }
+
+            if(purchase_company_name==""){
+                alert("请选择供货商！");
+                return false;
+            }
+        }
+        
+        if(status==2){
+            if (confirm("确定采购单审核通过？")){
+                flag=true;
+            }
+        }else if(status==3){
+            if (confirm("确定采购单审核不通过？")){
+                flag=true;
+            }
+        }
+
+        if(flag){
+            $.ajax({ 
+                type: "post", 
+                url: "/scorderlist/shenheOrderPurchase",   
+                dataType: "json",
+                data: {
+                    'id': id,
+                    'status':status,
+                    'supplier_id':purchase_company_id,
+                    'supplier_name':purchase_company_name,
+                    'purchase_amount':purchase_amount,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                },
+                success: function (data) {
+                    if(data==1 && status==1){
+                        alert("保存成功");
+                        //document.getElementById("tr_"+id).remove();
+                    }else if(data==1 ){
+                        alert("审核成功");
+                        document.getElementById("tbody_"+id).remove();
+                    }else{
+                        alert("失败！");
+                    }
+                },
+                error: function(request, status, error){
+                    alert("失败！");
+                }
+            });
+        }
+    }
+
+    function setTab(type) {
+        window.location.href = "cgindex?type="+type;
+    }
+
+    function find(pageNum) {
+        document.getElementById('form1').submit();
+    }
+
+   
+    function  searchCom(obj) {
+        if(obj.parentNode.parentNode.parentNode.parentNode.id=="com"){
+            var optValue = $("#com .chosen-search input").first().val();
+        }else if(obj.parentNode.parentNode.parentNode.parentNode.id=="sup"){
+            var optValue = $("#sup .chosen-search input").first().val();
+        }else{
+            var id = obj.parentNode.parentNode.parentNode.parentNode.lastElementChild.value;
+            var optValue = $("#gh_"+id+" .chosen-search input").first().val();
+            
+        }
+
+      
+
+        console.log(optValue);
+        var parameterName=document.getElementById("parameterName").value;
+        var token=document.getElementById("token").value;
+        if(optValue=="公司" || optValue=="有限公司" || optValue=="集团"){
+            alert("请输入有效的关键词");
+            return false;
+        }else{
+            var url = '/invoiceManagement/getCompay?'+parameterName+'='+token;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: "text",
+                async:false, 
+                data: {
+                    "name":optValue
+                },
+                success: function (res) {
+                    if(obj.parentNode.parentNode.parentNode.parentNode.id=="com"){
+                       //1.添加选项HTML
+                        $("#com .chosen-select").html(res);
+                        //2.触发chosen的更新，重绘样式
+                        $("#com .chosen-select").trigger('chosen:updated');
+                    }else if(obj.parentNode.parentNode.parentNode.parentNode.id=="sup"){
+                       //1.添加选项HTML
+                        $("#sup .chosen-select").html(res);
+                        //2.触发chosen的更新，重绘样式
+                        $("#sup .chosen-select").trigger('chosen:updated');
+                    }else{
+                       //1.添加选项HTML
+                        $("#gh_"+id+" .chosen-select").html(res);
+                        //2.触发chosen的更新，重绘样式
+                        $("#gh_"+id+" .chosen-select").trigger('chosen:updated');
+
+                        if(res=="<option value=''>请输入搜索内容</option>" ){
+                            $("#company_name_"+id).val(optValue);
+                            $("#company_id_"+id).val("");
+                            $(".chosen-single span").html(optValue);
+                            $(".chosen-container").removeClass("chosen-container-single-nosearch");
+                            $(".chosen-single").removeClass("chosen-default");
+                            $(".chosen-search input[type='text']").removeAttr("readonly");
+                            $(".chosen-results").html("<li class='active-result result-selected' data-option-array-index='0' style=''>无搜索记录</li>");     
+                        }
+                    }
+
+
+                    
+
+                   
+                    
+                }
+            })
+        }
+    }
+
+    //select 数据同步  
+    function chose_get_ini(select){  
+        $(select).chosen().change(function(){$(select).trigger("chosen:updated");});  
+    }
+    //select value获取  
+    function chose_get_value(select){  
+        return $(select).val();  
+    }  
+    //select text获取，多选时请注意  
+    function chose_get_text(select){  
+        return $(select+" option:selected").text();  
+    }
+
+</script>
+</body>
+</html>

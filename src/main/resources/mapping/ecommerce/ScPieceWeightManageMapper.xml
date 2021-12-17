@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScPieceWeightManageMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScPieceWeightManage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="stmid" property="stmid" jdbcType="INTEGER" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_user_id" property="updateUserId" jdbcType="INTEGER" />
+    <association property="scSteelMill" javaType="com.isechome.ecommerce.entity.ScSteelMill">        
+      <result column="pmid" property="pmid" jdbcType="INTEGER" />
+      <result column="status" property="status" jdbcType="TINYINT" />
+      <result column="steel_name" property="steelName" jdbcType="VARCHAR" />
+      <result column="steel_name_short" property="steelNameShort" jdbcType="VARCHAR" />
+      <result column="steel_desc" property="steelDesc" jdbcType="VARCHAR" />
+      <result column="address_state" property="addressState" jdbcType="VARCHAR" />
+      <result column="address_city" property="addressCity" jdbcType="VARCHAR" />
+      <result column="address" property="address" jdbcType="VARCHAR" />
+      <result column="enclosure_url" property="enclosureUrl" jdbcType="VARCHAR" />
+      <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+      <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+      <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+      <result column="update_user_id" property="updateUserId" jdbcType="INTEGER" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_piece_weight_manage
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScPieceWeightManage" >
+    insert into sc_piece_weight_manage (id, stmid, spec, 
+      weight, `status`, creat_time, 
+      create_user_id, update_time, update_user_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{stmid,jdbcType=INTEGER}, #{spec,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=REAL}, #{status,jdbcType=TINYINT}, #{creatTime,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScPieceWeightManage" >
+    update sc_piece_weight_manage
+    set stmid = #{stmid,jdbcType=INTEGER},
+      spec = #{spec,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=REAL},
+      `status` = #{status,jdbcType=TINYINT},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user_id = #{updateUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateStatusById">
+    update sc_piece_weight_manage
+    set status =  #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, stmid, spec, weight, `status`, creat_time, create_user_id, update_time, 
+    update_user_id
+    from sc_piece_weight_manage
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getInfoByStmid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, stmid, spec, weight, `status`, creat_time, create_user_id, update_time, 
+    update_user_id
+    from sc_piece_weight_manage
+    where stmid = #{stmid,jdbcType=INTEGER} and `status` = '1'
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, stmid, spec, weight, `status`, creat_time, create_user_id, update_time, 
+    update_user_id
+    from sc_piece_weight_manage
+  </select>
+  <select id="getPieceWeightList" resultMap="BaseResultMap" >
+    select sc_piece_weight_manage.id, stmid, spec, weight, steel_name_short 
+    from sc_piece_weight_manage, sc_steel_mill
+    <where>
+      sc_piece_weight_manage.status = 1 and sc_piece_weight_manage.stmid = sc_steel_mill.id 
+      and sc_steel_mill.pmid = #{pmid,jdbcType=INTEGER}
+      <if test="steel_name_short!=null and steel_name_short!=''">
+        and steel_name_short like '%${steel_name_short}%'
+      </if>
+      <if test="spec!=null and spec!=''">
+        and spec like '%${spec}%'
+      </if>
+      <if test="weight!=null and weight!=''">
+        and weight like '%${weight}%'
+      </if>
+      order by id desc
+    </where>
+  </select>
+
+
+  <select id="getByGcShortSpec"  resultMap="BaseResultMap">
+    select sc_piece_weight_manage.*
+    from sc_piece_weight_manage,  sc_steel_mill
+    where  sc_piece_weight_manage.stmid = sc_steel_mill.id and  sc_piece_weight_manage.status=1 and sc_steel_mill.steel_name_short = #{factory, jdbcType=VARCHAR} and sc_piece_weight_manage.spec = #{specification, jdbcType=VARCHAR} and sc_steel_mill.pmid= #{pmid, jdbcType=INTEGER} limit 1
+  </select>
+
+
+
+
+</mapper>

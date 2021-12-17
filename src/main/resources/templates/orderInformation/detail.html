@@ -171,6 +171,7 @@
                         <td>件 数</td>	
                         <td>重 量</td>
                         <td>提货人</td>	
+                        <td>时间</td>	
                         <td th:if="${iswuliu} eq '1'">操作</td>	
                     </tr>
                     <tr th:each="list:${logisticsInfo}">
@@ -178,6 +179,7 @@
                         <td th:text="${#numbers.formatInteger(list.piece,0)}"></td>
                         <td th:text="${list.num}"></td>
                         <td><span th:each="shipper:${shipper}" th:if="${shipper.id} eq ${list.shipperId}" th:text="${shipper.real_name}"></span></td>
+                        <td th:text="${#dates.format(list.creatTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td> <input th:if="${iswuliu} eq '1'" type="button" value="删除" th:onclick="'del(\''+${list.id}+'\');'" class="delbutton"></td>
                     </tr>
                     <tr id="overnode" th:if="${iswuliu} eq '1'">
@@ -238,13 +240,15 @@
             return false;
         } 
         var orderType = "[[${orderInfo.orderType}]]";
+        var datenow = "[[${#dates.format(datenow, 'yyyy-MM-dd HH:mm:ss')}]]";
         var addhtml = '<tr id="addline"><td><input type="text" id="car_number" name="car_number"></td><td><input type="text" name="piece" id="piece" oninput="checkPiece(this,\''+orderType+'\')"></td>';
         if (orderType == "1") {
             addhtml += '<td><input type="text" name="num" id="num" readonly></td>'
         } else {
             addhtml += '<td><input type="text" name="num" id="num" oninput="checkNum(this)"></td>'
         }
-        addhtml += '<td>' + $("#selshipper").html() + '</td></tr>';
+        addhtml += '<td>' + $("#selshipper").html() + '</td>';
+        addhtml += '<td><input type="text" name="creatTime" id="creatTime" style="width:140px;text-align:left;" class="Wdate" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\'})" value="'+datenow+'" autocomplete="off"></td></tr>';
         $( "#overnode" ).before(addhtml);
     }
 

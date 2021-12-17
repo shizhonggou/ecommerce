@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScOrderListMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScOrderList" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="resource_id" property="resourceId" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="purchase_mid" property="purchaseMid" jdbcType="INTEGER" />
+    <result column="piece" property="piece" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="original_price" property="original_price" jdbcType="DOUBLE" />
+    <result column="settlement_weight" property="settlementWeight" jdbcType="DOUBLE" />
+    <result column="settlement_money" property="settlementMoney" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="iskp" property="iskp" jdbcType="TINYINT" />
+    <result column="extract_piece" property="extractPiece" jdbcType="VARCHAR" />
+    <result column="extract_num" property="extractNum" jdbcType="VARCHAR" />
+    <result column="order_expiration_time" property="orderExpirationTime" jdbcType="TIMESTAMP" />
+    <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="confirm_user_id" property="confirmUserId" jdbcType="INTEGER" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+
+    <association property="scshelfResource" javaType="com.isechome.ecommerce.entity.ScShelfResource"> 
+      <result column="variety_name" jdbcType="VARCHAR" property="varietyName" />
+      <result column="material" jdbcType="VARCHAR" property="material" />
+      <result column="specification" jdbcType="VARCHAR" property="specification" />
+      <result column="factory" jdbcType="VARCHAR" property="factory" />
+      <result column="warehouse" jdbcType="VARCHAR" property="warehouse" />
+      <result column="sold_num" jdbcType="DOUBLE" property="soldNum" />
+      <result column="num" jdbcType="DOUBLE" property="num" />
+      <result column="status" jdbcType="INTEGER" property="status" />
+      <result column="type" jdbcType="INTEGER" property="type" />
+      <result column="pmid" jdbcType="INTEGER" property="pmid" />
+    </association>
+   
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_order_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScOrderList" >
+    insert into sc_order_list (id, order_id, resource_id, 
+      pmid, purchase_mid, piece, 
+      num, settlement_weight, settlement_money, 
+      `status`, iskp, extract_piece, 
+      extract_num, order_expiration_time, confirm_time, 
+      confirm_user_id, creat_time, create_user_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{resourceId,jdbcType=INTEGER}, 
+      #{pmid,jdbcType=INTEGER}, #{purchaseMid,jdbcType=INTEGER}, #{piece,jdbcType=DOUBLE}, 
+      #{num,jdbcType=DOUBLE}, #{settlementWeight,jdbcType=DOUBLE}, #{settlementMoney,jdbcType=DOUBLE}, 
+      #{status,jdbcType=TINYINT}, #{iskp,jdbcType=TINYINT}, #{extractPiece,jdbcType=VARCHAR}, 
+      #{extractNum,jdbcType=VARCHAR}, #{orderExpirationTime,jdbcType=TIMESTAMP}, #{confirmTime,jdbcType=TIMESTAMP}, 
+      #{confirmUserId,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScOrderList" >
+    update sc_order_list
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      resource_id = #{resourceId,jdbcType=INTEGER},
+      pmid = #{pmid,jdbcType=INTEGER},
+      purchase_mid = #{purchaseMid,jdbcType=INTEGER},
+      piece = #{piece,jdbcType=DOUBLE},
+      num = #{num,jdbcType=DOUBLE},
+      settlement_weight = #{settlementWeight,jdbcType=DOUBLE},
+      settlement_money = #{settlementMoney,jdbcType=DOUBLE},
+      `status` = #{status,jdbcType=TINYINT},
+      iskp = #{iskp,jdbcType=TINYINT},
+      extract_piece = #{extractPiece,jdbcType=VARCHAR},
+      extract_num = #{extractNum,jdbcType=VARCHAR},
+      order_expiration_time = #{orderExpirationTime,jdbcType=TIMESTAMP},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      confirm_user_id = #{confirmUserId,jdbcType=INTEGER},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, order_id, resource_id, pmid, purchase_mid, piece, num, settlement_weight, 
+    settlement_money, `status`, iskp, extract_piece, extract_num, order_expiration_time, 
+    confirm_time, confirm_user_id, creat_time, create_user_id
+    from sc_order_list
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, order_id, resource_id, pmid, purchase_mid, piece, num, settlement_weight, 
+    settlement_money, `status`, iskp, extract_piece, extract_num, order_expiration_time, 
+    confirm_time, confirm_user_id, creat_time, create_user_id
+    from sc_order_list
+  </select>
+
+   <select id="getOrderList" resultMap="BaseResultMap" >
+    select res.variety_name, res.material, res.specification, res.factory, res.warehouse, ord.piece, ord.num,ord.price,ord.extract_piece, ord.extract_num, ord.id, 
+     ord.order_id, ord.creat_time, ord.confirm_time 
+    from sc_order_list ord, sc_shelf_resource res
+    <where>
+      ord.resource_id = res.id 
+      and ord.status = #{status} 
+      and (ord.purchase_mid = #{mid} or res.pmid = #{mid})
+      <if test="varietyName != null and varietyName!=''">
+        and res.variety_name like '%${varietyName}%'
+      </if>
+      <if test="Material!=null and Material!=''">
+        and res.material like '%${Material}%'
+      </if>
+      <if test="Spec!=null and Spec!=''">
+        and res.specification like '%${Spec}%'
+      </if>
+      <if test="origin_code!=null and origin_code!=''">
+        and res.factory like '%${origin_code}%'
+      </if>
+      <choose>
+        <when test="status == 1">
+          <if test="stime!=null and stime!=''">
+            AND ord.creat_time &gt;= #{stime}
+          </if>
+          <if test="etime!=null and etime!=''">
+            AND ord.creat_time &lt;= #{etime}
+          </if>
+          order by  ord.creat_time desc
+        </when>
+        <otherwise>
+          <if test="stime!=null and stime!=''">
+            AND ord.confirm_time &gt;= #{stime}
+          </if>
+          <if test="etime!=null and etime!=''">
+            AND ord.confirm_time &lt;= #{etime}
+          </if>
+          order by ord.confirm_time desc
+        </otherwise>
+      </choose>
+
+    </where>
+  </select>
+
+  <select id="getOrderByid" resultMap="BaseResultMap" >
+    select res.variety_name, res.material, res.specification, res.factory, res.warehouse, res.num,res.sold_num,
+    res.pmid, ord.piece, ord.num, ord.id, ord.price, ord.extract_piece, ord.extract_num, 
+     ord.order_id, ord.purchase_mid, ord.status, ord.resource_id,
+    ord.creat_time, ord.confirm_time 
+    from sc_order_list ord,  sc_shelf_resource res
+    <where>
+      ord.resource_id = res.id and ord.id = #{id,jdbcType=INTEGER}
+    </where>
+  </select>
+
+</mapper>

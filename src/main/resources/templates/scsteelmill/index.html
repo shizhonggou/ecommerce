@@ -1,0 +1,155 @@
+<!--
+ * @Author: lina
+ * @Date: 2021-08-19 09:34:33
+ * @LastEditTime: 2021-09-15 09:14:37
+ * @FilePath: \e-commerce\src\main\resources\templates\scsteelmill\index.html
+ * @Description: 
+ * @Copyright: © 2021, SteelHome. All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>钢厂信息</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<section>
+<div class="main w1000">
+<div th:insert="~{left :: left(${mark})}"></div>
+<aside>
+<div class="resources">
+<div class="resources_tt" th:include="common::varietyTag2"></div>
+
+<div class="pozition">
+    <p>当前位置：会员中心 &gt; 系统管理 &gt; 钢厂信息 </p>
+</div>
+    
+<section>
+<div class="steel_list w830">
+    <div class="ss">
+        <form name="form1" id="form1" th:action="@{'/scsteelmill/index'}" method="post">	
+            <table cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                <tr>
+                    <td><p>名称：</p><input type="text" name="name" id="name" th:value="${name}" size="10"></td>
+                    <td><p>省份：</p><input type="text" name="state" id="state" th:value="${state}" size="10"></td>
+                    <td><p>城市：</p><input type="text"  name="city" id="city" th:value="${city}" size="10"><p></td>
+                    <input type="hidden" name="page" id="page"/>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>					
+                    <td >
+                        <a style="width:60px;float: left;" href="javascript:void(0)" onclick="document.getElementById('form1').submit()">搜索</a>
+                        <a style="width:60px;" href="edit">新增</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div> 
+    <table class="steel_list_table w830" cellspacing="0" cellpadding="0" border="0">
+        <thead>
+            <tr>
+                <td>名称</td>
+                <td>简称</td>
+                <td>省份</td>
+                <td>城市</td>
+                <td>创建时间</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="list:${scSteelMillList}">
+                <td th:text="${list.steelName}"></td>
+                <td th:text="${list.steelNameShort}"></td>
+                <td th:text="${list.addressState}"></td>
+                <td th:text="${list.addressCity}"></td>
+                <td th:text="${#dates.format(list.createDate, 'yyyy-MM-dd')}"></td>
+                <td class="cz">
+                    <span class="xg">
+                      <a th:href="'edit?id='+${list.id}" target="_blank">修 改</a>
+                    </span>
+                    <span class="delete">
+                      <a href="javascript:void(0);" th:onclick="'del(this, \''+${list.id}+'\');'">删 除</a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="page">
+
+        <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+');'">上一页</a>
+
+        <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+            <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+            <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+');'" th:text="${navigatepageNum}"></a>
+        </p>
+        <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+');'">下一页</a>
+
+
+        <span>到第</span>
+        <input type="text" id="jump_num">
+        <span>页</span>
+        <button type="button" onclick="jumppage();">确定</button>
+    </div>
+</div>
+</section>
+</div>
+</aside>
+</div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+<script>
+// 翻页
+function jumppage() {
+    var pageNum = document.getElementById("jump_num").value;
+    if(pageNum>0){
+        queryDeviceRecords(Math.floor(pageNum));
+    }
+}
+
+function queryDeviceRecords(pageNum) {
+    $("#page").val(pageNum);
+    document.getElementById('form1').submit();
+}
+
+function del (obj, id) {
+    if (!confirm("确定删除？")) {
+        return false;
+    }
+    $.ajax({ 
+        type: "post", 
+        url: "/scsteelmill/del",   
+        dataType: "json",
+        data: {
+            'id':id,
+            "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+        },
+        success: function (data) {
+            if (data.success == "1") {
+                //通过this找到父级元素节点
+                var tr = obj.parentNode.parentNode.parentNode;
+                //找到表格
+                var tbody = tr.parentNode;
+                //删除行
+                tbody.removeChild(tr);
+            } else {
+                alert(data.message);
+            }
+        },
+        error: function(request, status, error){
+            console.log(error);
+        }
+    });
+} 
+</script>
+</html>

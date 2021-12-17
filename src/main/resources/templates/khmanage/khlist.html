@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/resource.js}" type="text/javascript"></script>
+    <script th:src="@{/js/systemsettings.js}" ></script>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/js/chosen.js}" type="text/javascript"></script>
+    <link th:href="@{/css/chosen.css}" rel="stylesheet" type="text/css"/>
+    <title>客户管理</title>
+    <style type="text/css">
+       .ss a{  width:180px; }
+        </style>
+</head>
+<body th:onload="onload();">
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <aside>
+            <div th:insert="~{left :: left(khmanage)}"></div>
+        </aside>
+        <aside>
+            <div class="resources">
+
+                <div class="pozition"><p>当前位置：会员中心 &gt; 客户管理 </p></div>
+                <div class="ss">
+                    <form action="/khmanage/khList2" name="huiFuLY" id="lybform"  method="POST">
+                        <table cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                    <td style="position:relative;" id="searchtd">
+                                        <div class="searchBox">
+                                           <p>公司名称：</p>  <input type="text" autocomplete="off"  id="cameName" value="" name="cameName" placeholder="请输入公司名称" onkeyup="getCameraNames()"  style="width:180px;" />
+                                           <input type="hidden" name="comname" id="companyid" value="">
+                                           <input type="hidden" id="parameterName" th:value="${_csrf.parameterName}">
+                                           <input type="hidden" id="token" th:value="${_csrf.token}">
+                                      
+                                        </div>
+                                        <!--搜索提示框 -->
+                                        <div class="searchDiv">
+                                        </div>
+                                        <div  id="dataList"  style="display:none;" >
+                                            <p th:each="item:${tmpcompay}" th:id="${item.id}" th:text="${item.comname}"></p>
+                                        </div>  
+                                </td>
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <td style=" width: 260px; ">   <input type="submit" value="搜索"  style="background: #FF6632;color: white;width: 100px;height: 30px;border: 0;cursor:pointer;">
+                                    <a  style ="width:105px;" th:href="@{'/register/reg?pmid='+${pmid}}" target="_blank">注册</a></td>
+                               
+                            </tr>
+                            
+                            </tbody>
+                        </table>
+                    </form>
+      
+                </div>
+                <table class="management" cellspacing="0" cellpadding="0" border="0">
+                    <thead>
+                    <tr style="background: #f6f6f6;">
+                       
+                        <td>申请公司</td>
+                        <td>申请时间</td>
+                        <td>审核人</td>
+                        <td style="width: 60px;">审核状态</td>
+                        <td>审核时间</td>
+                        <td style="width: 60px;">公司类型</td>
+                        <td style="width: 60px;">优惠幅度</td>
+                        <td>额度</td>
+                        <td >操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="khList_item:${khList}" align="center">
+                        <td th:text="${khList_item.SysCompany.comname}"></td>
+                        <td th:text="${#dates.format(khList_item.applydate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${khList_item.SysAdminuser.arealname2}" ></td>
+                        <td th:if="${khList_item.status} eq '1'" th:text="已审核"></td>
+                        <td th:if="${khList_item.status} ne '1'" th:text="未审核"></td>
+                        <td th:text="${#dates.format(khList_item.reviewdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:if="${khList_item.member_type} eq '2'" th:text="先款后货"></td>
+                        <td th:if="${khList_item.member_type} ne '2'" th:text="现款现货"></td>
+                        <td th:text="${khList_item.preferentialAmount}"></td>
+                        <td th:text="${khList_item.credit_amount}"></td>
+                        <td class="cz"  ><span class="xg">
+                            <a th:href="@{'/khmanage/khDetail?id='+${khList_item.id}}" target="_blank">修改</a>
+                            <a th:href="@{'/userInfo/companyDetail2?comid='+${khList_item.applymid}}" target="_blank">查看</a>
+                        </span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="page">
+                    <a th:href="'javascript:queryBasePriceRecords('+${pageInfo.prePage}+',\'/khmanage/khList?page=\');'">上一页</a>
+                    <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+                      <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+                      <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryBasePriceRecords('+${navigatepageNum}+',\'/khmanage/khList?page=\');'" th:text="${navigatepageNum}"></a>
+                    </p>
+                    <a th:href="'javascript:queryBasePriceRecords('+${pageInfo.nextPage}+',\'/khmanage/khList?page=\');'">下一页</a>
+                    <span>到第</span>
+                    <input type="text" id="jump_num" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                    <span>页</span>
+                    <button type="button" onclick="jumpbasepricepage('/khmanage/khList?page=');">确定</button>
+                  </div>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            </div>
+        </aside>
+    </div>
+</section>
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+<script type="text/javascript">
+ $(function(){
+  $(":radio").click(function(){
+   var luId = $(this).val();
+   $.ajax({
+            type: "POST",//方法类型
+
+            url: "/userInfo/accountUpdateZhuLXR",//url
+            data: {'link_user_id':luId,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                  },
+            success: function (data) {
+                alert("设置主联系人成功！");
+                    location.reload();
+            },
+            error: function(request, status, error){
+                console.log(error);
+                alert("设置主联系人失败！");
+            }
+        });
+  });
+ });
+
+
+
+</script>
+
+</body>
+</html>

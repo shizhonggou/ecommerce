@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScSettingRangeMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScSettingRange" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="jiajianjia" property="jiajianjia" jdbcType="REAL" />
+    <result column="variety_name" property="varietyName" jdbcType="VARCHAR" />
+    <result column="kind" property="kind" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="review_type" property="reviewType" jdbcType="TINYINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="adminid" property="adminid" jdbcType="INTEGER" />
+    <result column="review_date" property="reviewDate" jdbcType="TIMESTAMP" />
+    <result column="review_id" property="reviewId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_setting_range
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScSettingRange" >
+    insert into sc_setting_range (id, description, jiajianjia, 
+      variety_name, kind, `status`, 
+      pmid, `date`, review_type, 
+      create_date, adminid, review_date, 
+      review_id)
+    values (#{id,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{jiajianjia,jdbcType=REAL}, 
+      #{varietyName,jdbcType=VARCHAR}, #{kind,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
+      #{pmid,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{reviewType,jdbcType=TINYINT}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{adminid,jdbcType=INTEGER}, #{reviewDate,jdbcType=TIMESTAMP}, 
+      #{reviewId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScSettingRange" >
+    update sc_setting_range
+    set description = #{description,jdbcType=VARCHAR},
+      jiajianjia = #{jiajianjia,jdbcType=REAL},
+      variety_name = #{varietyName,jdbcType=VARCHAR},
+      kind = #{kind,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=TINYINT},
+      pmid = #{pmid,jdbcType=INTEGER},
+      `date` = #{date,jdbcType=DATE},
+      review_type = #{reviewType,jdbcType=TINYINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      adminid = #{adminid,jdbcType=INTEGER},
+      review_date = #{reviewDate,jdbcType=TIMESTAMP},
+      review_id = #{reviewId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, description, jiajianjia, variety_name, kind, `status`, pmid, `date`, review_type, 
+    create_date, adminid, review_date, review_id
+    from sc_setting_range
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, description, jiajianjia, variety_name, kind, `status`, pmid, `date`, review_type,
+    create_date, adminid, review_date, review_id
+    from sc_setting_range
+  </select>
+
+  <select id="getSettingRangeDateByKind" resultMap="BaseResultMap" >
+    select date,review_type
+    from sc_setting_range
+    where pmid = #{pmid} and kind = #{kind} and `status`= 1 and `date` &lt;= #{date}
+    order by date desc,id desc
+    limit 1
+  </select>
+
+  <select id="getSettingRangeReviewDateByKind" resultMap="BaseResultMap" >
+    select date,review_type
+    from sc_setting_range
+    where pmid = #{pmid} and kind = #{kind} and `status`= 1 and review_type = 1 and `date` &lt;= #{date}
+    order by date desc
+    limit 1
+  </select>
+
+  <select id="getSettingRangeInfoByKind" resultMap="BaseResultMap" >
+    select  id, description, jiajianjia, variety_name, kind, `status`, pmid, `date`, review_type,
+    create_date, adminid, review_date, review_id
+    from sc_setting_range
+    where pmid = #{pmid} and kind = #{kind} and `date` = #{date} and review_type = #{reviewType}
+  </select>
+  <delete id="deleteByDateAndStatus"  >
+    delete from sc_setting_range
+    where pmid = #{pmid} and kind = #{kind} and `date` = #{date} and review_type = #{reviewType}
+  </delete>
+
+  <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+    insert into sc_setting_range
+    ( description, jiajianjia, variety_name, kind, `status`, pmid, `date`, review_type,
+    create_date, adminid, review_date, review_id)
+    values
+    <foreach collection="list" item="item" index="index" separator ="," >
+      (#{item.description,jdbcType=VARCHAR},
+      #{item.jiajianjia,jdbcType=REAL},
+      #{item.varietyName,jdbcType=VARCHAR},
+      #{item.kind,jdbcType=TINYINT},
+      #{item.status,jdbcType=TINYINT},
+      #{item.pmid,jdbcType=INTEGER},
+      #{item.date,jdbcType=DATE},
+      #{item.reviewType,jdbcType=TINYINT},
+      #{item.createDate,jdbcType=TIMESTAMP},
+      #{item.adminid,jdbcType=INTEGER},
+      #{item.reviewDate,jdbcType=TIMESTAMP},
+      #{item.reviewId,jdbcType=INTEGER}
+      )
+    </foreach>
+  </insert>
+
+    <select id="getckname" resultMap="BaseResultMap" >
+    select  id, description, jiajianjia
+    from sc_setting_range
+    where pmid = #{pmid,jdbcType=INTEGER} and kind = #{kind,jdbcType=TINYINT}  group by description
+  </select>
+</mapper>

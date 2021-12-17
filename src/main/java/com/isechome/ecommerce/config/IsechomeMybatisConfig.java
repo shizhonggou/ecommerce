@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 /**
  * isechome数据库对应的配置
  */
-@MapperScan(basePackages = "com.isechome.ecommerce.mapper.isechome,com.isechome.ecommerce.security.mapper", sqlSessionFactoryRef = "isechomeMybatisSqlSessionFactory")
+@MapperScan(basePackages = "com.isechome.ecommerce.mapper.isechome,com.isechome.ecommerce.security.mapper.isechome", sqlSessionFactoryRef = "isechomeMybatisSqlSessionFactory")
 //指定Mapper接口的地址
 @Configuration
 public class IsechomeMybatisConfig {

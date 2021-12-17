@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.FinancialMapper" >
+    <resultMap id="financialMap" type="com.isechome.ecommerce.entity.FinancialInfo" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="bill" property="bill" jdbcType="INTEGER" />
+        <result column="bill_type" property="bill_type" jdbcType="INTEGER" />
+        <result column="accept_bank" property="accept_bank" jdbcType="VARCHAR" />
+        <result column="accept_date" property="accept_date" jdbcType="INTEGER" />
+        <result column="money" property="money" jdbcType="DOUBLE" />
+        <result column="company_id" property="company_id" jdbcType="INTEGER" />
+        <result column="company_name" property="company_name" jdbcType="VARCHAR" />
+        <result column="user_id" property="user_id" jdbcType="INTEGER" />
+        <result column="input_user" property="input_user" jdbcType="VARCHAR" />
+        <result column="input_date" property="input_date" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    </resultMap>
+    <insert id="financialInsert" parameterType="com.isechome.ecommerce.entity.FinancialInfo" >
+        <selectKey keyProperty="id"  order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into sc_financial_statement (bill, bill_type,
+        accept_bank, accept_date, money,
+        company_id, company_name, user_id,
+        input_user, input_date, remark, pmid)
+        values (#{bill,jdbcType=INTEGER}, #{bill_type,jdbcType=INTEGER},
+        #{accept_bank,jdbcType=VARCHAR}, #{accept_date,jdbcType=INTEGER}, #{money,jdbcType=DOUBLE},
+        #{company_id,jdbcType=INTEGER}, #{company_name,jdbcType=VARCHAR}, #{user_id,jdbcType=INTEGER},
+        #{input_user,jdbcType=VARCHAR}, #{input_date,jdbcType=TIMESTAMP}, #{remark,jdbcType=TINYINT},
+        #{pmid,jdbcType=INTEGER})
+    </insert>
+    <select id="selectAllList" resultMap="financialMap" parameterType="java.lang.Integer">
+        select * from sc_financial_statement where pmid = #{pmid,jdbcType=INTEGER} order by input_date desc
+    </select>
+    <delete id="deleteFinancialForID">
+        delete from sc_financial_statement where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <select id="selecteFinancialInfoForID" resultMap="financialMap" parameterType="java.lang.Integer">
+        select * from sc_financial_statement where id = #{id,jdbcType=INTEGER}
+    </select>
+    <update id="updateFinancialInfoForID" >
+        update sc_financial_statement set
+        bill = #{bill,jdbcType=INTEGER},
+        bill_type = #{bill_type,jdbcType=INTEGER},
+        <if test="accept_bank != null">
+            accept_bank = #{accept_bank,jdbcType=VARCHAR},
+        </if>
+        <if test="accept_date != null">
+            accept_date = #{accept_date,jdbcType=INTEGER},
+        </if>
+        money = #{money,jdbcType=DOUBLE},
+        company_id = #{company_id,jdbcType=INTEGER},
+        company_name = #{company_name,jdbcType=VARCHAR},
+        user_id =  #{user_id,jdbcType=INTEGER},
+        input_user = #{input_user,jdbcType=VARCHAR},
+        input_date = #{input_date,jdbcType=TIMESTAMP}
+        <if test="remark != null">
+            , remark = #{remark,jdbcType=VARCHAR}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="balanceMap" type="com.isechome.ecommerce.entity.BalanceInfo" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="balance" property="balance" jdbcType="DOUBLE" />
+        <result column="company_id" property="company_id" jdbcType="INTEGER" />
+        <result column="company_name" property="company_name" jdbcType="VARCHAR" />
+        <result column="user_id" property="user_id" jdbcType="INTEGER" />
+        <result column="input_user" property="input_user" jdbcType="VARCHAR" />
+        <result column="input_date" property="input_date" jdbcType="TIMESTAMP" />
+        <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    </resultMap>
+    <select id="selectBalanceAllList" resultMap="balanceMap" parameterType="java.lang.Integer">
+        select * from sc_company_balance  where pmid = #{pmid,jdbcType=INTEGER} order by input_date desc
+    </select>
+    <delete id="deleteBalanceForID">
+        delete from sc_company_balance where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <select id="selecteBalanceInfoForID" resultMap="balanceMap" parameterType="java.lang.Integer">
+        select * from sc_company_balance where id = #{id,jdbcType=INTEGER}
+    </select>
+    <update id="updateBalanceInfoForID" >
+        update sc_company_balance set
+        balance = #{balance,jdbcType=DOUBLE},
+        user_id = #{user_id,jdbcType=INTEGER},
+        input_user = #{input_user,jdbcType=VARCHAR},
+        input_date = #{input_date,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectCompaneyBalance" resultMap="balanceMap" parameterType="java.lang.Integer">
+        select * from sc_company_balance where company_id = #{company_id,jdbcType=INTEGER} and pmid = #{pmid,jdbcType=INTEGER}
+    </select>
+    <update id="updateCompaneyBalance" >
+        update sc_company_balance set
+        balance = #{balance,jdbcType=DOUBLE},
+        user_id = #{user_id,jdbcType=INTEGER},
+        input_user = #{input_user,jdbcType=VARCHAR},
+        input_date = #{input_date,jdbcType=TIMESTAMP}
+        where company_id = #{company_id,jdbcType=INTEGER} and pmid = #{pmid,jdbcType=INTEGER}
+    </update>
+    <insert id="insertCompanyBalance" parameterType="com.isechome.ecommerce.entity.BalanceInfo" >
+        <selectKey keyProperty="id"  order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into sc_company_balance (balance,
+        company_id, company_name, user_id,
+        input_user, input_date, pmid)
+        values (#{balance,jdbcType=DOUBLE},
+        #{company_id,jdbcType=INTEGER}, #{company_name,jdbcType=VARCHAR}, #{user_id,jdbcType=INTEGER},
+        #{input_user,jdbcType=VARCHAR}, #{input_date,jdbcType=TIMESTAMP}, #{pmid,jdbcType=INTEGER})
+    </insert>
+
+
+
+
+</mapper>

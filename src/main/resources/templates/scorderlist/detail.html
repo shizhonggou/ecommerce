@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>订单详情</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+    <style>
+        .logistics table td {float:none;}
+        .logistics table td input[type="text"] {border: 1px solid #dedede;text-align: center;padding: 1px 2px;width: 85px;height: 22px;}
+        .save{height: 38px;width: 100px; border: none;background: #F7836A;color: #ffffff;padding: 0 30px;box-shadow: none;}
+        .save:hover{ background:#cc0000;}
+        .nxrTable{border-bottom: solid 1px #dddddd;}
+        .stab input{width: 60px;}
+        .purchase_div{width: 100%;margin-top: 20px;}
+        .purchase_div .tt{    background: #F0FFFF;border: 1px solid #dddddd;height: 40px;line-height: 40px;color: #333333;}
+        .purchase_div .tt span {margin: 0 20px;height: 30px;line-height: 30px;display: inline-block;}
+        .purchase_div .tt span a {width: 100px;margin-top: 5px;background: #007FFF;color: #fff;display: block;text-align: center;}
+        .cart_bt a {display: block;float: left;text-align: center;width: 90px; height: 30px;line-height: 30px;border-radius: 2px;border: 1px solid #cccccc;background: #ffffff;margin: 10px;}
+        .cart_bt {background: #ffffff;width: 100%;}
+        .cart_bt div {display: table;margin: 0 auto;}
+        .cart_list tbody td {height: 22px;line-height: 22px;padding: 2px;}
+        .cart_list{min-height: 30px;}
+        .my_cart_list{height: 360px;}
+        .my_cart_list input{height:20px ;line-height: 20px;width: 60px;}
+        .cart_list3 {width: 100%;font-size: 12px;text-align: center;min-height: 80px;}
+        .cart_list,.cart_list3 tbody td input[type="text"]{width: 80px;}
+        .cart_list,.cart_list3 tbody td {height: 30px;line-height: 30px;}
+        .cart_list,.cart_list3{min-height: 30px;}
+        .order_list_dqr table{border-bottom: 1px solid #dddddd;}
+        .ebtn{background: #F7836A;padding: 6px 10px;color: #fff;border-radius: 2px;}
+        .resources a:hover{color: #fff;}
+        .cart_list3 thead tr td{background: #F0FFFF;border-left: 1px solid #dddddd;}
+        
+        .purchase_div .dd span {margin: 0 20px;height: 30px;line-height: 30px;display: inline-block;}
+        .purchase_div .dd span a {width: 100px;margin-top: 5px;background: #007FFF;color: #fff;display: block;text-align: center;}
+        .purchase_div .dd{    height: 40px;line-height: 40px;color: #333333;}
+        .purchase_div .dd div {margin: 0 20px;height: 30px;line-height: 30px;display: inline-block;height:40px;position:relative;}
+        .purchase_div .dd div a {width: 100px;margin-top: 5px;background: #007FFF;color: #fff;display: block;text-align: center;margin-left: 170px;}
+        .purchase_div .dd{    height: 40px;line-height: 40px;color: #333333;}
+        .purchase_div .dd div input {width: 140px;vertical-align:middle; margin-top:5px;height:25px ;line-height: 25px;float: left;}
+        #stable3 input{vertical-align:middle; margin-top:0;}
+        .my_cart_list table{width: 100%;}
+        .order_list_dqr .tt span{margin: 0px 15px;}
+        .sbtn {background: #007FFF;padding: 6px 13px;color: #fff;border-radius: 2px;}
+        #stable2 tbody td input[type="text"]{ height: 22px;}
+    </style>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <div th:insert="~{left :: left(${mark})}"></div>
+        <aside>
+        <div class="resources">
+        <div class="resources_tt" th:include="common::varietyTag2"></div>
+    
+        <div class="pozition">
+            <p>当前位置：会员中心 &gt; 订单管理 &gt; 订单详情
+            </p>
+        </div>
+
+        <div id="con_one_2">	
+			
+			
+			<div class="order_list_yqr">
+			<div class="tt">
+                <span>采购方</span>				
+            </div>
+			<table cellspacing="0" cellpadding="0" border="0">
+				<tbody>
+                <tr>
+					<td>公司名称：<span th:text="${purchaseCompany.comname}"></span> </td>
+				</tr>
+                <tr>
+					<td>公司地址：<span th:text="${purchaseCompany.address}"></span> </td>
+                </tr>
+                <tr>
+                    <td>公司描述：<span th:text="${purchaseCompany.comdesc}"></span> </td>			
+                </tr>
+                </tbody>
+            </table>
+			</div>
+			
+			<div class="order_list_yqr">
+			<div class="tt" style="background-color: #FFF8E8;">
+				<span>供应方</span>				
+            </div>
+			<table cellspacing="0" cellpadding="0" border="0">
+				<tbody>
+                <tr>
+					<td>公司名称：<span th:text="${salesCompany.comname}"></span> </td>
+				</tr>
+                <tr>
+                    <td>公司地址：<span th:text="${salesCompany.address}"></span> </td>
+                </tr>
+                <tr>
+					<td>公司描述：<span th:text="${salesCompany.comdesc}"></span> </td>	
+                </tr>
+                </tbody>
+            </table>
+			</div>
+			
+			<div class="order_list_yqr">
+			<div class="tt">
+				<span>收货联系人信息</span>				
+			</div>
+			<table cellspacing="0" cellpadding="0" border="0">
+				<tbody>
+                <tr>
+					<td>姓名：<span th:text="${linkUser.arealname}"></span></td>
+					<td>省份：<span th:text="${provice}"></td></td>	
+					<td>手   机： <span th:text="${linkUser.mobile}"></span></td>	
+				</tr>
+                <tr>
+                    <td>Email： <span th:text="${linkUser.email}"></span></td>
+					<td>城市：<span th:text="${purchaseCompany.city}"></span></td>
+				</tr>
+                <tr>
+					<td>地 址：<span th:text="${purchaseCompany.address}"></span></td>			
+					<td></td>
+					<td></td>
+				</tr>
+				</tbody>
+            </table>
+			</div>
+
+
+            <div class="order_list_yqr">
+                <div class="tt">
+                    <span>发货信息</span>				
+                </div>
+                <table cellspacing="0" cellpadding="0" border="0" id="nxrTable">
+                    <tbody>
+                    <tr>
+                        <td th:text="${orderInfo.ticketType==1} ? '票制：一票制':'票制：两票制'"></td>
+                        <td>发货仓库：<span th:text="${orderInfo.ScOrderListDetail[0].ScShelfResource.warehouse}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>送货地：<span th:text="${orderInfo.destination}"></td></td>	
+                        <td>运费(元)： <span th:text="${orderInfo.freight}"></span></td>	
+                        
+                    </tr>
+                   
+                    </tbody>
+                </table>
+                </div>
+
+            <div class="order_list_dqr">
+                <div class="tt">
+                    <span>
+                        订单编号：<span th:text="${orderInfo.orderId}"></span>
+                    </span>
+                    <span>
+                        订单日期：<span th:text="${#dates.format(orderInfo.creatTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                       
+                    </span>
+                    <span th:switch="${orderInfo.status}">
+                        订单状态：
+                        <span  th:case="'1'">待确认</span>
+                        <span  th:case="'2'">待付款</span>
+                        <span  th:case="'3'">已付款</span>
+                        <span  th:case="'4'">已结算</span>
+                        <span  th:case="'0'">已取消</span>
+                    </span>
+                    <span style="float: right;margin-top: 5px;" th:if="${orderInfo.status} eq '3' and ${thdCount} gt 0  "  >
+                        <a href="javascript:void(0)"   th:onclick="allThd([[${orderInfo.orderId}]]);" class="sbtn" style="padding-right: 10px;">提货单</a>
+                    </span>
+
+                    <span style="float: right;margin-top: 5px;" th:if=" ${orderInfo.status} eq '4' and ${thdCount} gt 0  "  >
+                        <a href="javascript:void(0)"  class="sbtn" style="padding-right: 10px;background: #ccc;">提货单</a>
+                    </span>
+                   
+                </div>
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <thead>
+                    <tr style="background: #FAFAFA;">
+                        <td>品名</td><td>材质</td><td>规格</td><td>产地</td><td>仓库</td><td>件数</td><td>重量</td><td>下单价格</td>
+
+                        <td th:if="${orderInfo.status} eq '4'">结算重量</td><td th:if="${orderInfo.status} eq '4'">结算金额</td>
+                        
+                        <td th:if="(${orderInfo.status} eq '1' or ${orderInfo.status} eq '2') and ${#dates.format(orderInfo.creatTime, 'yyyy-MM-dd')}  eq ${#dates.format(today, 'yyyy-MM-dd')}" style="width: 60px;">操作</td>
+
+                        <td th:if="${orderInfo.status} eq '3' or ${orderInfo.status} eq '4'">查看</td>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="detail:${orderInfo.ScOrderListDetail}" th:if="(${orderInfo.status} ne 0 and ${detail.isDeleted} eq 0) or ${orderInfo.status} eq 0 ">
+                        <td th:text="${detail.ScShelfResource.varietyName}"></td>
+                        <td th:text="${detail.ScShelfResource.material}"></td>
+                        <td th:text="${detail.ScShelfResource.specification}"></td>
+                        <td th:text="${detail.ScShelfResource.factory}"></td>
+                        <td th:text="${detail.ScShelfResource.warehouse}"></td>
+                        
+                        <td th:text="${#numbers.formatInteger(detail.piece,0)}==0?'-':${#numbers.formatInteger(detail.piece,0)} "></td>
+
+
+
+                        <td th:text="${detail.num}"></td>
+
+                        <td th:text="${detail.price}"></td>
+
+
+                        <td  th:if="${orderInfo.status} eq '4'" th:text="${detail.settlementWeight}"></td>
+                        <td  th:if="${orderInfo.status} eq '4'" th:text="${detail.settlementMoney}"></td>
+
+                        <td th:if="(${orderInfo.status} eq '1' or ${orderInfo.status} eq '2') and ${#dates.format(orderInfo.creatTime, 'yyyy-MM-dd')}  eq ${#dates.format(today, 'yyyy-MM-dd')}" ><a href="javascript:void(0)" th:onclick="'edit(\''+${detail.id}+'\');'" class="ebtn">修改</a></td>
+                        <td th:if="${orderInfo.status} eq '3'  or ${orderInfo.status} eq '4'"><a href="javascript:void(0)" th:onclick="'showThd(\''+${detail.id}+'\')'" class="ebtn">查看</a></td>
+
+                    </tr>	
+                    </tbody>
+                </table>
+                </div>
+			
+			
+
+
+                <div id="OrderContent" class="white_content">
+                    <div class="my_cart">
+                        <h3>订单修改<a href="javascript:void(0)" onclick="hide('OrderContent')">×</a></h3>
+                        <div class="my_cart_list">
+                            <table cellpadding="0" cellspacing="0" border="0" class="cart_list" id="stable">
+                                <thead>
+                                <tr>
+                                    <th>品名</th>
+                                    <th>材质</th>
+                                    <th>规格</th>
+                                    <th>产地</th>
+                                    <th>仓库</th>
+                                    <th>资源价格</th>
+                                    <th>件数</th>
+                                    <th>重量</th>
+                                    <th>下单价格</th>
+                                    <th>多次提货</th>
+                                </tr>
+                                </thead>
+                                <tbody  class="stab">
+                                </tbody>
+                            </table>
+
+                            <div class="purchase_div" id="sdiv">
+                                <div class="tt">
+                                    <span>提货单</span>	
+                                </div>
+                            <table cellpadding="0" cellspacing="0" border="0" class="cart_list" id="stable2" >
+                                <thead>
+                                <tr>
+                                    <td>序号</td>
+                                    <td>件数</td>
+                                    <td>重量</td>
+                                </tr>
+                                </thead>
+                                <tbody  class="stab2">
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+
+
+                        <div class="cart_bt">
+                            <div>
+                                <input type="hidden" id="detail_id" value=""/>
+                                <a href="javascript:void(0)" onclick="saveLogistics()" style="background: #F7836A;color: #fff;" >保存</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+                <div id="ThContent" class="white_content">
+                    <div class="my_cart">
+                        <h3>提货单<a href="javascript:void(0)" onclick="hide('ThContent')">×</a></h3>
+                        <div class="my_cart_list">
+                            <table cellpadding="0" cellspacing="0" border="0" class="cart_list" id="stable4">
+                                <thead>
+                                <tr>
+                                    <th>品名</th>
+                                    <th>材质</th>
+                                    <th>规格</th>
+                                    <th>产地</th>
+                                    <th>仓库</th>
+                                    <th>件数</th>
+                                    <th>重量</th>
+                                    <th>价格</th>
+                                </tr>
+                                </thead>
+                                <tbody  class="stab">
+                                </tbody>
+                            </table>
+                            <div class="purchase_div" id="sdiv2" style="margin-top: 10px;">
+                                <div class="dd">
+                                    
+                                </div>
+                                <table cellpadding="0" cellspacing="0" border="0" class="cart_list3" id="stable3"  style="border-collapse: separate; border-spacing: 0px 6px;" >
+                                    <thead>
+                                    <tr>
+                                        <td width="10%">采购</td>
+                                        <td width="30%">资源编号</td>
+                                        <td width="20%">状态</td>
+                                        <td width="20%">重量</td>
+                                        <td width="20%">操作</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="stab2">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="ThdContent" class="white_content">
+                    <div class="my_cart">
+                        <h3>提货单<a href="javascript:void(0)" onclick="hide('ThdContent')">×</a></h3>
+                        <div class="my_cart_list">
+                            <div class="purchase_div" id="sdiv2" style="margin-top: 0px;">
+                                
+                                <table cellpadding="0" cellspacing="0" border="0" class="cart_list3" id="stablet"  style="border-collapse: separate; border-spacing: 0px 6px;" >
+                                    <thead>
+                                    <tr>
+                                        <td width="30%">提单号</td>
+                                        <!--<td width="20%">状态</td>-->
+                                        <td width="20%">操作</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="stab2">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+
+<script> 
+    addCss();
+    function addCss(){
+        var status = "[[${orderInfo.status}]]";
+        if (status == "1") {
+            $("#nxrTable").addClass("nxrTable");
+        }
+    }
+
+    function open1(){
+        console.log("11111111");
+    }
+
+    function newline(){
+        var row=$("#stable3>tbody").children("tr").length;
+        if(row<5){
+            str="<tr style='background:'><td><input type='hidden' name='logisticsIds[]' id='' value='' /><input type='checkbox' name='logisticsChs[]' onclick='addColor(this)' /></td><td></td><td></td><td><input type='text' value='' name='logisticsNums[]' /></td><td><a href='javascript:void(0)' class='ebtn' onclick=removestr(this)>删除</a></td></tr>";
+            $("#stable3 tbody").append(str);
+        }else{
+            alert("提货单最多不超过五个");
+            return false;
+        }
+    }
+
+
+    function savePurchase(){
+        var logisticsNums=document.getElementsByName("logisticsNums[]");
+        var logisticsIds=document.getElementsByName("logisticsIds[]");
+        var logisticsChs=document.getElementsByName("logisticsChs[]");
+        var detail_id=$("#detail_id2").val();
+        var orderALLNum=$("#orderALLNum").val();
+        var insert=[],update=[],ids=[],sum=0;
+       
+        for (let index = 0; index < logisticsNums.length; index++) {
+           if($.trim(logisticsNums[index].value)!="" && $.trim(logisticsNums[index].value)>0 ){
+                var num=$.trim(logisticsNums[index].value);
+                var type=logisticsChs[index].checked?"1":"0";
+                if(logisticsIds[index].value!="" && logisticsIds[index].value>0 ){
+                    update.push([logisticsIds[index].value,type,num]);
+                    ids.push(logisticsIds[index].value);
+                }else{
+                    insert.push([type,num]);
+                }
+                sum=accAdd(sum,Number($.trim(logisticsNums[index].value)));
+                //sum+=Number($.trim(logisticsNums[index].value));
+           }
+        }
+       
+        if(sum<=0 || sum==""){
+            alert( "提货单重量不能为0，请核对重新填写" );
+            return false;
+        }
+
+        if(sum>orderALLNum){
+            alert( "提货单重量总计不能超过订单资源重量，请核对重新填写" );
+            return false;
+        }
+
+        
+        if(update.length>0 || insert.length>0){
+            $.ajax({
+                    type: "POST",
+                    url: "/scorderlist/addDetailPurchase",
+                    dataType: "json",
+                    async:false,
+                    data: {
+                        "detail_id":detail_id,
+                        "update":JSON.stringify(update),
+                        "insert":JSON.stringify(insert),
+                        "ids":JSON.stringify(ids),
+                        "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                    },
+                    success: function (data) {
+                        if(data==1){
+                            alert("保存成功");
+                            showThd(detail_id);
+                        }else if(data==2){
+                            alert("提货单量超出资源可提量！");
+                            showThd(detail_id);
+                        }
+                    }
+            });
+        }else{
+            alert("请添加提货单");
+            return false;
+        }
+    }
+
+
+    function allThd(orderId){
+        $.ajax({
+            type: "get",
+            url: "/scorderlist/getOrderThd",
+            dataType: "json",
+            async:false,
+            data: {
+                "orderId":orderId,
+                "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+            },
+            success: function (data) {
+                //data=JSON.stringify(data);
+                console.log(data);
+                console.log(data.length);
+                var arr=["提货单","仓库理货中"];
+                var str="";
+                for(var i in data){
+
+                    console.log(data[i]["extractId"]);
+                    console.log("*");
+                    if(data[i]){
+                        console.log("#");
+                        str+="<tr><td>"+data[i]["extractId"]+"</td>"; 
+                        if(data[i]["type"]==1){
+                            str+="<td><a href='/scorderlist/printPdf?id="+data[i].id+"' target='_blank' class='ebtn' )>下载提货单</a></td>";
+                        }else{
+                            str+="<td>"+arr[data[i]["type"]-1]+"</td>"; 
+                        }
+                        str+="</tr>";
+                    }
+                }
+                
+                
+                $("#stablet tbody").html("");
+                $("#stablet tbody").html(str);
+                $("#ThdContent").css('display','block');
+                
+            }
+        });
+    }
+
+
+    function showThd(id){
+        $.ajax({
+                type: "get",
+                url: "/scorderlist/getDetaiLogisticsByid",
+                dataType: "json",
+                async:false,
+                data: {
+                    id:id,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]",
+                },
+                success: function (data) {
+                   
+                    console.log(data);
+                    if(data['existSaveAction']==2 && "[[${iscaigou}]]"==1){
+                        alert("提货单异常，请联系销售人员再提货！");
+                    }
+                    var logisticsPurchase=data['logisticsPurchase'];
+                    //var arr=["提货单","采购待审核","采购审核不通过","采购未付款","采购资源未分配"];
+                    var arr=["可提货","仓库理货中"];
+                    
+                   
+
+
+                    var sstr="";
+                    if(!$.isEmptyObject(data)){
+                        sstr+="<tr><td>"+data['scShelfResource'].varietyName+"</td><td>"+data['scShelfResource'].material+"</td><td>"+data['scShelfResource'].specification+"</td><td>"+data['scShelfResource'].factory+"</td><td>"+data['scShelfResource'].warehouse;
+                        sstr+="</td><td>"+data['piece']+"</td><td>"+data['num'];
+                        sstr+="</td><td>"+data['price']+"</td></tr>";
+                    }
+                    $("#stable4 tbody").html(sstr);
+
+                    var date="[[${#dates.format(orderInfo.creatTime, 'yyyy-MM-dd')}]]";
+                    var tbody="";
+                    var thead="";
+
+                    
+                        thead+="<tr><td width=30%>资源编号</td><td width=20%>状态</td><td width=15%>重量</td>";
+                        
+                        if("[[${orderInfo.status}]]"==4){
+                            thead+="<td width=20%>发货数量</td>";
+                        }
+                        //if(tag){
+                        /*thead+="<td width=20%>查看</td>";*/
+                        //} 
+                        thead+="</tr>";
+                        var j=0;
+                        for(var i=0;i<logisticsPurchase.length;i++){
+                            var bag=logisticsPurchase[i].type!=1?"#F2EDED":"";
+                            //var type=arr[logisticsPurchase[i].type-1];
+                            //var type=arr[logisticsPurchase[i].type-1];
+
+
+                            if(data['existSaveAction']==2){
+                                //var arr=["可提货","超量销售","仓库理货中"];
+                                var type="超量销售";
+                            }else{
+                                if("[[${orderInfo.status}]]"==4){
+                                    var type="已提货";
+                                }else{
+                                    var type=arr[logisticsPurchase[i].type-1];
+                                }
+                                
+                            }
+                            
+
+                            
+                            tbody+="<tr style='background:"+bag+"'><td>"+logisticsPurchase[i].extractId+"</td><td>"+type+"</td><td>"+logisticsPurchase[i].num+"</td>";
+                            
+                            if("[[${orderInfo.status}]]"==4){
+                                tbody+="<td>"+logisticsPurchase[i].actualNum+"</td>";
+                            }
+                            
+
+                            //if(tag){
+                            /*if(logisticsPurchase[i].type==1){
+                                tbody+="<td><a href='/scorderlist/printPdf?id="+logisticsPurchase[i].id+"' target='_blank' class='ebtn' )>下载提货单</a></td>";
+                            }else{
+                                tbody+="<td></td>";
+                            }*/
+                            //}
+                            tbody+="</tr>";
+                        }
+                    $("#detail_id2").val(data['id']);
+                    $("#orderALLNum").val(data['num']);
+                    $("#stable3 tbody").html(tbody);
+                    $("#stable3 thead").html(thead);
+                    $("#ThContent").css('display','block');
+                
+                }
+        });
+
+    }
+
+    function edit(id){
+        if(id>0){
+            $.ajax({
+                type: "get",
+                url: "/scorderlist/getDetailByid",
+                dataType: "json",
+                async:false,
+                data: {
+                    id:id,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                },
+                success: function (data) {
+                    var checked="";
+                    var piece_arr = new Array(),num_arr= new Array();  
+                    console.log(data);
+
+                    var status="[[${orderInfo.status}]]";
+
+
+                    if(data['extractNum']!="" && data['extractNum']!=null){
+                        if(data['extractNum'].indexOf(",") != -1){
+                            checked="checked";
+                            piece_arr=data['extractPiece']!=null?data['extractPiece'].split(","):piece_arr;
+                            num_arr=data['extractNum'].split(",");
+                            $("#sdiv").css('display','block');
+                        }
+                        
+                    }else{
+                        $("#sdiv").css('display','none');
+                    }
+
+                    
+                   
+                    var str="";
+                    if(!$.isEmptyObject(data)){
+                        str+="<tr><td>"+data['scShelfResource'].varietyName+"</td><td>"+data['scShelfResource'].material+"</td><td>"+data['scShelfResource'].specification+"</td><td>"+data['scShelfResource'].factory+"</td><td>"+data['scShelfResource'].warehouse+"</td><td>"+data['scShelfResource'].price;
+                        str+="</td><td><input type='text' id='piece_5' value='"+data['piece']+"' onkeyup=this.value=this.value.replace(/[^0-9]/g,\'\')  onBlur=check_piece(this,'"+data['piece']+"','"+data['resourceId']+"','"+data['scShelfResource'].factory+"','"+data['scShelfResource'].specification+"','"+data['scShelfResource'].num+"') /></td><td><input type='text' id='num_5' value='"+data['num']+"' onkeyup=this.value=this.value.replace(/[^0-9\.]/g,\'\')  onBlur=check_piece(this,'"+data['num']+"','"+data['resourceId']+"','"+data['scShelfResource'].factory+"','"+data['scShelfResource'].specification+"','"+data['scShelfResource'].num+"') />";
+                       
+                        if(status==1 && ( "[[${iscaigou}]]"==1 || ([[${#authorization.expression('hasRole(''ROLE_GYLQX_MASTER'')')}]] && [[${#authorization.expression('hasRole(''ROLE_GYLQX_PTF'')')}]]))){
+                            var price_str="<td><input type='text' id='price' name='price' value='"+data['price']+"'   onkeyup=this.value=this.value.replace(/[^0-9\.]/g,\'\')  /></td>";
+                        }else{
+                            var price_str="<td>"+data['price']+"</td>";
+                        }
+                        str+="</td>"+price_str+"<td><input type='checkbox' id='isdc' "+checked+" onclick='dcth(this)' /></td></tr>";
+                    }
+
+                 
+                    $("#stable tbody").html(str);
+
+                   var str2="";
+                    if(checked!=""){
+                        for(var i=0;i<num_arr.length;i++){
+                            piece_arr[i]=piece_arr[i]?piece_arr[i]:"";
+                            str2+="<tr><td>"+(i+1)+"</td><td><input type='text' id='piece_"+i+"' name='piece[]'  value='"+piece_arr[i]+"' onkeyup=this.value=this.value.replace(/[^0-9]/g,\'\') onBlur=check_piece(this,'"+piece_arr[i]+"','"+data['resourceId']+"','"+data['scShelfResource'].factory+"','"+data['scShelfResource'].specification+"','"+data['scShelfResource'].num+"') /></td><td><input type='text' id='num_"+i+"' name='num[]' value='"+num_arr[i]+"'  onkeyup=this.value=this.value.replace(/[^0-9\.]/g,\'\')  onBlur=check_piece(this,'"+num_arr[i]+"','"+data['resourceId']+"','"+data['scShelfResource'].factory+"','"+data['scShelfResource'].specification+"','"+data['scShelfResource'].num+"') /></td></tr>";
+                        }
+                    }
+                    
+                     for(var i=num_arr.length;i<5;i++){
+                        //str2+="<tr><td>"+(i+1)+"</td><td><input type='text' id='piece_"+i+"' name='piece[]'  value='' /></td><td><input type='text' id='num_"+i+"' name='num[]' value='1' /></td></tr>";
+                        str2+="<tr><td>"+(i+1)+"</td><td><input type='text' id='piece_"+i+"' name='piece[]'  value='' onkeyup=this.value=this.value.replace(/[^0-9]/g,\'\') onBlur=check_piece(this,'','"+data['resourceId']+"','"+data['scShelfResource'].factory+"','"+data['scShelfResource'].specification+"','"+data['scShelfResource'].num+"') /></td><td><input type='text' id='num_"+i+"' name='num[]' value='' onkeyup=this.value=this.value.replace(/[^0-9\.]/g,\'\')   onBlur=check_piece(this,'','"+data['resourceId']+"','"+data['scShelfResource'].factory+"','"+data['scShelfResource'].specification+"','"+data['scShelfResource'].num+"') /></td></tr>";
+                    }
+                   
+                    str2+="<tr style='background: #F0FFFF;'><td>合计</td><td><input type='text' id='piece_sum'   value='' readonly /></td><td><input type='text' id='num_sum'  value='' readonly /></td></tr>";
+
+                    $("#stable2 tbody").html(str2);
+                }
+            });
+            $("#detail_id").val(id);
+            $("#OrderContent").css('display','block');
+        }
+    }
+
+
+    function saveLogistics(){
+        var pieces = [],nums = [],piece_sum=0,num_sum=0;
+        var detail_id=$("#detail_id").val();
+        var piece_order=$("#piece_5").val()?$("#piece_5").val():0;
+        var num_order=$("#num_5").val();
+        var i=$("input[id='isdc']").is(':checked')?0:5;
+        var status="[[${orderInfo.status}]]";
+        var price="";
+        if(status==1){
+            price=$("#price").val();
+            if(price<0 || $.trim(price)==""){
+                alert("请输入正确的价格");
+                document.getElementById("price").focus();
+                return false;
+            }
+        }
+        
+
+      
+        for( i; i < 6; ++i ){
+            if(document.getElementById("piece_"+i).value<0 && document.getElementById("piece_"+i).value!=""){
+                alert("请输入正确的件数");
+                document.getElementById("piece_"+i).focus();
+                return false;
+            }else if( document.getElementById("num_"+i).value<0 && document.getElementById("num_"+i).value!=""){
+                alert( "请输入正确的订单重量" );
+                //document.getElementById("num_"+i).focus();
+                return false;
+            }else if( document.getElementById("piece_"+i).value!="" && document.getElementById("num_"+i).value==""){
+                var tmp = i + 1;
+                if(i==5){
+                    alert( "请填写订单的重量" );
+                }else{
+                    alert( "请填写提货单序号"+tmp+"的重量" );
+                }
+                //document.getElementById("num_"+i).focus();
+                return false;
+            }else if( document.getElementById("num_5").value==""){
+                alert("订单的重量不能为空");
+                document.getElementById("piece_5").focus();
+                return false;
+            }else if(document.getElementById("num_"+i).value!="" && i<5){
+                pieces.push($("#piece_"+i).val());
+                nums.push($("#num_"+i).val());
+                num_sum=accAdd(num_sum,Number($.trim(document.getElementById("num_"+i).value)));
+                piece_sum=accAdd(piece_sum,Number($.trim(document.getElementById("piece_"+i).value)));
+                //num_sum+=Number($.trim(document.getElementById("num_"+i).value));
+                //piece_sum+=Number($.trim(document.getElementById("piece_"+i).value));
+            }
+        }
+
+
+        if($("input[id='isdc']").is(':checked')){
+            if(num_order!=num_sum){
+                alert( "提货重量总计与订单重量不相等，请重新核对填写" );
+                return false;
+            }
+            pieces=pieces.join(",");
+            nums=nums.join(",");
+        }
+
+        $.ajax({
+                type: "get",
+                url: "/scorderlist/updateDetailById",
+                dataType: "json",
+                async:false,
+                data: {
+                    "detail_id":detail_id,
+                    "order_piece":piece_order,
+                    "order_num":num_order,
+                    "extract_piece":pieces,
+                    "extract_num":nums,
+                    "price":price,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                },
+                success: function (data) {
+                    
+                    if(data==1){
+                        alert("保存成功！");
+                        window.location.reload();
+                    }
+                }
+        });
+    }
+
+    function dcth(obj){
+        if(obj.checked){
+            $("#sdiv").css('display','block');
+        }else{
+            $("#sdiv").css('display','none');
+        }
+    }
+
+    function addColor(obj){
+        //通过this找到父级元素节点
+        var tr = obj.parentNode.parentNode;
+        tr.style.background=obj.checked?"#F2EDED":"";
+    }
+
+    function removestr(obj){
+        //通过this找到父级元素节点
+        var tr = obj.parentNode.parentNode;
+        //找到表格
+        var tbody = tr.parentNode;
+        //删除行
+        tbody.removeChild(tr);
+    }
+
+    function hide(tag){
+        var SonContent=document.getElementById(tag);
+        SonContent.style.display='none';
+    }
+
+    function FloatMul(arg1,arg2)
+    {
+        var m=0,s1=arg1.toString(),s2=arg2.toString();
+        try{m+=s1.split(".")[1].length}catch(e){}
+        try{m+=s2.split(".")[1].length}catch(e){}
+        return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m);
+    }
+
+    function FloatDuv(num1,num2){
+
+        const num1String = num1.toString();
+        const num2String = num2.toString();
+        const num1Digits = (num1String.split('.')[1] || '').length;
+        const num2Digits = (num2String.split('.')[1] || '').length;
+        const baseNum = Math.pow(10, num1Digits + num2Digits);
+        let n1 = floatMultiply(num1, baseNum);
+        let n2 = floatMultiply(num2, baseNum);
+        return Number(n1) / Number(n2);
+    }
+
+    function accDiv(arg1,arg2){
+        var t1=0,t2=0,r1,r2;
+        try{t1=arg1.toString().split(".")[1].length}catch(e){}
+        try{t2=arg2.toString().split(".")[1].length}catch(e){}
+        with(Math){
+            r1=Number(arg1.toString().replace(".",""));
+            r2=Number(arg2.toString().replace(".",""));
+            return (r1/r2)*pow(10,t2-t1);
+        }
+    }
+
+
+    function accAdd(arg1,arg2){ 
+        var r1,r2,m; 
+        try{r1=arg1.toString().split(".")[1].length}catch(e){r1=0} 
+        try{r2=arg2.toString().split(".")[1].length}catch(e){r2=0} 
+        m=Math.pow(10,Math.max(r1,r2)) 
+        return (arg1*m+arg2*m)/m 
+    } 
+
+    
+    //检查件数
+    function check_piece (obj,ynum,resource_id,factory,specification,num){
+        var write = Number(obj.value);
+        if ( write < 0 ) {
+            alert("请输入正确的件数和重量");
+            //obj.value = "";
+            //obj.focus();
+            //return false;
+        }
+        
+        var arr=obj.id.split("_");
+
+        if(write!=''){
+            var weight=0;
+            var surplus=0;
+            $.ajax({
+                type: "get",
+                url: "/scorderlist/getWeightNum",
+                dataType: "json",
+                async:false,
+                data: {
+                    resource_id:resource_id,
+                    factory:factory,
+                    specification:specification,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                },
+                success: function (data) {
+                    surplus=Number(data['surplus']);
+                    weight=Number(data['weight']);
+                }
+            });
+
+            if(weight>0){
+                if(arr[0]=="piece"){
+                    //result = Math.round(weight*write * 100) / 100;
+                    result =FloatMul(weight,write);
+                    if(ynum!="" && write>ynum && result>surplus){
+                        alert("订单重量不能超过资源可销售量"+surplus+"吨");
+                        obj.value = "";
+                        obj.focus();
+                        return false;
+                    }
+                    $("#num_"+arr[1]).val(result);
+                }else{
+                    if(ynum!="" && write>ynum && write>surplus){
+                        alert("订单重量不能超过资源可销售量"+surplus+"吨");
+                        obj.value = "";
+                        obj.focus();
+                        return false;
+                    }
+                    //result = Math.round(write/weight * 100) / 100;
+                    //result = write/weight ;
+                    result = accDiv(write,weight );
+                    if(String(result).indexOf(".") + 1>0){
+                        if(FloatMul(weight,Math.ceil(result))>surplus){
+                            result=Math.floor(result);
+                        }else{
+                            result=Math.ceil(result);
+                        }
+                        write= FloatMul(weight,result);
+                        $("#num_"+arr[1]).val(write);
+                    }
+                    
+                    if(ynum!="" && write>ynum && write>surplus){
+                        alert("订单重量不能超过资源可销售量"+surplus+"吨");
+                        obj.value = "";
+                        obj.focus();
+                        return false;
+                    }
+                    
+                    $("#piece_"+arr[1]).val(result);
+                }
+            }else{
+                if(arr[0]=="num" && ynum!="" && write>ynum && write>surplus ){
+                    alert("订单重量不能超过资源可销售量"+surplus+"吨");
+                        obj.value = "";
+                        obj.focus();
+                        return false;
+                }
+            }
+        }
+
+        var num_sum=0;
+        var piece_sum=0;
+        for( i=0; i<5; ++i ){
+            if(document.getElementById("num_"+i).value!=""){
+                num_sum=accAdd(num_sum,Number($.trim(document.getElementById("num_"+i).value)));
+                piece_sum=accAdd(piece_sum,Number($.trim(document.getElementById("piece_"+i).value)));
+            }
+        }
+        $("#piece_sum").val(piece_sum);
+        $("#num_sum").val(num_sum);
+
+        
+        
+        if(write=="" || weight==0 || weight<0){
+            if(arr[0]=="piece"){
+                $("#num_"+arr[1]).val("");
+            }else{
+                $("#piece_"+arr[1]).val("");
+                
+            }
+        }
+    }
+
+    function showThpdf() {
+        var checkstr = checkPayWord();
+        //if (checkstr == "successed") {
+            var detail_id=$("#detail_id2").val();
+            showThd(detail_id);
+        //}
+    }
+
+
+    function checkPayWord() {
+        var inputPayWord = $("#pay_password").val();
+        var str = "falsed";
+        if (inputPayWord == "") {
+            alert("请输入交易密码！");
+            return str;
+        }
+        $.ajax({
+            type: "post",
+            url: "/resourcemanage/checkPayWord",
+            dataType: "json",
+            async: false,
+            data: {
+                'inputPayWord': inputPayWord,
+                "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+            },
+            success: function (data) {
+                if (data == "1") {
+                    str = "successed";
+                } else if (data == '2') {
+                    alert("交易密码错误！")
+                }
+            },
+            error: function (request, status, error) {
+                console.log(error);
+            }
+        });
+        return str;
+    }
+
+
+    function isToday(date) {
+        var date = new Date(date);
+        var y1=date.getFullYear();
+        var m1=date.getMonth()+1;   //获取系统月份，由于月份是从0开始计算，所以要加1
+        var d1=date.getDate(); // 获取系统日，
+        var oDate = new Date();
+        var y2=oDate.getFullYear();
+        var m2=oDate.getMonth()+1;   
+        var d2=oDate.getDate(); 
+        if(y1+"-"+m1+"-"+d1 == y2+"-"+m2+"-"+d2){
+            return true;
+        }else{
+            return false;
+        }
+    }
+   
+
+    function checkDecimal(number){
+        if(!isNaN(number)){
+            var reg=/^[0-9]{1}\.\d+$/;
+            return reg.test(number);
+        }
+        return false;
+    }
+
+    function hasDot(num){
+        if(!isNaN(num)){
+            return ( (num + '').indexOf('.') != -1 ) ? num: num.toFixed(2);   
+        }
+    }
+
+</script>
+</html>

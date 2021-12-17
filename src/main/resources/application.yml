@@ -29,7 +29,7 @@ server:
 
 mybatis:
   mapper-locations: classpath:mapping/**/*.xml
-  type-aliases-package: cn.steelhome.ess
+  type-aliases-package: com.isechome.ecommerce.entity
 
 # 分页配置
 pagehelper:
@@ -37,3 +37,5 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+
+server.tomcat.basedir: /data/apps/tmp 

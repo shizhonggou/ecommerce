@@ -1,0 +1,100 @@
+<!--
+ * @Author: lina
+ * @Date: 2021-08-20 14:22:10
+ * @LastEditTime: 2021-08-31 08:38:39
+ * @FilePath: \e-commerce\src\main\resources\templates\scpieceweightmanage\edit.html
+ * @Description: 
+ * @Copyright: © 2021, SteelHome. All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::commonHeader(${title})">
+</head>
+
+<div th:insert="~{header :: header}"></div>
+<body>
+<section>
+  <div class="main w1000">
+    <div th:insert="~{left :: left(${mark})}"></div>
+
+    <aside>
+      <div class="resources">
+        <div class="resources_tt" th:include="common::varietyTag2"></div>
+        <div class="pozition">
+          <p>当前位置：会员中心 &gt; 系统管理 &gt; 件重设置 </p>
+        </div>
+
+        <form id="pieceweightform" method="POST" action="doedit" onsubmit=" return checkForm();">
+          <table class="heavy_set" cellspacing="0" cellpadding="0" border="0">
+            <thead>
+            <tr>
+              <td>钢厂</td>
+              <td>规格</td>
+              <td>件重</td>
+            </tr>
+            </thead>
+            <tbody >
+              <tr>
+                <td>
+                  <select name="stmid">
+                    <span th:each="list:${smlist}">
+                    <option th:if="${list.id} eq ${arrinfo.stmid}" selected th:value ="${list.id}" th:text="${list.steelNameShort}"></option>
+                    <option th:if="${list.id} ne ${arrinfo.stmid}" th:value ="${list.id}" th:text="${list.steelNameShort}"></option>
+                    </span>
+                  </select>
+                </td>
+                <td ><input type="text" autocomplete="off"  name="spec" id="spec" th:value="${arrinfo.spec?: ''}" placeholder="请输入规格"></td>
+                <td ><input type="text" autocomplete="off"  name="weight" id="weight" th:value="${arrinfo.weight}" placeholder="请输入重量" oninput="checkNum(this)"></td>
+              </tr>
+              <tr>
+                <td class="cz" colspan="3">
+                  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                  <input type="hidden" name="id" th:value="${arrinfo.id}">
+                  <input type="submit" id="saveSubmitBtn" value="保存">
+                  <span class="delete">
+                    <a href="/scpieceweightmanage/index" th:text="返回"  ></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </aside>
+  </div>
+
+</section>
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+<script>
+  function checkForm(){
+      if ($("#spec").val() == "") {
+          alert("请输入规格");
+          return false;
+      }
+      if ($("#weight").val() == "") {
+          alert("请输入重量");
+          return false;
+      }
+  }
+
+  function checkNum(obj){
+    // var t = obj.value.charAt(0);
+    //先把非数字的都替换掉，除了数字和.
+    obj.value = obj.value.replace(/[^\d.]/g, "");
+    //必须保证第一个为数字而不是.
+    obj.value = obj.value.replace(/^\./g, "");
+    //保证只有出现一个.而没有多个.
+    obj.value = obj.value.replace(/\.{2,}/g, ".");
+    //保证.只出现一次，而不能出现两次以上
+    obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    // 限制三位小数
+    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3');
+    //如果第一位是负号，则允许添加   如果不允许添加负号 可以把这块注释掉
+    // if (t == '-') {
+    //     obj.value = '-' + obj.value;
+    // }
+  }
+  </script>
+</html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.InvoiceManagementMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.InvoiceManagement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="invoice_money" property="invoiceMoney" jdbcType="DOUBLE" />
+    <result column="drawer" property="drawer" jdbcType="INTEGER" />
+    <result column="create_user" property="createUser" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="invoice_type" property="invoiceType" jdbcType="TIMESTAMP" />
+    <result column="invoice_baseid" property="invoiceBaseid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="invoice_url" property="invoiceUrl" jdbcType="VARCHAR" />
+    <result column="invoice_num" property="invoiceNum" jdbcType="VARCHAR" />
+    <result column="mid" property="mid" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_invoice_management
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.InvoiceManagement" >
+    insert into sc_invoice_management ( order_id, invoice_money, 
+      create_user, create_time, invoice_type, invoice_baseid, `status`,  mid, pmid
+      )values ( #{orderId,jdbcType=VARCHAR}, #{invoiceMoney,jdbcType=DOUBLE}, 
+      #{createUser,jdbcType=INTEGER}, now(), #{invoiceType,jdbcType=INTEGER}, #{invoiceBaseid,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+     #{mid,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.InvoiceManagement" >
+    update sc_invoice_management
+    set drawer = #{drawer,jdbcType=INTEGER},
+    update_time = now(),
+    `status` = #{status,jdbcType=INTEGER},
+    invoice_url = #{invoiceUrl,jdbcType=VARCHAR},
+    invoice_num=#{invoiceNum,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, order_id, invoice_money, drawer, create_user, create_time, update_time, invoice_type,
+    invoice_baseid, `status`, invoice_url,invoice_num, mid, pmid
+    from sc_invoice_management
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, order_id, invoice_money, drawer, create_user, create_time, update_time, invoice_type,
+    invoice_baseid, `status`, invoice_url,invoice_num, mid, pmid
+    from sc_invoice_management
+  </select>
+
+   <select id="getInvoiceList" resultMap="BaseResultMap" >
+    select id, order_id, invoice_money, drawer, create_user, create_time, update_time, invoice_type,
+    invoice_baseid, `status`, invoice_url,invoice_num, mid, pmid
+    from sc_invoice_management
+    <where>
+      <if test="status != null and status!=''" >
+         and status=#{status}
+      </if>
+       <if test="pmid != null and pmid!=''" >
+         and pmid=#{pmid}
+      </if>
+       <if test="mid != null and mid!=''" >
+         and mid in (${mid})
+      </if>
+       <if test="orderId != null and orderId!=''" >
+         and order_id like '%${orderId}%' 
+      </if>
+      <if test="stime!=null and stime!=''">
+        AND create_time &gt;= #{stime}
+      </if>
+      <if test="etime!=null and etime!=''">
+        AND create_time &lt;= #{etime}
+      </if>
+       <if test="invoiceNum !=null and invoiceNum!=''">
+        AND invoice_num = #{invoiceNum}
+      </if>
+    
+    </where>
+    order by id desc
+  </select>
+
+  <update id="updatedrawer" parameterType="com.isechome.ecommerce.entity.InvoiceManagement" >
+    update sc_invoice_management
+    set 
+      drawer = #{drawer,jdbcType=INTEGER},
+      update_time = now(),
+      `status` = #{status,jdbcType=INTEGER}
+      <if test="invoiceUrl!=null and invoiceUrl!=''">
+        ,invoice_url = #{invoiceUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="invoiceNum!=null and invoiceNum!=''">
+         ,invoice_num = #{invoiceNum,jdbcType=VARCHAR}
+      </if>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

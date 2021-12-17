@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.WarehouseResourceMapper">
+    <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.WarehouseResource">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="v_id" property="vId" jdbcType="INTEGER"/>
+        <result column="variety_name" property="varietyName" jdbcType="VARCHAR"/>
+        <result column="material" property="material" jdbcType="VARCHAR"/>
+        <result column="specification" property="specification" jdbcType="VARCHAR"/>
+        <result column="hd" property="hd" jdbcType="DOUBLE"/>
+        <result column="kd" property="kd" jdbcType="DOUBLE"/>
+        <result column="cd" property="cd" jdbcType="DOUBLE"/>
+        <result column="xd" property="xd" jdbcType="DOUBLE"/>
+        <result column="factory" property="factory" jdbcType="VARCHAR"/>
+        <result column="warehouse" property="warehouse" jdbcType="VARCHAR"/>
+        <result column="num" property="num" jdbcType="DOUBLE"/>
+        <result column="reserved_num" property="reservedNum" jdbcType="DOUBLE"/>
+        <result column="reserved_date" property="reservedDate" jdbcType="DATE"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="review_status" property="reviewStatus" jdbcType="INTEGER"/>
+        <result column="system_type" property="systemType" jdbcType="INTEGER"/>
+        <result column="pmid" property="pmid" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="audit_userid" property="auditUserid" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="selectColumn">
+    id, v_id,variety_name, material, specification, hd, kd, cd, xd, factory, warehouse,
+    num, reserved_num, reserved_date, `status`, system_type, pmid, create_time, audit_time,
+    audit_userid,review_status
+    </sql>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sc_warehouse_resource
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+    insert into sc_warehouse_resource (id,v_id, variety_name, material,
+      specification, hd, kd, 
+      cd, xd, factory, warehouse,
+      num, reserved_num, reserved_date, 
+      `status`,`review_status`, system_type, pmid,
+      create_time, audit_time, audit_userid
+      )
+    values (#{id,jdbcType=INTEGER},#{vId,jdbcType=INTEGER}, #{varietyName,jdbcType=VARCHAR}, #{material,jdbcType=VARCHAR},
+      #{specification,jdbcType=VARCHAR}, #{hd,jdbcType=DOUBLE}, #{kd,jdbcType=DOUBLE}, 
+      #{cd,jdbcType=DOUBLE}, #{xd,jdbcType=DOUBLE}, #{factory,jdbcType=VARCHAR}, #{warehouse,jdbcType=VARCHAR},
+      #{num,jdbcType=DOUBLE}, 0, '00:00:00',
+      #{status,jdbcType=INTEGER},#{reviewStatus,jdbcType=INTEGER}, #{systemType,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER},
+      NOW(), #{auditTime,jdbcType=TIMESTAMP}, #{auditUserid,jdbcType=INTEGER}
+      )
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+        update sc_warehouse_resource
+        <set>
+            <if test="num != null and num != ''">
+                num =num+ #{num,jdbcType=DOUBLE},
+            </if>
+            <if test="status != null and status != ''">
+                status =#{status,jdbcType=INTEGER},
+            </if>
+            create_time = NOW()
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="unReviewByPrimaryKey" parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+        update sc_warehouse_resource
+        <set>
+            <if test="reviewStatus != null">
+                review_status=#{reviewStatus},
+            </if>
+            audit_time=#{auditTime},
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateShangJiaByPrimaryKey" parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+    update sc_warehouse_resource
+    <set>
+        <if test="num != null and num != ''">
+            num = num - #{num,jdbcType=DOUBLE},
+        </if>
+        <if test="reservedNum != null and reservedNum != ''">
+            reserved_num =#{reservedNum},
+        </if>
+        <if test="status != null and status != ''">
+            status =#{status},
+        </if>
+        create_time = NOW()
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <update id="updateByResource" parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+        update sc_warehouse_resource
+        <set>
+            <if test="reservedNum != null">
+                reserved_num =#{reservedNum},
+            </if>
+            <if test="reservedDate != null">
+                reserved_date =#{reservedDate,jdbcType=DATE},
+            </if>
+            <if test="num != null">
+                num =#{num},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByReturnResource" parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+    update sc_warehouse_resource
+    set num = num + #{num}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <update id="auditResource" parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+        update sc_warehouse_resource
+        set
+        <if test="auditUserid != null and auditUserid != ''">
+            audit_userid =#{auditUserid},audit_time = NOW()
+        </if>
+        <if test="reviewStatus != null and reviewStatus != ''">
+            ,review_status =#{reviewStatus}
+        </if>
+        <if test="pmid != null and pmid != ''">
+            ,pmid =#{pmid}
+        </if>
+        where status = '1'
+    </update>
+
+    <select id="getIdBySth" resultMap="BaseResultMap" parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+        select
+        <include refid="selectColumn">
+        </include>
+        from sc_warehouse_resource where variety_name = #{varietyName,jdbcType=VARCHAR}
+        and material = #{material,jdbcType=VARCHAR}
+        and specification = #{specification,jdbcType=VARCHAR}
+        and factory = #{factory,jdbcType=VARCHAR}
+        and warehouse = #{warehouse,jdbcType=VARCHAR}
+        <if test="pmid != null and pmid != ''">
+            AND pmid=#{pmid}
+        </if>
+    </select>
+
+    <select id="selectListByResource" resultMap="BaseResultMap"
+            parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+        select
+        <include refid="selectColumn">
+        </include>
+        from sc_warehouse_resource where status='1'
+        <if test="varietyName != null and varietyName != ''">
+            AND variety_name like concat('%', #{varietyName}, '%')
+        </if>
+        <if test="material != null and material != ''">
+            AND material like concat('%', #{material}, '%')
+        </if>
+        <if test="specification != null and specification != ''">
+            AND specification like concat('%', #{specification}, '%')
+        </if>
+        <if test="factory != null and factory != ''">
+            AND factory like concat('%', #{factory}, '%')
+        </if>
+        <if test="warehouse != null and warehouse != ''">
+            AND warehouse like concat('%', #{warehouse}, '%')
+        </if>
+        <if test="reviewStatus != null and reviewStatus != ''">
+            AND review_status =#{reviewStatus}
+        </if>
+        <if test="pmid != null and pmid != ''">
+            AND pmid=#{pmid}
+        </if>
+        order by variety_name,material,specification
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="selectColumn">
+        </include>
+        from sc_warehouse_resource
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="selectColumn">
+        </include>
+        from sc_warehouse_resource
+    </select>
+    <select id="selectAuditListByResource" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="selectColumn">
+        </include>
+        from sc_warehouse_resource where status='1'
+        and <![CDATA[ audit_time >= #{beginDate}]]>
+        <if test="pmid != null and pmid != ''">
+            AND pmid=#{pmid}
+        </if>
+        and status = 1
+    </select>
+
+    <select id="getAuditResourceId" resultMap="BaseResultMap" parameterType="com.isechome.ecommerce.entity.WarehouseResource">
+        select <include refid="selectColumn">
+    </include>
+        from sc_warehouse_resource where status='1'
+
+        AND pmid=#{pmid}
+        and review_status =#{reviewStatus}
+    </select>
+
+    <update id="updateReserved">
+    update sc_warehouse_resource set reserved_num = 0,reserved_date = null
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

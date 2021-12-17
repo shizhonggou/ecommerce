@@ -1,0 +1,134 @@
+<!--
+ * @Author: lina
+ * @Date: 2021-08-19 09:34:33
+ * @LastEditTime: 2021-09-15 09:16:19
+ * @FilePath: \e-commerce\src\main\resources\templates\transet\sysstatus.html
+ * @Description: 
+ * @Copyright: © 2021, SteelHome. All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>开盘/停盘</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<section>
+<div class="main w1000">
+<div th:insert="~{left :: left(${mark})}"></div>
+<aside>
+<div class="resources">
+<div class="resources_tt" th:include="common::varietyTag2"></div>
+
+<div class="pozition">
+    <p>当前位置：会员中心 &gt; 系统管理 &gt; 开盘/停盘 </p>
+</div>
+    
+<section>
+<div class="steel_list w830">
+    <div class="ss">
+        <div class="zhu" th:if="${trantype eq 1}">交易已开始 如需停止交易请点击停盘</div>
+       <div class="zhu" th:if="${trantype eq 2}">交易已停止 如需开启交易请点击开盘</div>
+       <div class="suspension">
+           <a href="#" th:if="${trantype eq 1}" class="now" onclick="ModifyStatus('2');">停盘</a>
+           <a href="#" th:if="${trantype eq 1}" class="nonow" >开盘</a>
+           <a href="#" th:if="${trantype eq 2}" class="nonow" >停盘</a>
+           <a href="#" th:if="${trantype eq 2}" class="now" onclick="ModifyStatus('1');" >开盘</a>
+        </div>
+    </div> 
+    <table class="steel_list_table w830" cellspacing="0" cellpadding="0" border="0">
+        <thead>
+            <tr>
+                <td>姓名</td>
+                <td>操作</td>
+                <td>时间</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="list:${scSysStatusLogList}">
+                <td th:text="${list.createUserName}"></td>
+                <td th:if="${list.type eq 1}">开盘</td>
+                <td th:if="${list.type eq 2}">停盘</td>
+                <td th:text="${#dates.format(list.creatTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="page">
+
+        <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+');'">上一页</a>
+
+        <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
+            <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
+            <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+');'" th:text="${navigatepageNum}"></a>
+        </p>
+        <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+');'">下一页</a>
+
+
+        <span>到第</span>
+        <input type="text" id="jump_num">
+        <span>页</span>
+        <button type="button" onclick="jumppage();">确定</button>
+    </div>
+</div>
+</section>
+</div>
+</aside>
+</div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+<script>
+// 翻页
+function jumppage() {
+    var pageNum = document.getElementById("jump_num").value;
+    if(pageNum>0){
+        window.location.href="sysstatus?page="+Math.floor(pageNum);
+    }
+}
+
+function queryDeviceRecords(pageNum) {
+    window.location.href="sysstatus?page="+pageNum;
+}
+
+function ModifyStatus(status) {
+    if (status == "1") {
+        if (!confirm("确定开盘？")) {
+            return false;
+        }
+    } else if (status == "2") {
+        if (!confirm("确定停盘？")) {
+            return false;
+        }
+    }
+    $.ajax({ 
+        type: "post", 
+        url: "/transet/modifystatus",   
+        dataType: "json",
+        data: {
+            'status':status,
+            "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+        },
+        success: function (data) {
+            // console.log(data);
+            if (data.success == "1") {
+                location.reload();
+            }
+            alert(data.message);
+        },
+        error: function(request, status, error){
+            console.log(error);
+        }
+    });
+}
+</script>
+</html>

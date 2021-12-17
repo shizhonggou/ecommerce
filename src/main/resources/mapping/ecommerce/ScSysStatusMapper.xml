@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScSysStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScSysStatus" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="trantype" property="trantype" jdbcType="TINYINT" />
+    <result column="excessive_stop" property="excessiveStop" jdbcType="DOUBLE" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_user_id" property="updateUserId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_sys_status
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScSysStatus" >
+    insert into sc_sys_status (id, pmid, `date`, 
+      trantype, excessive_stop, creat_time, create_user_id, 
+      update_time, update_user_id)
+    values (#{id,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER}, #{date,jdbcType=DATE}, 
+      #{trantype,jdbcType=TINYINT}, #{excessiveStop,jdbcType=REAL}, #{creatTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScSysStatus" >
+    update sc_sys_status
+    set pmid = #{pmid,jdbcType=INTEGER},
+      `date` = #{date,jdbcType=DATE},
+      trantype = #{trantype,jdbcType=TINYINT},
+      excessive_stop = #{excessiveStop,jdbcType=REAL},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPmid" parameterType="com.isechome.ecommerce.entity.ScSysStatus" >
+    update sc_sys_status
+    set pmid = #{pmid,jdbcType=INTEGER},
+      `date` = #{date,jdbcType=DATE},
+      trantype = #{trantype,jdbcType=TINYINT},
+      excessive_stop = #{excessiveStop,jdbcType=REAL},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user_id = #{updateUserId,jdbcType=INTEGER}
+    where pmid = #{pmid,jdbcType=INTEGER} and date = #{date,jdbcType=DATE}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, pmid, `date`, trantype, excessive_stop, creat_time, create_user_id, update_time, update_user_id
+    from sc_sys_status
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selTodyStatus" resultMap="BaseResultMap">
+    select id, pmid, `date`, trantype, excessive_stop, creat_time, create_user_id, update_time, update_user_id
+    from sc_sys_status
+    where pmid = #{pmid,jdbcType=INTEGER} and date = #{date,jdbcType=DATE}
+    limit 1
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, pmid, `date`, trantype, excessive_stop, creat_time, create_user_id, update_time, update_user_id
+    from sc_sys_status
+  </select>
+</mapper>

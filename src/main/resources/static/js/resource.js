@@ -64,7 +64,7 @@
     <!-- 加入购物车 start -->
 
     //加入购物车
-    function add_purchase_car(id){
+    function add_purchase_car(id,is_pljr){
         if( id > 0 ) {
             document.getElementById('loading').style.display="";
         }
@@ -74,30 +74,57 @@
             dataType: "json",
             //async:false,
             data: {
-                resids:id
+                resids:id,
+                is_pljr:is_pljr
             },
-            success: function (data) {
+            success: function (retdata) {
                 //console.log(data);
-                if ( data != null && data != "" ) {
-                    var purchase_car_html = "";
-                    var readflag = "";
-                    $('#car_resource_num').html( data.length ) ;
-                    for( var i=0;i<data.length;i++ ) {
-                        if ( data[i].vid == 1 ){
-                            readflag = "readonly";
-                        }else{
-                            readflag = "";
-                        }
-                        purchase_car_html += '<tr><td class="checkbox"><input type="checkbox" id="'+data[i].id+'" name="pre_order_resource" checked="checked"></td><td>'+data[i].varietyname+'</td><td>'+data[i].material+'</td><td>'+data[i].spec+'</td><td>'+data[i].cangku+'</td><td>'+data[i].originCode+'</td><td><input type="text" value="'+data[i].writePiece+'" id="purchase_piece_'+data[i].id+'" onkeyup="this.value=this.value.replace(/[^0-9]/g,\'\')" onBlur="check_piece(this,'+data[i].vid+',\''+data[i].spec+'\','+data[i].piece+','+data[i].id+')"><span> /'+data[i].piece+'</span></td><td><input type="text" value="'+data[i].writeNum+'" id="purchase_num_'+data[i].id+'" '+readflag+' onkeyup="this.value=this.value.replace(/[^0-9.]/g,\'\')" onBlur="check_num(this,'+data[i].vid+','+data[i].num+')"><span> /'+data[i].num+'</span></td><td><span class="red">¥ '+data[i].price+'</span></td><td class="caozuo"><a href="javascript:void(0);" onclick="del_purchase_car( this, '+data[i].id+')">删除</a></td></tr>';
+                if(retdata != undefined){
+                    if(retdata.gwclist != undefined)
+                        $('#car_resource_num').html( retdata.gwclist.length );
+                    if(retdata.success == 1){
+                        alert("成功加入采购车！");
+                        // var data = retdata.gwclist;
+                        // if ( data != null && data != "" ) {
+                        //     var purchase_car_html = "";
+                        //     var readflag = "";
+                        //     $('#car_resource_num').html( data.length );
+                        //     var gwc_ids = "";
+                        //     for( var i=0;i<data.length;i++ ) {
+                        //         var z_weight = "";
+                        //         if ( data[i].v_id != 1 ){
+                        //             readflag = "readonly";
+                        //         }else{
+                        //             readflag = "";
+                        //             if (typeof(data[i].d_weight) != "undefined"){
+                        //                 z_weight = parseInt((parseFloat(data[i].num)/parseFloat(data[i].d_weight)));
+                        //             }
+                        //         }
+                        //         if(gwc_ids == ""){
+                        //             gwc_ids = data[i].id;
+                        //         }else{
+                        //             gwc_ids = gwc_ids + "," + data[i].id;
+                        //         }
+                                
+                        //         purchase_car_html += '<tr><td><input type="hidden" id="'+data[i].id+'" value="'+data[i].id+'" name="pre_order_resource[]">'+data[i].variety_name+'</td><td>'+data[i].material+'</td><td>'+data[i].specification+'</td><td>'+data[i].warehouse+'</td><td>'+data[i].factory+'</td><td><input type="text" value="'+data[i].weight+'" id="weight'+data[i].id+'" onkeyup="this.value=this.value.replace(/[^0-9]/g,\'\')" onBlur="check_num(this,'+data[i].num+','+data[i].id+','+data[i].d_weight+')"><span> /'+data[i].num+'</span></td><td><input type="text" value="'+data[i].weight2+'" id="weight2'+data[i].id+'" '+readflag+' onkeyup="this.value=this.value.replace(/[^0-9.]/g,\'\')" onBlur="check_piece(this,'+z_weight+','+data[i].id+','+data[i].d_weight+')"><span> /'+z_weight+'</span></td><td><span class="red">¥ '+data[i].price+'</span></td><td class="caozuo"><a href="javascript:void(0);" onclick="del_purchase_car( this, '+data[i].id+')">删除</a></td></tr>';
+                        //     }
+                        //     $('#purchase_car').html( purchase_car_html ) ;
+                        //     $('#gwc_ids').val( gwc_ids );
+                        // }
+                        // if( id > 0 ) {
+                        //     show_purchase_car();
+                        // }
+                    }else{
+                        if(retdata.msg != undefined && retdata.msg != "")
+                            alert(retdata.msg);
                     }
-                    $('#purchase_car').html( purchase_car_html ) ;
                 }
                 document.getElementById('loading').style.display="none";
             }
         });
-        if( id > 0 ) {
-            show_purchase_car();
-        }
+//        if( id > 0 ) {
+//            show_purchase_car();
+//        }
     }
 
     //从购物车删除
@@ -122,7 +149,7 @@
             dataType: "json",
             //async:false,
             data: {
-                resids:id
+                gwc_id:id
             },
             success: function (data) {
                 console.log(data);
@@ -131,75 +158,81 @@
     }
 
     //清空购物车
-    function clear_purchase_car( ){
+    function clear_purchase_car(){
         $('#purchase_car').html( "" ) ;
-        alert("清空购物车已完成！");
-        //后台session 异步执行
+        var ids = $('#gwc_ids').val();
         $.ajax({
             type: "get",
             url: "/purchase_car/clear_purchase_car",
             dataType: "json",
+            data: {
+                gwc_id:ids
+            },
             success: function (data) {
+                if(data.code == 0)
+                    alert("清空采购车已完成！");
+                hide('SonContent1');
+                $('#car_resource_num').html(0) ;
                 console.log(data);
             }
         });
     }
 
-    //检查件数
-    function check_piece ( obj, vid, spec, piece, id ){
-        var write_piece = obj.value;
-        if ( write_piece < 0 || write_piece > piece ) {
-            alert("请输入正确的件数");
+    //检查重量
+    function check_num ( obj,  num, id, d_weight){
+        var write_num = obj.value;
+        if ( write_num < 0 ) {
+            alert("请输入正确的购买量！");
             obj.value = "";
             obj.focus();
-        }else if( write_piece > 0 ){
-            if ( vid == 1 ) {
-                $.ajax({
-                    type: "get",
-                    url: "/resourcemanage/getWeight",
-                    dataType: "json",
-                    //async:false,
-                    data: {
-                        spec:spec
-                    },
-                    success: function (data) {
-                        var purchase_num = data * write_piece;
-                        purchase_num = purchase_num.toFixed(3);
-                        $('#purchase_num_'+id).val( purchase_num );
-                        update_purchase_car_num( id, write_piece, purchase_num );
-                    }
-                });
-            }else{
-                update_purchase_car_num( id, write_piece, 0 );
+        }else if( write_num > num ){
+            alert("购买数量不能大于总量！");
+            obj.value = "";
+            obj.focus();
+        }else{
+            if(d_weight != ""){
+                var jianshu = parseInt((parseFloat(write_num)/parseFloat(d_weight)));
+                $('#weight2'+id).val(jianshu);
             }
         }
     }
 
-    //检查重量
-    function check_num( obj, id, num ){
-        var write_num = obj.value;
-        if ( write_num < 0 || write_num > num ) {
-            alert("请输入正确的重量");
+    //检查件数
+    function check_piece( obj, piece, id, d_weight){
+        var write_piece = obj.value;
+        if (write_piece < 0) {
+            alert("请输入正确的件数！");
+            obj.value = "";
+            obj.focus();
+        }else if ( write_piece > piece ) {
+            alert("购买件数不能大于总件数！");
             obj.value = "";
             obj.focus();
         }else{
-            update_purchase_car_num( id, 0, write_num );
+            if(d_weight != ""){
+                $('#weight'+id).val((parseFloat(write_piece)*parseFloat(d_weight)).toFixed(3));
+            }
         }
     }
 
     //更新购物车数量
-    function update_purchase_car_num( id, piece, num ) {
+    function update_purchase_car_num( ids, weight, weight2, istz) {
         $.ajax({
             type: "get",
             url: "/purchase_car/update_purchase_car_num",
             dataType: "json",
             //async:false,
             data: {
-                id:id,
-                piece:piece,
-                num:num
+                ids:ids,
+                weights:weight,
+                weights2:weight2
             },
             success: function (data) {
+                if (istz == 1) {
+                    location.href = "/purchase_car/mycart";
+                }else if(istz == 2){
+                    hide('SonContent1');
+                }
                 console.log( data );
             }
         });
@@ -210,8 +243,9 @@
     }
 
     function show(tag){
-        var SonContent=document.getElementById(tag);
-        SonContent.style.display='block';
+        $(location).attr('href', '/purchase_car/mycart');
+        // var SonContent=document.getElementById(tag);
+        // SonContent.style.display='block';
     }
     function hide(tag){
         var SonContent=document.getElementById(tag);
@@ -226,62 +260,65 @@
 
     <!-- 下订单 start -->
         //下订单
-    function do_purchase_order(){
+    function do_purchase_order(istz){
         document.getElementById('loading').style.display="";
-        //选择下单的资源
-        var purchase_resource_ids = "";
-        var purchase_resource_piece = "";
-        var purchase_resource_num = "";
-        var num = 0;
-        $('input:checkbox[name=pre_order_resource]:checked').each(function (i) {
-            var resource_id = $(this).attr("id");
-            if( $('#purchase_piece_'+resource_id).val() > 0 && $('#purchase_num_'+resource_id).val()>0 ) {
-                if (0 == num) {
-                    purchase_resource_ids = resource_id;
-                    purchase_resource_piece = $('#purchase_piece_'+resource_id).val();
-                    purchase_resource_num = $('#purchase_num_'+resource_id).val();
-                } else {
-                    purchase_resource_ids += ("," + resource_id);
-                    purchase_resource_piece += ("," + $('#purchase_piece_'+resource_id).val() );
-                    purchase_resource_num += ("," + $('#purchase_num_'+resource_id).val() );
+        var gwc_ids = $('#gwc_ids').val();
+        var gwc_id_arr = gwc_ids.split(",");
+        var weights = "";
+        var weights2 = "";
+        if ( gwc_ids != "" ) {
+            for(var i = 0;i< gwc_id_arr.length; i++){
+                if(weights == ""){
+                    weights = $('#weight'+gwc_id_arr[i]).val();
+                    weights2 = $('#weight2'+gwc_id_arr[i]).val();
+                }else{
+                    weights = weights + "," + $('#weight'+gwc_id_arr[i]).val();
+                    weights2 = weights2 + "," + $('#weight2'+gwc_id_arr[i]).val();
                 }
-                num++;
-            }else{
-                $('#purchase_piece_'+resource_id).focus();
-                alert("请填写正确的件数和数量");
-                return false;
             }
-
-        });
-        if ( purchase_resource_ids != "" ) {
-            $.ajax({
-                type: "get",
-                url: "/orderinformation/generate_order",
-                dataType: "json",
-                //async:false,
-                data: {
-                    purchase_resource_ids:purchase_resource_ids,
-                    purchase_resource_piece:purchase_resource_piece,
-                    purchase_resource_num:purchase_resource_num
-                },
-                success: function (data) {
-                    console.log(data);
-                    if ( data == "1" ) {
-                        alert("下单成功");
-                        location.href = "orderinformation/index?status=1";
-                    }else if( data != null && data != "" ){
-                        alert(data);
-                    }
-                },
-                error: function(msg){
-                    alert(msg.responseText);
-                }
-            });
-        }else{
-            alert("请选择资源下单！");
+            update_purchase_car_num(gwc_ids,weights,weights2,istz);
         }
         document.getElementById('loading').style.display="none";
 
     }
 
     <!-- 下订单 end -->
+
+    // 全选
+    function selall(){
+        var checkarr = document.getElementsByName("check_num");
+        var length = checkarr.length;
+        obj = document.getElementById("selallbox");
+        if(obj.checked){
+            //全选
+            for(i=0;i<length;i++){
+                checkarr[i].checked=true;
+            }
+        }else{
+            //全不选
+            for(i=0;i<length;i++){
+                checkarr[i].checked=false;
+            }
+        }
+    }
+
+    //获得选中项
+    function getcheckednum() {
+        var allSel = "";
+        var checkarr = document.getElementsByName("check_num");
+        for (i = 0; i < checkarr.length; i++) {
+            if (checkarr[i].checked) {
+                if (allSel == "")
+                    allSel = checkarr[i].value;
+                else
+                    allSel = allSel + "," + checkarr[i].value;
+            }
+        }
+        return allSel;
+    }
+
+    //批量加入购物车
+    function save(){
+        var resids = getcheckednum();
+        add_purchase_car(resids,1);
+    }

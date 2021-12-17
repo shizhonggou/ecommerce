@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="edge" />
     <title>Title</title>
 </head>
 <body>
@@ -34,7 +35,7 @@
                         </div>
                         <!–登录–>
                         <div class="topleft" sec:authorize="isAuthenticated()">
-                            欢迎您：<span sec:authentication="principal.AdminUserInfo.nick_name"></span>
+                            欢迎您：<span sec:authentication="principal.SysCompany.comname"></span>，贵公司余额：<span sec:authentication="principal.BalanceInfo.balance"></span>
 <!--                            <p>登录名：<span sec:authentication="name"></span></p>-->
 <!--                            <p>角色：<span sec:authentication="principal.AdminUserInfo.nick_name"></span></p>-->
 <!--                            <p>Username：<span sec:authentication="principal.username"></span></p>-->
@@ -49,7 +50,7 @@
                         <div class="topright">
                             <ul class="nav">
 <!--                                <li><a href="//www.isechome.com" target="_blank">易钢云商</a></li>-->
-                                <li><a href="/orderinformation/index" target="_blank">会员中心</a></li>
+                                <li><a href="/scorderlist/index" target="_blank">会员中心</a></li>
 <!--                                <li class="navli">-->
 <!--                                    <a href="//mg.isechome.com">马钢电商平台</a><span></span>-->
 <!--&lt;!&ndash;                                    <ul class="sub-nav">&ndash;&gt;-->
@@ -72,6 +73,8 @@
 
                         <a href="/index" >
                             <img th:src="@{/images/logo.png}" alt="logo">
+                            <!--  <img th:src="${principal.LogoUrl}" alt="logo">
+                            <input type="hidden" name="LogoUrl" th:value="${principal.LogoUrl}"></input>-->
                         </a>
                         <form id="searchall" name="searchall" method="post" action="/index" >
                             <div class="search">
@@ -92,27 +95,41 @@
                             </div>
                         </form>
                         <div class="dorp">
-                            <h5 onclick="show('SonContent1')"><p>购物车</p><span id="car_resource_num">0</span></h5>
+                            <h5 sec:authorize="isAnonymous()" onclick="location.href = '/login_p';"><p>采购车</p><span id="car_resource_num">0</span></h5>
+                            <h5 sec:authorize="isAuthenticated()" onclick="show('SonContent1')"><p>采购车</p><span id="car_resource_num">0</span></h5>
                         </div>
-
+                    </div>
+                </div>
+                <div class="top" sec:authorize="isAuthenticated()">
+                    <div class="w1000">
+                        <div class="topleft" style="color: #666666;">
+                            开市时间：<span sec:authentication="principal.workTime"></span>
+                        </div>
+<!--                        <div class="topright" style="color: #666666;">-->
+<!--                            <span id="countTime" class="fr">距离交易结束-->
+<!--                                <em class="color_c0">00</em> 时-->
+<!--                                <em class="color_c0">22</em> 分-->
+<!--                                <em class="color_c0">54</em> 秒-->
+<!--                            </span>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>
             <div id="SonContent1" class="white_content">
                 <div class="my_cart">
-                    <h3>我的购物车<a href="javascript:void(0)" onclick="hide('SonContent1')">×</a></h3>
+                    <h3>我的采购车<a href="javascript:void(0)" onclick="hide('SonContent1')">×</a></h3>
                     <div class="my_cart_list">
                         <table cellpadding="0" cellspacing="0" border="0" class="cart_list">
                             <thead>
                             <tr>
-                                <th>选择</th>
+                                <!--th>选择</th-->
                                 <th>品名</th>
                                 <th>材质</th>
                                 <th>规格</th>
                                 <th>仓库</th>
                                 <th>产地</th>
                                 <th>购买量/总量</th>
-                                <th>重量</th>
+                                <th>件数</th>
                                 <th>价格</th>
                                 <th>操作</th>
                             </tr>
@@ -122,12 +139,17 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="xuanze"><input type="checkbox" value="" checked="checked" id="gwc_check_all">　全选</div>
+                    <!--div class="xuanze"><input type="checkbox" value="" checked="checked" id="gwc_check_all">　全选</div-->
                     <div class="mycart_bt">
                         <ul>
-                            <a href="javascript:void(0)" onclick="clear_purchase_car();"><li>清空购物车</li></a>
-                            <a href="javascript:void(0)" onclick="do_purchase_order();"><li>下订单</li></a>
-                            <a href="javascript:void(0)" onclick="hide('SonContent1')"><li>继续购物</li></a>
+                            <a href="javascript:void(0)" onclick="clear_purchase_car();">
+                                <li>
+                                    <input type="hidden" value="" id="gwc_ids">
+                                    清空采购车
+                                </li>
+                            </a>
+                            <a href="javascript:void(0)" onclick="do_purchase_order(1);"><li>下订单</li></a>
+                            <a href="javascript:void(0)" onclick="do_purchase_order(2)"><li>继续购物</li></a>
                         </ul>
                     </div>
                 </div>

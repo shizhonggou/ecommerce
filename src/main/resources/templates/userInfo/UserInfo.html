@@ -4,18 +4,19 @@
     <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
     <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
     <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/resource.js}" type="text/javascript"></script>
     <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
     <meta http-equiv="X-UA-Compatible" content="IEedge">
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <title>用户信息</title>
+    <title>个人信息</title>
 </head>
 <body>
 <div th:insert="~{header :: header}"></div>
 <section>
     <div class="main w1000">
         <aside>
-        <div th:insert="~{left :: left(userInfo)}"></div>
+            <div th:insert="~{left :: left(userInfo)}"></div>
         </aside>
         <aside>
             <div class="resources">
@@ -28,45 +29,46 @@
                         <tr>
                             <td>姓   名<span>*</span></td>
                             <td>
-                                <input type="text" name="real_name" id="real_name" th:value="${userDetail.real_name}" />
+                                <input type="text" name="real_name" id="real_name" th:value="${userDetail.arealname}" />
                             </td>
-                            <td>昵   称<span>*</span></td>
-                            <td ><input type="text" name="nick_name" id="nick_name" th:value="${userDetail.nick_name}" > </td>
+                            <td>性   别</td>
+                            <td >
+                                <select name="sex" style="width: 70%; color: #3333338c; padding: 8px 20px; margin: 12px auto; display: inline-block;border: 1px solid #ccc; border-radius: 0px;box-sizing: border-box;">
+                                    <option th:selected="${userDetail.sex == '0'}" value="0">男</option>
+                                    <option th:selected="${userDetail.sex == '1'}" value="1">女</option>
+                                </select>
+                            </td>
+<!--                            <td>昵   称<span>*</span></td>-->
+<!--                            <td ><input type="text" name="nick_name" id="nick_name" th:value="${userDetail.anickname}" > </td>-->
                         </tr>
                         <tr>
                             <td>用户名<span>*</span></td>
-                            <td ><input type="text" name="user_name" id="user_name"  th:value="${userDetail.user_name}" > </td>
+                            <td ><input type="text" name="user_name" id="user_name"  th:value="${userDetail.ausername}" onchange="ajaxcheckuname()"> </td>
                             <td>密 码<span>*</span></td>
-                            <td ><input type="password" name="pwd_input" id="pwd_input"  th:value="${userDetail.password}" > </td>
+                            <td ><input type="password" name="pwd_input" id="pwd_input"  th:value="${userDetail.apasswd}" > </td>
                         </tr>
                         <tr>
                             <td>交易密码<span>*</span></td>
-                            <td ><input type="password" name="pay_password" id="pay_password"  th:value="${userDetail.pay_password}" > </td>
+                            <td ><input type="password" name="pay_password" id="pay_password"  th:value="${userDetail.tradepwd}" > </td>
                             <td>手机号<span>*</span></td>
-                            <td ><input type="text" name="mobile" id="mobile"  th:value="${userDetail.mobile}" > </td>
+                            <td ><input type="text" name="mobile" id="mobile"  th:value="${userDetail.mobile}" onchange="ajaxchecktel()"> </td>
                         </tr>
                         <tr>
-                            <td>身份证号<span>*</span></td>
-                            <td ><input type="text" name="idcard" id="idcard"  th:value="${userDetail.idcard}" > </td>
+                            <td>身份证号</td>
+                            <td ><input type="text" name="idcard" id="idcard"  th:value="${userDetail.idnum}" > </td>
                             <td>邮   箱</td>
                             <td ><input type="text" name="email" id="email"  th:value="${userDetail.email}" > </td>
                         </tr>
                         <tr>
                             <td>职    位</td>
                             <td ><input type="text" name="job" id="job"  th:value="${userDetail.job}" > </td>
-                            <td>性   别</td>
-                            <td >
-                                <select name="sex" style="width: 70%; color: #3333338c; padding: 8px 20px; margin: 12px auto; display: inline-block;border: 1px solid #ccc; border-radius: 0px;box-sizing: border-box;">
-                                    <option th:selected="${userDetail.sex == '1'}" value="1">男</option>
-                                    <option th:selected="${userDetail.sex == '2'}" value="2">女</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>地    址<span>*</span></td>
-                            <td ><input type="text" name="address_user" id="address_user"  th:value="${userDetail.address_user}" > </td>
 
                         </tr>
+<!--                        <tr>-->
+<!--                            <td>地    址<span>*</span></td>-->
+<!--                            <td ><input type="text" name="address_user" id="address_user"  th:value="${userDetail.address}" > </td>-->
+
+<!--                        </tr>-->
                         <!--tr>
                             <td>操作权限</td>
                             <td colspan="3">
@@ -80,8 +82,8 @@
                     <div style="text-align: center;">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                         <input type="hidden"  name="id" th:value="${userDetail.id}">
-                        <input type="hidden"  name="pay_password_old" id="pay_password_old" th:value="${userDetail.pay_password}" >
-                        <input type="hidden"  name="password_old" id="password_old" th:value="${userDetail.password}" >
+                        <input type="hidden"  name="pay_password_old" id="pay_password_old" th:value="${userDetail.tradepwd}" >
+                        <input type="hidden"  name="password_old" id="password_old" th:value="${userDetail.apasswd}" >
                         <input type="submit" value="保存"  style="background: #FF6632;color: white;width: 300px;height: 30px;border: 0;cursor:pointer;">
                     </div>
                 </form>
@@ -92,6 +94,67 @@
 </section>
 
 <div th:insert="~{footer :: footer}"></div>
-
+<script>
+// 检查用户名 是否重复
+function ajaxcheckuname(){
+    // 校验用户名 只能是 数字字母 下划线
+    var regUN = /^[0-9a-zA-Z_]{1,}$/;
+    var user_name=document.getElementById("user_name").value.replace(/\s*/g,"");
+    if (user_name == '' || user_name ==null) {
+            alert("请输入用户名");
+            user_name.focus();
+            return false;
+    } else if(!regUN.test(user_name)) {
+            alert("用户名只能包含数字、字母、下划线");
+            user_name.focus();
+            return false;
+    }
+	$.ajax({
+                type: "POST",
+                url: "/userInfo/checkUName",
+                data: {'user_name': user_name,"[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"},
+        success: function(data) {
+			if(data==0){
+			    alert("用户名重复，不可用");
+			    var user_name2 = document.getElementById("user_name");
+			    user_name2.value = '';
+                return;
+		    }
+		},
+	    error: function(request, status, error){
+                        console.log(error);
+        }
+        });
+}
+    // 检查手机号码 是否重复
+function ajaxchecktel(){
+    // 校验手机号
+    var regMobile = /^1[3,4,5,7,8]\d{9}$/;
+    var mobile=document.getElementById("mobile").value.replace(/\s*/g,"");
+    if (mobile == '' || mobile ==null) {
+            alert("请输入手机号码");
+            return false;
+        } else if(!regMobile.test(mobile)){
+            alert("请输入正确的手机号码");
+            return false;
+        }
+		$.ajax({
+		        type: "POST",
+                url: "/userInfo/checkMobile",
+                data: {'mobile': mobile,"[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"},
+        success: function(data) {
+			if(data==0){
+			    alert("手机号重复，不可用");
+			    var mobile2=document.getElementById("mobile");
+			    mobile2.value = '';
+                return;
+		    }
+		},
+	    error: function(request, status, error){
+                        console.log(error);
+        }
+        });
+}
+</script>
 </body>
 </html>

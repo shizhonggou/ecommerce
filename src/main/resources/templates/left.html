@@ -1,7 +1,8 @@
 <!--
  * @Author: lina
  * @Date: 2021-06-09 16:23:26
- * @LastEditTime: 2021-06-11 18:00:20
+ * @LastEditTime: 2021-11-02 08:54:23
+ * @LastEditTime: 2021-08-31 08:56:07
  * @FilePath: \e-commerce\src\main\resources\templates\left.html
  * @Description: 
  * @Copyright: © 2021, SteelHome. All rights reserved.
@@ -18,7 +19,8 @@
         <div class="nav_tree">
             <h3><img src="/images/khzx.fw.png">会员中心</h3>
             <dl class="dl1">
-                <dt>资源管理</dt>
+                <dt sec:authorize="(hasAuthority('ROLE_GYLQX_MASTERKC') and hasAuthority('ROLE_GYLQX_PTF')) or ((hasAuthority('ROLE_GYLQX_MASTER') and hasAuthority('ROLE_GYLQX_PTF')))">资源管理</dt>
+                <!--
                 <dd>
                     <a th:if="${mark eq 'sh'}" href="/resourcemanage/index?act=sh" class="now" >资源发布</a>
                     <a th:if="${mark ne 'sh'}" href="/resourcemanage/index?act=sh" >资源发布</a>
@@ -31,17 +33,98 @@
                     <a th:if="${mark eq 'xj'}" href="/resourcemanage/index?act=xj" class="now" >在售资源</a>
                     <a th:if="${mark ne 'xj'}" href="/resourcemanage/index?act=xj" >在售资源</a>
                 </dd>
-                
+                -->
+
+                <dd sec:authorize="(hasAuthority('ROLE_GYLQX_MASTERKC') and hasAuthority('ROLE_GYLQX_PTF')) or ((hasAuthority('ROLE_GYLQX_MASTER') and hasAuthority('ROLE_GYLQX_PTF')))">
+                    <a th:if="${mark eq 'shelflist'}" href="/shelf_resource/index" class="now" >上架资源管理</a>
+                    <a th:if="${mark ne 'shelflist'}" href="/shelf_resource/index" >上架资源管理</a>
+                </dd>
+
+                <dd sec:authorize="(hasAuthority('ROLE_GYLQX_MASTERKC') and hasAuthority('ROLE_GYLQX_PTF')) or ((hasAuthority('ROLE_GYLQX_MASTER') and hasAuthority('ROLE_GYLQX_PTF')))">
+                    <a th:if="${mark eq 'warehouselist'}" href="/warehouse_resource/index" class="now" >仓库资源管理</a>
+                    <a th:if="${mark ne 'warehouselist'}" href="/warehouse_resource/index" >仓库资源管理</a>
+                </dd>
+
+                <dd sec:authorize="(hasAuthority('ROLE_GYLQX_MASTERKC') and hasAuthority('ROLE_GYLQX_PTF')) or ((hasAuthority('ROLE_GYLQX_MASTER') and hasAuthority('ROLE_GYLQX_PTF')))">
+                    <a th:if="${mark eq 'resourceindex'}" href="/scorderlist/resourceIndex" class="now" >超量资源管理</a>
+                    <a th:if="${mark ne 'resourceindex'}" href="/scorderlist/resourceIndex" >超量资源管理</a>
+                </dd>
+
+<!--                <dd sec:authorize="hasAuthority('ROLE_GYLQX_MASTERKC') or (hasAuthority('ROLE_GYLQX_MASTER') and hasAuthority('ROLE_GYLQX_PTF'))">-->
+<!--                    <a th:if="${mark eq 'resource_action'}" href="/warehouse_resource/resource_action" class="now" >仓库资源日志</a>-->
+<!--                    <a th:if="${mark ne 'resource_action'}" href="/warehouse_resource/resource_action" >仓库资源日志</a>-->
+<!--                </dd>-->
+
+
             </dl>
             <dl class="dl2">
                 <dt>订单管理</dt>
-                <dd><a th:if="${mark eq 'order'}" href="/orderinformation/index" class="now" >订单列表</a></dd>
-                <dd><a th:if="${mark ne 'order'}" href="/orderinformation/index" >订单列表</a></dd>
+                <dd>
+                    <a th:if="${mark eq 'order'}" href="/scorderlist/index" class="now" >订单列表</a>
+                    <a th:if="${mark ne 'order'}" href="/scorderlist/index" >订单列表</a>
+                </dd>
+
+
+
+                <dd sec:authorize="((hasAuthority('ROLE_GYLQX_MASTERCG') or hasAuthority('ROLE_GYLQX_MASTERCGSH')) and hasAuthority('ROLE_GYLQX_PTF')) or ((hasAuthority('ROLE_GYLQX_MASTER') and hasAuthority('ROLE_GYLQX_PTF')))">
+                    <a th:if="${mark eq 'purchase'}" href="/scorderlist/cgindex" class="now" >采购单管理</a>
+                    <a th:if="${mark ne 'purchase'}" href="/scorderlist/cgindex" >采购单管理</a>
+                </dd>
+
+
+                <dd sec:authorize="(hasAuthority('ROLE_GYLQX_MASTERKC') and hasAuthority('ROLE_GYLQX_PTF')) or ((hasAuthority('ROLE_GYLQX_MASTER') and hasAuthority('ROLE_GYLQX_PTF')))">
+                    <a th:if="${mark eq 'shipmentsimport'}" href="/shipmentsimport/index" class="now" >提单发货导入</a>
+                    <a th:if="${mark ne 'shipmentsimport'}" href="/shipmentsimport/index" >提单发货导入</a>
+                </dd>
+
             </dl>
-            <dl class="dl3" th:if="${session.SPRING_SECURITY_CONTEXT.authentication.principal.id} eq ${T(com.isechome.ecommerce.constant.CommonConstant).GCGZJ}" >
+<!--            <dl class="dl3" th:if="${session.SPRING_SECURITY_CONTEXT.authentication.principal.id} eq ${T(com.isechome.ecommerce.constant.CommonConstant).GCGZJ}" >-->
+            <dl class="dl3"  >
                 <dt>系统管理</dt>
-                <dd><a th:if="${mark eq 'pieceweight'}" href="/pieceweight/list" class="now" >件重设置</a></dd>
-                <dd><a th:if="${mark ne 'pieceweight'}" href="/pieceweight/list" >件重设置</a></dd>
+                <dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTER') or hasAuthority('ROLE_GYLQX_MASTERXS'))">
+                    <a th:if="${mark eq 'scsteelmill'}" href="/scsteelmill/index" class="now" >钢厂信息</a>
+                    <a th:if="${mark ne 'scsteelmill'}" href="/scsteelmill/index" >钢厂信息</a>
+                </dd>
+                <dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTER') or hasAuthority('ROLE_GYLQX_MASTERXS'))">
+                    <a th:if="${mark eq 'scpieceweightmanage'}" href="/scpieceweightmanage/index" class="now" >件重设置</a>
+                    <a th:if="${mark ne 'scpieceweightmanage'}" href="/scpieceweightmanage/index" >件重设置</a>
+                </dd>
+                <dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTER') or hasAuthority('ROLE_GYLQX_MASTERXS'))">
+                    <a th:if="${mark eq 'scworktime'}" href="/transet/worktime" class="now" >交易设置</a>
+                    <a th:if="${mark ne 'scworktime'}" href="/transet/worktime" >交易设置</a>
+                </dd>
+                <dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTER') or hasAuthority('ROLE_GYLQX_MASTERJG'))">
+                    <a th:if="${mark eq 'modifyprice'}" href="/transet/modifyprice" class="now" >调价录入</a>
+                    <a th:if="${mark ne 'modifyprice'}" href="/transet/modifyprice" >调价录入</a>
+                </dd>
+                <!-- <dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTER') or hasAuthority('ROLE_GYLQX_MASTERXS'))">
+                    <a th:if="${mark eq 'sysstatus'}" href="/transet/sysstatus" class="now" >开/停盘</a>
+                    <a th:if="${mark ne 'sysstatus'}" href="/transet/sysstatus" >开/停盘</a>
+                </dd> -->
+                <dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTERJG') or hasAuthority('ROLE_GYLQX_MASTER') ) ">
+                    <a th:if="${mark eq 'baseprice'}" href="/baseprice/settings" class="now" >基价设置</a>
+                    <a th:if="${mark ne 'baseprice'}" href="/baseprice/settings" >基价设置</a>
+                </dd>
+                <dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTERJG') or hasAuthority('ROLE_GYLQX_MASTER') ) ">
+                    <a th:if="${mark eq 'settings'}" href="/settings/range" class="now" >级差设置</a>
+                    <a th:if="${mark ne 'settings'}" href="/settings/range" >级差设置</a>
+                </dd>   
+                <dd sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTER') or hasAuthority('ROLE_GYLQX_MASTERXS'))">
+                    <a th:if="${mark eq 'khmanage'}" href="/khmanage/khList" class="now" >客户管理</a>
+                    <a th:if="${mark ne 'khmanage'}" href="/khmanage/khList" >客户管理</a>
+                </dd> 
+                <dd sec:authorize="(hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTER') or hasAuthority('ROLE_GYLQX_MASTERXS'))) or hasAuthority('ROLE_KH') ">
+                    <a th:if="${mark eq 'fpmanage'}" href="/fpmanage/fpList" class="now" >发票管理</a>
+                    <a th:if="${mark ne 'fpmanage'}" href="/fpmanage/fpList" >发票管理</a>
+                </dd>         
+                <dd sec:authorize="(hasAuthority('ROLE_GYLQX_PTF') and (hasAuthority('ROLE_GYLQX_MASTER') or hasAuthority('ROLE_GYLQX_MASTERXS'))) or hasAuthority('ROLE_KH')">
+                    <a th:if="${mark eq 'fhmanage'}" href="/fhmanage/fhList" class="now" >到站运费管理</a>
+                    <a th:if="${mark ne 'fhmanage'}" href="/fhmanage/fhList" >到站运费管理</a>
+                </dd> 
+                <dd th:if="${session.SPRING_SECURITY_CONTEXT.authentication.principal.id} eq ${T(com.isechome.ecommerce.constant.CommonConstant).GCGZJ}" >
+                    <a th:if="${mark eq 'joblist'}" href="/job/index" class="now" >任务调度管理</a>
+                    <a th:if="${mark ne 'joblist'}" href="/job/index" >任务调度管理</a>
+                </dd>
             </dl>
             <dl class="dl4">
                 <dt>会员管理</dt>
@@ -54,8 +137,27 @@
                     <a th:if="${mark ne 'companyInfo'}" href="/userInfo/companyDetail">公司信息</a>
                 </dd>
                 <dd>
-                    <a th:if="${mark eq 'accountManage'}" href="/userInfo/accountList" class="now">账号管理</a>
-                    <a th:if="${mark ne 'accountManage'}" href="/userInfo/accountList">账号管理</a>
+                    <a th:if="${mark eq 'accountManage'}" href="/userInfo/accountList?page=1" class="now">账号管理</a>
+                    <a th:if="${mark ne 'accountManage'}" href="/userInfo/accountList?page=1">账号管理</a>
+                </dd>
+                <dd>
+                    <a th:if="${mark eq 'invoiceManagement'}" href="/invoiceManagement/index" class="now">开票管理</a>
+                    <a th:if="${mark ne 'invoiceManagement'}" href="/invoiceManagement/index">开票管理</a>
+                </dd>
+            </dl>
+            <dl class="dl5" sec:authorize="hasAuthority('ROLE_GYLQX_PTF') and (hasRole('ROLE_GYLQX_MASTERCW') or hasRole('ROLE_GYLQX_MASTER'))">
+                <dt>财务管理</dt>
+                <dd >
+                    <a th:if="${mark eq 'financialAccount'}" href="/financial/financialAccount?page=1" class="now">财务管理</a>
+                    <a th:if="${mark ne 'financialAccount'}" href="/financial/financialAccount?page=1">财务管理</a>
+                </dd>
+<!--                <dd >-->
+<!--                    <a th:if="${mark eq 'financialInput'}" href="/financial/financialInput" class="now">财务信息录入</a>-->
+<!--                    <a th:if="${mark ne 'financialInput'}" href="/financial/financialInput">财务信息录入</a>-->
+<!--                </dd>-->
+                <dd >
+                    <a th:if="${mark eq 'balanceAccount'}" href="/financial/balanceAccount?page=1" class="now">余额管理</a>
+                    <a th:if="${mark ne 'balanceAccount'}" href="/financial/balanceAccount?page=1">余额管理</a>
                 </dd>
             </dl>
         </div>

@@ -53,7 +53,7 @@ public class ResourceManage {
         PageHelper.startPage(pageNum, limit);
 
         SecuritySysUser loginMessage = SecurityUserUtil.getCurrentUser();
-        Integer mid = loginMessage.getCompanyInfo().getId();
+        Integer mid = loginMessage.getSysCompanyInfo().getId();
         String act = request.getParameter("act");
         String varietyName = request.getParameter("varietyName");
         String Material = request.getParameter("Material");

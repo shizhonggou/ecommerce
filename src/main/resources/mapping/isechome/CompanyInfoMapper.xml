@@ -68,4 +68,10 @@
       link_user_id = #{linkUserId,jdbcType=INTEGER} 
       where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="seletSerch" resultMap="BaseResultMap">
+   select id, com_name, com_name_short, com_desc, address_state, address_city, address, 
+    enclosure_url, link_user_id, create_date, create_user_id, where_from, external_uniqueness
+    from `sys_company` where comName  like '%${searchName}%' limit 50
+  </select>
 </mapper>

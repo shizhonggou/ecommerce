@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScWorkTimeMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScWorkTime" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="TIME" />
+    <result column="end_time" property="endTime" jdbcType="TIME" />
+    <result column="delay_time" property="delayTime" jdbcType="TIME" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_user_id" property="updateUserId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_worktime
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScWorkTime" >
+    insert into sc_worktime (id, pmid, start_time, 
+      end_time, delay_time, creat_time, 
+      create_user_id, update_time, update_user_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER}, #{startTime,jdbcType=TIME}, 
+      #{endTime,jdbcType=TIME}, #{delayTime,jdbcType=TIME}, #{creatTime,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScWorkTime" >
+    update sc_worktime
+    set pmid = #{pmid,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=TIME},
+      end_time = #{endTime,jdbcType=TIME},
+      delay_time = #{delayTime,jdbcType=TIME},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user_id = #{updateUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, pmid, start_time, end_time, delay_time, creat_time, create_user_id, update_time, 
+    update_user_id
+    from sc_worktime
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPmid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, pmid, start_time, end_time, delay_time, creat_time, create_user_id, update_time, 
+    update_user_id
+    from sc_worktime
+    where pmid = #{pmid,jdbcType=INTEGER}
+    limit 1
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, pmid, start_time, end_time, delay_time, creat_time, create_user_id, update_time, 
+    update_user_id
+    from sc_worktime
+  </select>
+</mapper>

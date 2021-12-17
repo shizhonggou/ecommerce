@@ -57,16 +57,16 @@
     <div class="tab1" id="tab1">
     <div class="menu">                                                                                              
         <ul>
-            <li id="one1" onclick="setTab(1)" th:if="${status eq '1'}" class="off">待确认订单</li>
-            <li id="one1" onclick="setTab(1)" th:if="${status ne '1'}">待确认订单</li>
-            <li id="one2" onclick="setTab(2)" th:if="${status eq '2'}" class="off">待发货</li>
-            <li id="one2" onclick="setTab(2)" th:if="${status ne '2'}">待发货</li>
-            <li id="one3" onclick="setTab(3)" th:if="${status eq '3'}" class="off">发货中</li>
-            <li id="one3" onclick="setTab(3)" th:if="${status ne '3'}">发货中</li>
-            <li id="one4" onclick="setTab(4)" th:if="${status eq '4'}" class="off">已完成</li>
-            <li id="one4" onclick="setTab(4)" th:if="${status ne '4'}">已完成</li>
-            <li id="one5" onclick="setTab(5)" th:if="${status eq '5'}" class="off">无效订单</li>
-            <li id="one5" onclick="setTab(5)" th:if="${status ne '5'}">无效订单</li>
+            <li onclick="setTab(1)" th:if="${status eq '1'}" class="off">待确认订单</li>
+            <li onclick="setTab(1)" th:if="${status ne '1'}">待确认订单</li>
+            <li onclick="setTab(2)" th:if="${status eq '2'}" class="off">待发货</li>
+            <li onclick="setTab(2)" th:if="${status ne '2'}">待发货</li>
+            <li onclick="setTab(3)" th:if="${status eq '3'}" class="off">发货中</li>
+            <li onclick="setTab(3)" th:if="${status ne '3'}">发货中</li>
+            <li onclick="setTab(4)" th:if="${status eq '4'}" class="off">已完成</li>
+            <li onclick="setTab(4)" th:if="${status ne '4'}">已完成</li>
+            <li onclick="setTab(5)" th:if="${status eq '5'}" class="off">无效订单</li>
+            <li onclick="setTab(5)" th:if="${status ne '5'}">无效订单</li>
         </ul>
     </div>
     <div class="menudiv">
@@ -75,7 +75,7 @@
         <table cellspacing="0" cellpadding="0" border="0">
         <thead>
             <tr class="tt">
-                <td>品名</td><td>材质</td><td>规格</td><td>产地</td><td>仓库</td><td>件数</td><td>重量</td><td>价格</td><td>订单时间</td>
+                <td>品名</td><td>材质</td><td>规格</td><td>产地</td><td>仓库</td><td>件数</td><td>重量</td><td>价格</td><td>总价</td><td>订单时间</td>
             </tr>
         </thead>
         <tbody>
@@ -94,6 +94,7 @@
                 <td th:if="${status eq '4'}" th:text="${#numbers.formatInteger(list.actualPiece,0)}"></td>
                 <td th:if="${status eq '4'}" th:text="${list.actualNum}"></td>
                 <td th:text="${#numbers.formatInteger(list.price,0)}"></td>
+                <td th:text="${#numbers.formatDecimal(list.price * list.num,0,2)}"></td>
                 <td th:if="${status} eq '1'" th:text="${#dates.format(list.creatTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                 <td th:if="${status} ne '1'" th:text="${#dates.format(list.confirmTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
@@ -107,6 +108,7 @@
             </span>
         </tbody>
         </table>
+        </div></div></div>
         <div class="page">
 
             <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+');'">上一页</a>
@@ -126,6 +128,7 @@
     </div>
 </div>
 </div>
+</section>
 </aside>
 </div>
 </section>

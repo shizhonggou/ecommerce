@@ -63,12 +63,12 @@
         </javaModelGenerator>
         <!-- 生成mapxml文件 -->
         <!--<sqlMapGenerator targetPackage="mapping.steelbiz" targetProject="src/main/resources">-->
-        <sqlMapGenerator targetPackage="mapping.isechome" targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="mapping.ecommerce" targetProject="src/main/resources">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
         <!-- 生成mapxml对应client，也就是接口dao -->
        <!--  <javaClientGenerator targetPackage="cn.steelhome.ess.mapper.steelbiz" targetProject="src/main/java" type="XMLMAPPER">-->
-       <javaClientGenerator targetPackage="com.isechome.ecommerce.mapper.isechome" targetProject="src/main/java" type="XMLMAPPER">
+       <javaClientGenerator targetPackage="com.isechome.ecommerce.mapper.ecommerce" targetProject="src/main/java" type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
@@ -78,7 +78,8 @@
           
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table> -->
-        <table tableName="logistics_information " domainObjectName="LogisticsInformation"
+        <!--执行generator插件生成文件的命令： call mvn mybatis-generator:generate -e -->
+        <table tableName="sc_purchaseorder_management_base" domainObjectName="ScPurchasBase"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false" ></table>

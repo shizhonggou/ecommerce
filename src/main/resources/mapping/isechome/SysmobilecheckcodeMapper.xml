@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.isechome.SysmobilecheckcodeMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.Sysmobilecheckcode" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="Mid" property="mid" jdbcType="INTEGER" />
+    <result column="SignCS" property="signcs" jdbcType="VARCHAR" />
+    <result column="Mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="CheckCode" property="checkcode" jdbcType="VARCHAR" />
+    <result column="CheckType" property="checktype" jdbcType="BIT" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CreateUser" property="createuser" jdbcType="VARCHAR" />
+    <result column="IsUsed" property="isused" jdbcType="TINYINT" />
+    <result column="UsedUser" property="useduser" jdbcType="VARCHAR" />
+    <result column="UsedDate" property="useddate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from `sys_mobile_checkcode`
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.Sysmobilecheckcode" >
+    insert into `sys_mobile_checkcode` (ID, Mid, SignCS, 
+      Mobile, CheckCode, CheckType, 
+      CreateDate, `CreateUser`, IsUsed, 
+      UsedUser, UsedDate)
+    values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{signcs,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{checkcode,jdbcType=VARCHAR}, #{checktype,jdbcType=BIT}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, #{isused,jdbcType=TINYINT}, 
+      #{useduser,jdbcType=VARCHAR}, #{useddate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.Sysmobilecheckcode" >
+    update `sys_mobile_checkcode`
+    set Mid = #{mid,jdbcType=INTEGER},
+      SignCS = #{signcs,jdbcType=VARCHAR},
+      Mobile = #{mobile,jdbcType=VARCHAR},
+      CheckCode = #{checkcode,jdbcType=VARCHAR},
+      CheckType = #{checktype,jdbcType=BIT},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      `CreateUser` = #{createuser,jdbcType=VARCHAR},
+      IsUsed = #{isused,jdbcType=TINYINT},
+      UsedUser = #{useduser,jdbcType=VARCHAR},
+      UsedDate = #{useddate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ID, Mid, SignCS, Mobile, CheckCode, CheckType, CreateDate, `CreateUser`, IsUsed, 
+    UsedUser, UsedDate
+    from `sys_mobile_checkcode`
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, Mid, SignCS, Mobile, CheckCode, CheckType, CreateDate, `CreateUser`, IsUsed, 
+    UsedUser, UsedDate
+    from `sys_mobile_checkcode`
+  </select>
+
+  <select id="selectSysmobilecheckcodeByMobileNumber" resultMap="BaseResultMap" >
+    select ID, Mid, SignCS, Mobile, CheckCode, CheckType, CreateDate, `CreateUser`, IsUsed, 
+    UsedUser, UsedDate
+    from `sys_mobile_checkcode` where Mobile = #{MobileNumber,jdbcType=VARCHAR} order by ID desc limit 1
+  </select>
+  <update id="updisused" parameterType="com.isechome.ecommerce.entity.Sysmobilecheckcode" >
+    update `sys_mobile_checkcode`
+      IsUsed = #{isused,jdbcType=TINYINT},
+      UsedUser = #{useduser,jdbcType=VARCHAR},
+      UsedDate = #{useddate,jdbcType=TIMESTAMP}
+      where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

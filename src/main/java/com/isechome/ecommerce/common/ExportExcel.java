@@ -10,6 +10,9 @@ package com.isechome.ecommerce.common;
 
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.io.OutputStream;
@@ -22,6 +25,10 @@ public class ExportExcel  {
   // 导出表的列名
   private String[] rowName;
   private List<Object[]> dataList = new ArrayList<Object[]>();
+
+  private short VERTICAL_CENTER = 1;
+  private short ALIGN_CENTER = 2;
+  private short BORDER_THIN = 1;
 
   // 构造函数，传入要导出的数据
   public ExportExcel(String title, String[] rowName, List<Object[]> dataList) {
@@ -136,17 +143,17 @@ public class ExportExcel  {
     // 设置字体大小
     font.setFontHeightInPoints((short) 11);
     // 字体加粗
-    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
     // 设置字体名字
     font.setFontName("Courier New");
     // 设置样式
     HSSFCellStyle style = workbook.createCellStyle();
     // 设置低边框
-    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+    style.setBorderBottom(BorderStyle.valueOf(BORDER_THIN));
     // 设置低边框颜色
     style.setBottomBorderColor(HSSFColor.BLACK.index);
     // 设置右边框
-    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+    style.setBorderRight(BorderStyle.valueOf(BORDER_THIN));
     // 设置顶边框
     style.setTopBorderColor(HSSFColor.BLACK.index);
     // 设置顶边框颜色
@@ -156,8 +163,8 @@ public class ExportExcel  {
     // 设置自动换行
     style.setWrapText(false);
     // 设置水平对齐的样式为居中对齐；
-    style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-    style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+    style.setAlignment(HorizontalAlignment.forInt(ALIGN_CENTER));
+    style.setVerticalAlignment(VerticalAlignment.forInt(VERTICAL_CENTER));
     return style;
 
   }
@@ -168,25 +175,25 @@ public class ExportExcel  {
     // 设置字体大小
     font.setFontHeightInPoints((short) 10);
     // 字体加粗
-    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
     // 设置字体名字
     font.setFontName("Courier New");
     // 设置样式;
     HSSFCellStyle style = workbook.createCellStyle();
     // 设置底边框;
-    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+    style.setBorderBottom(BorderStyle.valueOf(BORDER_THIN));
     // 设置底边框颜色;
     style.setBottomBorderColor(HSSFColor.BLACK.index);
     // 设置左边框;
-    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+    style.setBorderLeft(BorderStyle.valueOf(BORDER_THIN));
     // 设置左边框颜色;
     style.setLeftBorderColor(HSSFColor.BLACK.index);
     // 设置右边框;
-    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+    style.setBorderRight(BorderStyle.valueOf(BORDER_THIN));
     // 设置右边框颜色;
     style.setRightBorderColor(HSSFColor.BLACK.index);
     // 设置顶边框;
-    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+    style.setBorderTop(BorderStyle.valueOf(BORDER_THIN));
     // 设置顶边框颜色;
     style.setTopBorderColor(HSSFColor.BLACK.index);
     // 在样式用应用设置的字体;
@@ -194,9 +201,10 @@ public class ExportExcel  {
     // 设置自动换行;
     style.setWrapText(false);
     // 设置水平对齐的样式为居中对齐;
-    style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+    short ALIGN_CENTER = 2;
+    style.setAlignment(HorizontalAlignment.forInt(ALIGN_CENTER));
     // 设置垂直对齐的样式为居中对齐;
-    style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+    style.setVerticalAlignment(VerticalAlignment.forInt(VERTICAL_CENTER));
     return style;
   }
  

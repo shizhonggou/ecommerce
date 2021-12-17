@@ -1,7 +1,7 @@
 spring:
   datasource:
-    isechome:
-      url: jdbc:mysql://172.16.201.239:1306/isechome_e-commerce?characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
+    ecommerce:
+      url: jdbc:mysql://172.16.201.239:1306/isechome_e-commerce?characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull&autoReconnect=true&defaultAutoCommit=true
       username: llh
       password: st01697828
 #      url: jdbc:mysql://172.16.201.239:2306/isechome_e-commerce?characterEncoding=cp1252&useSSL=false&zeroDateTimeBehavior=convertToNull
@@ -19,13 +19,38 @@ spring:
       minIdle: 1
       timeBetweenEvictionRunsMillis: 60000
       minEvictableIdleTimeMillis: 300000
-      validationQuery: select 1 from sys_company
+      validationQuery: select 1 from sc_platform_side_setting
       testWhileIdle: true
       testOnBorrow: false
       testOnReturn: false
       filters: stat, wall
 
+    isechome:
+      url: jdbc:mysql://172.16.201.239:1306/isechome_v2?characterEncoding=cp1252&useSSL=false&zeroDateTimeBehavior=convertToNull
+      username: llh
+      password: st01697828
+      #      url: jdbc:mysql://172.16.201.239:2306/isechome_e-commerce?characterEncoding=cp1252&useSSL=false&zeroDateTimeBehavior=convertToNull
+      #      username: llh
+      #      password: st01697828
+      ConnectionPropertiesTransform: false
+      driver-class-name: com.mysql.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
 
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 1 from sys_company
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      filters: stat, wall
+  resources:
+    static-locations: [classpath:/static/,file:/usr/local/www/e-commerce/src/main/resources/static/]
 connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 # spring.mvc.static-path-pattern: /static/**
 #spring.mvc.static-path-pattern: /static/**
@@ -45,3 +70,11 @@ logging:
     com:
       isechome:
         ecommerce: debug
+
+thymeleaf:
+  cache: false # 开发时关闭缓存,不然没法看到实时页面
+  mode: LEGACYHTML5 # 用非严格的 HTML
+
+smslogin:
+  url: "http://mgdev.isechome.com/mg_user.php"
+  param: "action=ajaxsendcheckcode3&mobile="

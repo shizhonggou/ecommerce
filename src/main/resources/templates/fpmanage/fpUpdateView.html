@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link  th:href="@{/css/bass.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/userInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/resource.js}" type="text/javascript"></script>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>账号信息修改</title>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<section>
+    <div class="main w1000">
+        <aside>
+            <div th:insert="~{left :: left(fpmanage)}"></div>
+        </aside>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+                <div class="pozition"><p>当前位置：会员中心  &gt; 发票管理    &gt; 修改</p></div>
+                <form action="/fpmanage/fpUpdate" name="huiFuLY" id="lybform"  method="POST"  onsubmit="return checkForm()">
+                    <table class="Information" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                        <tr>
+                            <td>名称<span>*</span></td>
+                            <td><input type="text" name="rise" id="rise" th:value="${fpdetail.rise}" ></td>
+                            <td>税  号<span>*</span></td>
+                            <td ><input type="text" name="taxnum" id="taxnum" th:value="${fpdetail.taxnum}" > </td>
+                        </tr>
+                        <tr>
+                            <td>邮寄地址<span>*</span></td>
+                            <td ><input type="text" name="addressMail" id="addressMail" th:value="${fpdetail.addressMail}" > </td>
+                            <td>公司地址<span>*</span></td>
+                            <td ><input type="text" name="addressCompany" id="addressCompany" th:value="${fpdetail.addressCompany}" > </td>
+                        </tr>
+                        <tr>
+                            <td>开户银行<span>*</span></td>
+                            <td ><input type="text" name="openBank" id="openBank" th:value="${fpdetail.openBank}" > </td>
+                            <td>银行账号<span>*</span></td>
+                            <td ><input type="text" name="account" id="account" th:value="${fpdetail.account}" > </td>
+                           
+                        </tr>
+                        <tr>
+
+                            <td>电  话<span>*</span></td>
+                            <td ><input type="text" name="phone" id="phone" th:value="${fpdetail.phone}" > </td>
+                            <td>是否默认抬头</td>
+                            <td >
+                            <select name="isdefault" style="width: 70%; color: #3333338c; padding: 8px 20px; margin: 12px auto; display: inline-block;border: 1px solid #ccc; border-radius: 0px;box-sizing: border-box;">
+                                <option th:selected="${fpdetail.isdefault == '0'}" value="0">否</option>
+                                <option th:selected="${fpdetail.isdefault == '1'}" value="1">是</option>
+                            </select></td>
+                           
+                      </tr>
+                      <tr>
+                        <td>发票代码</td>
+                        <td ><input type="text" name="invoiceCode" id="invoiceCode" th:value="${fpdetail.invoiceCode}" > </td>
+                        <td>备注说明</td>
+                        <td ><input type="text" name="remark" id="remark" th:value="${fpdetail.remark}" > </td>
+                       
+                  </tr>
+                        </tbody>
+                    </table>
+                    <div style="text-align: center;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="hidden"  name="id" th:value="${fpdetail.id}">
+                        <input type="submit" value="保存"  style="background: #FF6632;color: white;width: 300px;height: 30px;border: 0;cursor:pointer;">
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+<script>
+// 检查用户名 是否重复
+function ajaxcheckuname(){
+    // 校验用户名 只能是 数字字母 下划线
+    var regUN = /^[0-9a-zA-Z_]{1,}$/;
+    var user_name=document.getElementById("user_name").value.replace(/\s*/g,"");
+    if (user_name == '' || user_name ==null) {
+            alert("请输入用户名");
+            user_name.focus();
+            return false;
+    } else if(!regUN.test(user_name)) {
+            alert("用户名只能包含数字、字母、下划线");
+            user_name.focus();
+            return false;
+    }
+	$.ajax({
+                type: "POST",
+                url: "/userInfo/checkUName",
+                data: {'user_name': user_name,"[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"},
+        success: function(data) {
+			if(data==0){
+			    alert("用户名重复，不可用");
+			    var user_name2 = document.getElementById("user_name");
+			    user_name2.value = '';
+                return;
+		    }
+		},
+	    error: function(request, status, error){
+                        console.log(error);
+        }
+        });
+}
+    // 检查手机号码 是否重复
+function ajaxchecktel(){
+    // 校验手机号
+    var regMobile = /^1[3,4,5,7,8]\d{9}$/;
+    var mobile=document.getElementById("mobile").value.replace(/\s*/g,"");
+    if (mobile == '' || mobile ==null) {
+            alert("请输入手机号码");
+            return false;
+        } else if(!regMobile.test(mobile)){
+            alert("请输入正确的手机号码");
+            return false;
+        }
+		$.ajax({
+		        type: "POST",
+                url: "/userInfo/checkMobile",
+                data: {'mobile': mobile,"[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"},
+        success: function(data) {
+			if(data==0){
+			    alert("手机号重复，不可用");
+			    var mobile2=document.getElementById("mobile");
+			    mobile2.value = '';
+                return;
+		    }
+		},
+	    error: function(request, status, error){
+                        console.log(error);
+        }
+        });
+}
+
+
+
+function checkForm(){
+      if ($("#rise").val() == "") {
+          alert("名称不能为空");
+          return false;
+      }
+      if ($("#taxnum").val() == "") {
+          alert("税号不能为空");
+          return false;
+      }
+
+      if ($("#addressMail").val() == "") {
+          alert("邮寄地址不能为空");
+          return false;
+      }
+
+      if ($("#addressCompany").val() == "") {
+          alert("公司地址不能为空");
+          return false;
+      }
+      if ($("#phone").val() == "") {
+          alert("电话不能为空");
+          return false;
+      }
+
+
+      if ($("#openBank").val() == "") {
+          alert("开户银行不能为空");
+          return false;
+      }
+      if ($("#account").val() == "") {
+          alert("银行账号不能为空");
+          return false;
+      }
+
+  }
+</script>
+</body>
+</html>

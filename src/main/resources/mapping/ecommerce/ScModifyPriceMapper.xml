@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScModifyPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScModifyPrice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_user_id" property="updateUserId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_modify_price
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScModifyPrice" >
+    insert into sc_modify_price (id, pmid, `date`, 
+      `status`, `type`, price, 
+      creat_time, create_user_id, update_time, 
+      update_user_id)
+    values (#{id,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER}, #{date,jdbcType=DATE}, 
+      #{status,jdbcType=TINYINT}, #{type,jdbcType=INTEGER}, #{price,jdbcType=DOUBLE}, 
+      #{creatTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
+      #{updateUserId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScModifyPrice" >
+    update sc_modify_price
+    set pmid = #{pmid,jdbcType=INTEGER},
+      `date` = #{date,jdbcType=DATE},
+      `status` = #{status,jdbcType=TINYINT},
+      `type` = #{type,jdbcType=INTEGER},
+      price = #{price,jdbcType=DOUBLE},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user_id = #{updateUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="statusDel">
+    update sc_modify_price
+    set `status` = '0'
+    where pmid = #{pmid,jdbcType=INTEGER} and `date` = #{date,jdbcType=DATE}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, pmid, `date`, `status`, `type`, price, creat_time, create_user_id, update_time, 
+    update_user_id
+    from sc_modify_price
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, pmid, `date`, `status`, `type`, price, creat_time, create_user_id, update_time, 
+    update_user_id
+    from sc_modify_price
+  </select>
+  <select id="selectListByPmid" resultMap="BaseResultMap" >
+    select id, pmid, `date`, `status`, `type`, price, creat_time, create_user_id, update_time, 
+    update_user_id
+    from sc_modify_price
+    where pmid = #{pmid,jdbcType=INTEGER} and status = 1 and type in ('1','2','3') and date=#{date,jdbcType=DATE}
+  </select>
+
+  <select id="getTodayModifyPrice" resultMap="BaseResultMap" >
+    select id, pmid, `date`, `status`, `type`, price, creat_time, create_user_id, update_time,
+    update_user_id
+    from sc_modify_price
+    where pmid = #{pmid,jdbcType=INTEGER} and status = #{status} and date=#{date,jdbcType=DATE}
+  </select>
+  <select id="getTodayModifyPriceforCal" resultMap="BaseResultMap" >
+    select id, pmid, `date`, `status`, `type`, price, creat_time, create_user_id, update_time,
+    update_user_id
+    from sc_modify_price
+    where pmid = #{pmid,jdbcType=INTEGER} and status = #{status} and date=#{date,jdbcType=DATE} AND ISNULL( `update_user_id` )
+  </select>
+
+</mapper>

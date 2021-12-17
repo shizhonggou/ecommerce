@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.isechome.SysAdminuserMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.SysAdminuser" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ComID" property="comid" jdbcType="INTEGER" />
+    <result column="DepartID" property="departid" jdbcType="INTEGER" />
+    <result column="ARealName" property="arealname" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="ANickName" property="anickname" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="AUserName" property="ausername" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="APassWD" property="apasswd" jdbcType="VARCHAR" />
+    <result column="APassWDUpDate" property="apasswdupdate" jdbcType="TIMESTAMP" />
+    <result column="AQueryPassWD" property="aquerypasswd" jdbcType="VARCHAR" />
+    <result column="Mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="Job" property="job" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="ADesc" property="adesc" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="APowerRoles" property="apowerroles" jdbcType="VARCHAR" />
+    <result column="AWHs" property="awhs" jdbcType="VARCHAR" />
+    <result column="IsAllWH" property="isallwh" jdbcType="BIT" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="IsMain" property="ismain" jdbcType="TINYINT" />
+    <result column="LoginIpType" property="loginiptype" jdbcType="BIT" />
+    <result column="LoginLockIp" property="loginlockip" jdbcType="VARCHAR" />
+    <result column="CxtNum1" property="cxtnum1" jdbcType="INTEGER" />
+    <result column="CxtNum2" property="cxtnum2" jdbcType="INTEGER" />
+    <result column="CxtNum3" property="cxtnum3" jdbcType="INTEGER" />
+    <result column="Status" property="status" jdbcType="INTEGER" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CreateUser" property="createuser" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="UpdateDate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="UpdateUser" property="updateuser" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="LastDate" property="lastdate" jdbcType="TIMESTAMP" />
+    <result column="LastIP" property="lastip" jdbcType="VARCHAR" />
+    <result column="SType" property="stype" jdbcType="TINYINT" />
+    <result column="IsLimit" property="islimit" jdbcType="BIT" />
+    <result column="IsSteel" property="issteel" jdbcType="TINYINT" />
+    <result column="PowerLimit" property="powerlimit" jdbcType="TINYINT" />
+    <result column="childroot" property="childroot" jdbcType="VARCHAR" />
+    <result column="FirstSign" property="firstsign" jdbcType="TINYINT" />
+    <result column="MobileCheck" property="mobilecheck" jdbcType="VARCHAR" />
+    <result column="TelePhone" property="telephone" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="QQNum" property="qqnum" jdbcType="VARCHAR" />
+    <result column="Fax" property="fax" jdbcType="VARCHAR" />
+    <result column="PostCode" property="postcode" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="yq_registered" property="yqRegistered" jdbcType="TINYINT" />
+    <result column="yq_isSealMember" property="yqIssealmember" jdbcType="TINYINT" />
+    <result column="yq_isYQSealMember" property="yqIsyqsealmember" jdbcType="TINYINT" />
+    <result column="yq_telnumber" property="yqTelnumber" jdbcType="VARCHAR" />
+    <result column="yq_changedUserInfo" property="yqChangeduserinfo" jdbcType="TINYINT" />
+    <result column="Rights" property="rights" jdbcType="BIGINT" />
+    <result column="IdNum" property="idnum" jdbcType="VARCHAR" />
+    <result column="TradePwd" property="tradepwd" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="IdNameMap" type="com.isechome.ecommerce.entity.SysAdminuser" >
+    <result column="ARealName" property="arealname" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_adminuser
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.SysAdminuser" >
+    insert into sys_adminuser (ID, ComID, DepartID, 
+      ARealName, ANickName, AUserName, 
+      APassWD, APassWDUpDate, AQueryPassWD, 
+      Mobile, Job, ADesc, 
+      APowerRoles, AWHs, IsAllWH, 
+      Email, IsMain, LoginIpType, 
+      LoginLockIp, CxtNum1, CxtNum2, 
+      CxtNum3, `Status`, CreateDate, 
+      `CreateUser`, UpdateDate, UpdateUser, 
+      LastDate, LastIP, SType, 
+      IsLimit, IsSteel, PowerLimit, 
+      childroot, FirstSign, MobileCheck, 
+      TelePhone, city, province, 
+      address, QQNum, Fax, 
+      PostCode, sex, yq_registered, 
+      yq_isSealMember, yq_isYQSealMember, yq_telnumber, 
+      yq_changedUserInfo, Rights, IdNum, 
+      TradePwd)
+    values (#{id,jdbcType=INTEGER}, #{comid,jdbcType=INTEGER}, #{departid,jdbcType=INTEGER}, 
+      #{arealname,jdbcType=VARCHAR}, #{anickname,jdbcType=VARCHAR}, #{ausername,jdbcType=VARCHAR}, 
+      #{apasswd,jdbcType=VARCHAR}, #{apasswdupdate,jdbcType=TIMESTAMP}, #{aquerypasswd,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, #{adesc,jdbcType=VARCHAR}, 
+      #{apowerroles,jdbcType=VARCHAR}, #{awhs,jdbcType=VARCHAR}, #{isallwh,jdbcType=BIT}, 
+      #{email,jdbcType=VARCHAR}, #{ismain,jdbcType=TINYINT}, #{loginiptype,jdbcType=BIT}, 
+      #{loginlockip,jdbcType=VARCHAR}, #{cxtnum1,jdbcType=INTEGER}, #{cxtnum2,jdbcType=INTEGER}, 
+      #{cxtnum3,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{createuser,jdbcType=VARCHAR}, #{updatedate,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR}, 
+      #{lastdate,jdbcType=TIMESTAMP}, #{lastip,jdbcType=VARCHAR}, #{stype,jdbcType=TINYINT}, 
+      #{islimit,jdbcType=BIT}, #{issteel,jdbcType=TINYINT}, #{powerlimit,jdbcType=TINYINT}, 
+      #{childroot,jdbcType=VARCHAR}, #{firstsign,jdbcType=TINYINT}, #{mobilecheck,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{qqnum,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, 
+      #{postcode,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{yqRegistered,jdbcType=TINYINT}, 
+      #{yqIssealmember,jdbcType=TINYINT}, #{yqIsyqsealmember,jdbcType=TINYINT}, #{yqTelnumber,jdbcType=VARCHAR}, 
+      #{yqChangeduserinfo,jdbcType=TINYINT}, #{rights,jdbcType=BIGINT}, #{idnum,jdbcType=VARCHAR}, 
+      #{tradepwd,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.SysAdminuser" >
+    update sys_adminuser
+    set ComID = #{comid,jdbcType=INTEGER},
+      DepartID = #{departid,jdbcType=INTEGER},
+      ARealName = #{arealname,jdbcType=VARCHAR},
+      ANickName = #{anickname,jdbcType=VARCHAR},
+      AUserName = #{ausername,jdbcType=VARCHAR},
+      APassWD = #{apasswd,jdbcType=VARCHAR},
+      APassWDUpDate = #{apasswdupdate,jdbcType=TIMESTAMP},
+      AQueryPassWD = #{aquerypasswd,jdbcType=VARCHAR},
+      Mobile = #{mobile,jdbcType=VARCHAR},
+      Job = #{job,jdbcType=VARCHAR},
+      ADesc = #{adesc,jdbcType=VARCHAR},
+      APowerRoles = #{apowerroles,jdbcType=VARCHAR},
+      AWHs = #{awhs,jdbcType=VARCHAR},
+      IsAllWH = #{isallwh,jdbcType=BIT},
+      Email = #{email,jdbcType=VARCHAR},
+      IsMain = #{ismain,jdbcType=TINYINT},
+      LoginIpType = #{loginiptype,jdbcType=BIT},
+      LoginLockIp = #{loginlockip,jdbcType=VARCHAR},
+      CxtNum1 = #{cxtnum1,jdbcType=INTEGER},
+      CxtNum2 = #{cxtnum2,jdbcType=INTEGER},
+      CxtNum3 = #{cxtnum3,jdbcType=INTEGER},
+      `Status` = #{status,jdbcType=TINYINT},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      `CreateUser` = #{createuser,jdbcType=VARCHAR},
+      UpdateDate = #{updatedate,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateuser,jdbcType=VARCHAR},
+      LastDate = #{lastdate,jdbcType=TIMESTAMP},
+      LastIP = #{lastip,jdbcType=VARCHAR},
+      SType = #{stype,jdbcType=TINYINT},
+      IsLimit = #{islimit,jdbcType=BIT},
+      IsSteel = #{issteel,jdbcType=TINYINT},
+      PowerLimit = #{powerlimit,jdbcType=TINYINT},
+      childroot = #{childroot,jdbcType=VARCHAR},
+      FirstSign = #{firstsign,jdbcType=TINYINT},
+      MobileCheck = #{mobilecheck,jdbcType=VARCHAR},
+      TelePhone = #{telephone,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      QQNum = #{qqnum,jdbcType=VARCHAR},
+      Fax = #{fax,jdbcType=VARCHAR},
+      PostCode = #{postcode,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      yq_registered = #{yqRegistered,jdbcType=TINYINT},
+      yq_isSealMember = #{yqIssealmember,jdbcType=TINYINT},
+      yq_isYQSealMember = #{yqIsyqsealmember,jdbcType=TINYINT},
+      yq_telnumber = #{yqTelnumber,jdbcType=VARCHAR},
+      yq_changedUserInfo = #{yqChangeduserinfo,jdbcType=TINYINT},
+      Rights = #{rights,jdbcType=BIGINT},
+      IdNum = #{idnum,jdbcType=VARCHAR},
+      TradePwd = #{tradepwd,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ID, ComID, DepartID, ARealName, ANickName, AUserName, APassWD, APassWDUpDate, 
+    AQueryPassWD, Mobile, Job, ADesc, APowerRoles, AWHs, IsAllWH, Email, IsMain, LoginIpType, 
+    LoginLockIp, CxtNum1, CxtNum2, CxtNum3, `Status`, CreateDate, `CreateUser`, UpdateDate, 
+    UpdateUser, LastDate, LastIP, SType, IsLimit, IsSteel, PowerLimit, childroot, FirstSign, 
+    MobileCheck, TelePhone, city, province, address, QQNum, Fax, PostCode, sex, yq_registered, 
+    yq_isSealMember, yq_isYQSealMember, yq_telnumber, yq_changedUserInfo, Rights, IdNum, 
+    TradePwd
+    from sys_adminuser
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, ComID, DepartID, ARealName, ANickName, AUserName, APassWD, APassWDUpDate, 
+    AQueryPassWD, Mobile, Job, ADesc, APowerRoles, AWHs, IsAllWH, Email, IsMain, LoginIpType, 
+    LoginLockIp, CxtNum1, CxtNum2, CxtNum3, `Status`, CreateDate, `CreateUser`, UpdateDate, 
+    UpdateUser, LastDate, LastIP, SType, IsLimit, IsSteel, PowerLimit, childroot, FirstSign, 
+    MobileCheck, TelePhone, city, province, address, QQNum, Fax, PostCode, sex, yq_registered, 
+    yq_isSealMember, yq_isYQSealMember, yq_telnumber, yq_changedUserInfo, Rights, IdNum, 
+    TradePwd
+    from sys_adminuser
+    <where>
+      <if test="ids != null and ids !=''">
+        ID in(${ids})
+      </if>
+    </where>
+  </select>
+   <select id="selectByComID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ID, ComID, DepartID, ARealName, ANickName, AUserName, APassWD, APassWDUpDate,
+    AQueryPassWD, Mobile, Job, ADesc, APowerRoles, AWHs, IsAllWH, Email, IsMain, LoginIpType,
+    LoginLockIp, CxtNum1, CxtNum2, CxtNum3, `Status`, CreateDate, `CreateUser`, UpdateDate,
+    UpdateUser, LastDate, LastIP, SType, IsLimit, IsSteel, PowerLimit, childroot, FirstSign,
+    MobileCheck, TelePhone, city, province, address, QQNum, Fax, PostCode, sex, yq_registered,
+    yq_isSealMember, yq_isYQSealMember, yq_telnumber, yq_changedUserInfo, Rights, IdNum,
+    TradePwd
+    from sys_adminuser
+    where ComID = #{mid,jdbcType=INTEGER}
+  </select>
+
+<!--gzw add start-->
+  <select id="selectUserInfoDetail" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from sys_adminuser
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <update id="updateUserInfo" parameterType="com.isechome.ecommerce.entity.SysAdminuser" >
+    update sys_adminuser set
+    ARealName = #{real_name,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    AUserName = #{user_name,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    APassWD = #{password,jdbcType=VARCHAR},
+    TradePwd = #{pay_password,jdbcType=VARCHAR},
+    Mobile = #{mobile,jdbcType=VARCHAR}, IdNum = #{idcard,jdbcType=VARCHAR},
+    Email = #{email,jdbcType=VARCHAR},
+    Job = #{job,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    sex = #{sex,jdbcType=TINYINT}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllUser" resultMap="BaseResultMap" >
+    select * from sys_adminuser where ComID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="checkMobile" resultMap="BaseResultMap" >
+    select * from sys_adminuser where Mobile = #{mobile,jdbcType=VARCHAR} order by ID desc limit 1
+  </select>
+  <select id="checkUserName" resultMap="BaseResultMap" >
+    select * from sys_adminuser where AUserName = #{user_name,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}  limit 1
+  </select>
+  <update id="accountUpdate" >
+    update sys_adminuser set
+    ARealName = #{real_name,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    AUserName = #{user_name,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    APassWD = #{password,jdbcType=VARCHAR},
+    TradePwd = #{pay_password,jdbcType=VARCHAR},
+    Mobile = #{mobile,jdbcType=VARCHAR},
+      IdNum = #{idcard,jdbcType=VARCHAR},
+    <if test="email != null">
+      Email = #{email,jdbcType=VARCHAR},
+    </if>
+    <if test="job != null">
+      Job = #{job,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    </if>
+    sex = #{sex,jdbcType=TINYINT},
+    rights = #{rights,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <delete id="accountDelete" >
+    delete from sys_adminuser where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="accountAddAction" parameterType="com.isechome.ecommerce.entity.SysAdminuser" >
+    <selectKey keyProperty="id"  order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_adminuser (ComID, DepartID,
+    ARealName, ANickName, AUserName,
+    APassWD, APassWDUpDate, AQueryPassWD,
+    Mobile, Job, ADesc,
+    APowerRoles, AWHs, IsAllWH,
+    Email, IsMain, LoginIpType,
+    LoginLockIp, CxtNum1, CxtNum2,
+    CxtNum3, `Status`, CreateDate,
+    `CreateUser`, UpdateDate, UpdateUser,
+    LastDate, LastIP, SType,
+    IsLimit, IsSteel, PowerLimit,
+    childroot, FirstSign, MobileCheck,
+    TelePhone, city, province,
+    address, QQNum, Fax,
+    PostCode, sex, yq_registered,
+    yq_isSealMember, yq_isYQSealMember, yq_telnumber,
+    yq_changedUserInfo, Rights, IdNum,
+    TradePwd)
+    values (#{comid,jdbcType=INTEGER}, #{departid,jdbcType=INTEGER},
+    #{arealname,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    #{anickname,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    #{ausername,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    #{apasswd,jdbcType=VARCHAR}, #{apasswdupdate,jdbcType=TIMESTAMP}, #{aquerypasswd,jdbcType=VARCHAR},
+    #{mobile,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    #{adesc,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    #{apowerroles,jdbcType=VARCHAR}, #{awhs,jdbcType=VARCHAR}, #{isallwh,jdbcType=BIT},
+    #{email,jdbcType=VARCHAR}, #{ismain,jdbcType=TINYINT}, #{loginiptype,jdbcType=BIT},
+    #{loginlockip,jdbcType=VARCHAR}, #{cxtnum1,jdbcType=INTEGER}, #{cxtnum2,jdbcType=INTEGER},
+    #{cxtnum3,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createdate,jdbcType=TIMESTAMP},
+    #{createuser,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    #{updatedate,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    #{lastdate,jdbcType=TIMESTAMP}, #{lastip,jdbcType=VARCHAR}, #{stype,jdbcType=TINYINT},
+    #{islimit,jdbcType=BIT}, #{issteel,jdbcType=TINYINT}, #{powerlimit,jdbcType=TINYINT},
+    #{childroot,jdbcType=VARCHAR}, #{firstsign,jdbcType=TINYINT}, #{mobilecheck,jdbcType=VARCHAR},
+    #{telephone,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    #{province,jdbcType=VARCHAR},
+    #{address,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    #{qqnum,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR},
+    #{postcode,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{yqRegistered,jdbcType=TINYINT},
+    #{yqIssealmember,jdbcType=TINYINT}, #{yqIsyqsealmember,jdbcType=TINYINT}, #{yqTelnumber,jdbcType=VARCHAR},
+    #{yqChangeduserinfo,jdbcType=TINYINT}, #{rights,jdbcType=BIGINT}, #{idnum,jdbcType=VARCHAR},
+    #{tradepwd,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateZhuLianXiRen" >
+    update sys_adminuser set IsMain = #{isMain,jdbcType=TINYINT} where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+<!--  gzw add end-->
+
+  <select id="selectMainAdminuserByComid" resultMap="BaseResultMap" >
+    select * from sys_adminuser where ComID = #{id,jdbcType=INTEGER} order by IsMain desc limit 1
+  </select>
+
+ <update id="pwdupd"  >
+        update sys_adminuser set
+        `APassWD` = #{password,jdbcType=VARCHAR}
+         where ID = #{id,jdbcType=INTEGER}
+    </update>
+  <select id="selectIdAndName" resultMap="IdNameMap">
+        select ID, ARealName
+        from sys_adminuser
+        where status=1
+    </select>
+<select id="selecUserInfoByPmidAndRights" resultMap="BaseResultMap">
+     select * from sys_adminuser where ComID = #{pmid,jdbcType=INTEGER} and Rights&amp;8
+  </select>
+</mapper>

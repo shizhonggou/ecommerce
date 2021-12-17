@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScfahuolibsMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.Scfahuolibs" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mid" property="mid" jdbcType="INTEGER" />
+    <result column="cangkuid" property="cangkuid" jdbcType="VARCHAR" />
+    <result column="cangkuname" property="cangkuname" jdbcType="VARCHAR" />
+    <result column="yunfei" property="yunfei" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="daozhan_cangku_name" property="daozhanCangkuName" jdbcType="VARCHAR" />
+    <result column="daozhanma" property="daozhanma" jdbcType="VARCHAR" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_fahuolibs
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.Scfahuolibs" >
+    insert into sc_fahuolibs (id, mid, cangkuid, 
+      cangkuname, yunfei, remark, 
+      daozhan_cangku_name, daozhanma, pmid
+      )
+    values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{cangkuid,jdbcType=VARCHAR}, 
+      #{cangkuname,jdbcType=VARCHAR}, #{yunfei,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{daozhanCangkuName,jdbcType=VARCHAR}, #{daozhanma,jdbcType=VARCHAR}, #{pmid,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.Scfahuolibs" >
+    update sc_fahuolibs
+    set mid = #{mid,jdbcType=INTEGER},
+      cangkuid = #{cangkuid,jdbcType=VARCHAR},
+      cangkuname = #{cangkuname,jdbcType=VARCHAR},
+      yunfei = #{yunfei,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      daozhan_cangku_name = #{daozhanCangkuName,jdbcType=VARCHAR},
+      daozhanma = #{daozhanma,jdbcType=VARCHAR},
+      pmid = #{pmid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, mid, cangkuid, cangkuname, yunfei, remark, daozhan_cangku_name, daozhanma, 
+    pmid
+    from sc_fahuolibs
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, mid, cangkuid, cangkuname, yunfei, remark, daozhan_cangku_name, daozhanma, 
+    pmid
+    from sc_fahuolibs
+    where pmid = #{id,jdbcType=INTEGER} or mid = #{id,jdbcType=INTEGER} 
+  </select>
+  <update id="updatefhinfo" >
+    update sc_fahuolibs
+    set 
+      mid = #{mid,jdbcType=INTEGER},
+      cangkuname = #{cangkuname,jdbcType=VARCHAR},
+      cangkuid = #{cangkuid,jdbcType=VARCHAR},
+      yunfei = #{yunfei,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      daozhan_cangku_name = #{daozhanCangkuName,jdbcType=VARCHAR},
+      daozhanma = #{daozhanma,jdbcType=VARCHAR}
+      where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="insertfhinfo" >
+    insert into sc_fahuolibs (mid, cangkuid,cangkuname, yunfei, remark, daozhan_cangku_name, daozhanma, pmid
+      )
+    values (#{mid,jdbcType=INTEGER},#{cangkuid,jdbcType=VARCHAR},#{cangkuname,jdbcType=VARCHAR},#{yunfei,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},#{daozhanCangkuName,jdbcType=VARCHAR}, #{daozhanma,jdbcType=VARCHAR}, #{pmid,jdbcType=INTEGER}
+      )
+  </insert>
+  <select id="selectAll2" resultMap="BaseResultMap" >
+    select id, mid, cangkuid, cangkuname, yunfei, remark, daozhan_cangku_name, daozhanma, 
+    pmid
+    from sc_fahuolibs
+    where pmid = #{pmid,jdbcType=INTEGER} and mid = #{mid,jdbcType=INTEGER}
+  </select>
+
+</mapper>

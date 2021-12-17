@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.isechome.SmownmemberMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.Smownmember" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ApplyUid" property="applyuid" jdbcType="INTEGER" />
+    <result column="ApplyMid" property="applymid" jdbcType="INTEGER" />
+    <result column="ContactMan" property="contactman" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="ContactTel" property="contacttel" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Mobile" property="mobile" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Email" property="email" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="ApplyDesc" property="applydesc" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="ApplyDate" property="applydate" jdbcType="TIMESTAMP" />
+    <result column="ReviewUid" property="reviewuid" jdbcType="INTEGER" />
+    <result column="ReviewMid" property="reviewmid" jdbcType="INTEGER" />
+    <result column="ReviewDate" property="reviewdate" jdbcType="TIMESTAMP" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Status" property="status" jdbcType="TINYINT" />
+    <result column="ManageUser" property="manageuser" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="ManageDate" property="managedate" jdbcType="TIMESTAMP" />
+    <result column="ManageDesc" property="managedesc" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="dzstatus" property="dzstatus" jdbcType="BIT" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="preferential_amount" property="preferentialAmount" jdbcType="DOUBLE" />
+    <result column="member_type" property="member_type" jdbcType="INTEGER" />
+    <result column="credit_amount" property="credit_amount" jdbcType="DOUBLE" />
+    <result column="con_file_url" property="con_file_url" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+   
+   <association property="SysAdminuser" javaType="com.isechome.ecommerce.entity.SysAdminuser"> 
+   <result column="Applytruename"  property="arealname" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+   <result column="Reviewtruename" property="arealname2" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+   </association>
+
+    <association property="SysCompany" javaType="com.isechome.ecommerce.entity.SysCompany"> 
+    <result column="ApplyComName" property="comname" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="ReviewComName" property="comname2" jdbcType="VARCHAR"   typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+      </association>
+    
+   
+  </resultMap>
+
+
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sm_own_member
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.Smownmember" >
+    insert into sm_own_member (ID, ApplyUid, ApplyMid, 
+      ContactMan, ContactTel, Mobile, 
+      Email, ApplyDesc, ApplyDate, 
+      ReviewUid, ReviewMid, ReviewDate, 
+      Remark, `Status`, ManageUser, 
+      ManageDate, ManageDesc, dzstatus, 
+      `level`, preferential_amount)
+    values (#{id,jdbcType=INTEGER}, #{applyuid,jdbcType=INTEGER}, #{applymid,jdbcType=INTEGER}, 
+      #{contactman,jdbcType=VARCHAR}, #{contacttel,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{applydesc,jdbcType=VARCHAR}, #{applydate,jdbcType=TIMESTAMP}, 
+      #{reviewuid,jdbcType=INTEGER}, #{reviewmid,jdbcType=INTEGER}, #{reviewdate,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{manageuser,jdbcType=VARCHAR}, 
+      #{managedate,jdbcType=TIMESTAMP}, #{managedesc,jdbcType=VARCHAR}, #{dzstatus,jdbcType=BIT}, 
+      #{level,jdbcType=TINYINT}, #{preferentialAmount,jdbcType=DOUBLE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.Smownmember" >
+    update sm_own_member
+    set ApplyUid = #{applyuid,jdbcType=INTEGER},
+      ApplyMid = #{applymid,jdbcType=INTEGER},
+      ContactMan = #{contactman,jdbcType=VARCHAR},
+      ContactTel = #{contacttel,jdbcType=VARCHAR},
+      Mobile = #{mobile,jdbcType=VARCHAR},
+      Email = #{email,jdbcType=VARCHAR},
+      ApplyDesc = #{applydesc,jdbcType=VARCHAR},
+      ApplyDate = #{applydate,jdbcType=TIMESTAMP},
+      ReviewUid = #{reviewuid,jdbcType=INTEGER},
+      ReviewMid = #{reviewmid,jdbcType=INTEGER},
+      ReviewDate = #{reviewdate,jdbcType=TIMESTAMP},
+      Remark = #{remark,jdbcType=VARCHAR},
+      `Status` = #{status,jdbcType=TINYINT},
+      ManageUser = #{manageuser,jdbcType=VARCHAR},
+      ManageDate = #{managedate,jdbcType=TIMESTAMP},
+      ManageDesc = #{managedesc,jdbcType=VARCHAR},
+      dzstatus = #{dzstatus,jdbcType=BIT},
+      `level` = #{level,jdbcType=TINYINT},
+      preferential_amount = #{preferentialAmount,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ID, ApplyUid, ApplyMid, ContactMan, ContactTel, Mobile, Email, ApplyDesc, 
+    ApplyDate, ReviewUid, ReviewMid, ReviewDate, Remark, `Status`, ManageUser, ManageDate, 
+    ManageDesc, dzstatus, `level`, preferential_amount,member_type,credit_amount,con_file_url
+    from sm_own_member
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectbyapplymid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ID,Status   
+    from sm_own_member
+    where ApplyMid = #{applymid,jdbcType=INTEGER} and ReviewMid = #{reviewmid,jdbcType=INTEGER} limit 1
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, ApplyUid, ApplyMid, ContactMan, ContactTel, Mobile, Email, ApplyDesc, 
+    ApplyDate, ReviewUid, ReviewMid, ReviewDate, Remark, `Status`, ManageUser, ManageDate, 
+    ManageDesc, dzstatus, `level`, preferential_amount,member_type,credit_amount,con_file_url
+    from sm_own_member where ReviewMid = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll4" resultMap="BaseResultMap" >
+    select ID, ApplyUid, ApplyMid, ContactMan, ContactTel, Mobile, Email, ApplyDesc, 
+    ApplyDate, ReviewUid, ReviewMid, ReviewDate, Remark, `Status`, ManageUser, ManageDate, 
+    ManageDesc, dzstatus, `level`, preferential_amount,member_type,credit_amount,con_file_url
+    from sm_own_member where ReviewMid = #{id,jdbcType=INTEGER} group by ApplyMid
+  </select>
+    <select id="selectAll2" resultMap="BaseResultMap" >
+    select ID, ApplyUid ,(select ARealName from sys_adminuser where sm_own_member.ApplyUid = sys_adminuser.id)Applytruename,ApplyMid,(select ComName from sys_company where sm_own_member.ApplyMid = sys_company.id)ApplyComName,ContactMan, ContactTel, Mobile, Email, ApplyDesc, 
+    ApplyDate, ReviewUid,(select ARealName from sys_adminuser where sm_own_member.ReviewUid = sys_adminuser.id)Reviewtruename, ReviewMid,(select ComName from sys_company where sm_own_member.ReviewMid = sys_company.id)ReviewComName,ReviewDate, Remark, `Status`, ManageUser, ManageDate, 
+    ManageDesc, dzstatus, `level`, preferential_amount,member_type,credit_amount,con_file_url
+    from sm_own_member where  ApplyUid is not null and ReviewUid is not null and  ReviewMid = #{id,jdbcType=INTEGER} 
+  </select>
+    <select id="selectbycom" resultMap="BaseResultMap" >
+    select ID, ApplyUid ,(select ARealName from sys_adminuser where sm_own_member.ApplyUid = sys_adminuser.id)Applytruename,ApplyMid,(select ComName from sys_company where sm_own_member.ApplyMid = sys_company.id)ApplyComName,ContactMan, ContactTel, Mobile, Email, ApplyDesc, 
+    ApplyDate, ReviewUid,(select ARealName from sys_adminuser where sm_own_member.ReviewUid = sys_adminuser.id)Reviewtruename, ReviewMid,(select ComName from sys_company where sm_own_member.ReviewMid = sys_company.id)ReviewComName,ReviewDate, Remark, `Status`, ManageUser, ManageDate, 
+    ManageDesc, dzstatus, `level`, preferential_amount,member_type,credit_amount,con_file_url
+    from sm_own_member where  ApplyUid is not null and ReviewUid is not null and  ReviewMid = #{id,jdbcType=INTEGER} and ApplyMid =  #{comid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll3" resultMap="BaseResultMap" >
+    select ID, ApplyUid ,(select ARealName from sys_adminuser where sm_own_member.ApplyUid = sys_adminuser.id and sm_own_member.ApplyUid is not null )Applytruename
+    from sm_own_member where  ApplyUid is not null and ReviewMid = #{id,jdbcType=INTEGER} 
+  </select>
+
+  <select id="selectByPmidAndMid" resultMap="BaseResultMap" >
+    select ID, ApplyUid, ApplyMid, ContactMan, ContactTel, Mobile, Email, ApplyDesc, 
+    ApplyDate, ReviewUid, ReviewMid, ReviewDate, Remark, `Status`, ManageUser, ManageDate, 
+    ManageDesc, dzstatus, `level`, preferential_amount, credit_amount, member_type
+    from sm_own_member where ReviewMid = #{pmid,jdbcType=INTEGER} and ApplyMid = #{mid,jdbcType=INTEGER} limit 1
+  </select>
+
+
+  <update id="updatekhinfo">
+update sm_own_member
+    set
+      ReviewUid = #{reviewuid,jdbcType=INTEGER},
+      ReviewMid = #{reviewmid,jdbcType=INTEGER},
+      ReviewDate = now(),
+      Status = #{status,jdbcType=TINYINT},
+      preferential_amount = #{preferentialAmount,jdbcType=DOUBLE},
+      member_type = #{member_type,jdbcType=INTEGER},
+      credit_amount = #{credit_amount,jdbcType=DOUBLE},
+      con_file_url = #{filePath,jdbcType=VARCHAR ,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}
+       where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectByPmidAndUid" resultMap="BaseResultMap" >
+    select ID, ApplyUid, ApplyMid, ContactMan, ContactTel, Mobile, Email, ApplyDesc, 
+    ApplyDate, ReviewUid, ReviewMid, ReviewDate, Remark, `Status`, ManageUser, ManageDate, 
+    ManageDesc, dzstatus, `level`, preferential_amount, credit_amount, member_type
+    from sm_own_member where status=1 and  ReviewMid = #{pmid,jdbcType=INTEGER} and ApplyUid = #{uid,jdbcType=INTEGER} limit 1
+  </select>
+</mapper>

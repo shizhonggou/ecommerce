@@ -1,8 +1,11 @@
 package com.isechome.ecommerce.mapper.isechome;
 
 import com.isechome.ecommerce.entity.AdminUserInfo;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface AdminUserInfoMapper {
     int deleteByPrimaryKey(Integer id);
 

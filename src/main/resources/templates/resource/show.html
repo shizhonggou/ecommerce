@@ -4,25 +4,35 @@
 </head>
 
 <div th:insert="~{header :: header}"></div>
+<div class="top" sec:authorize="isAnonymous()">
+    <div class="w1000">
+        <div class="topleft" style="color: #666666;">
+            开市时间：<span th:text="${work_time_str}"></span>
+        </div>
+    </div>
+</div>
 <section>
 
     <div class="search_group w1000">
-        <div th:include="common::varietyTag(${vid})"></div>
+        <div th:include="common::varietyTag(${shelfResource.vId})"></div>
         <div class="tab_conbox" id="tab_conbox">
             <div class="tab_con" >
-                <form id="searchdetail" name="searchdetail" method="post" th:action="'/index?vid='+${vid}" >
+                <form id="searchdetail" name="searchdetail" method="post" th:action="'/index'" >
                     <table cellspacing="0" cellpadding="0" border="0">
                         <tbody><tr>
-                            <td><p>材质：</p><input type="text" id="material" name="material"  th:value="${material}" size="26"></td>
-                            <td><p>规格：</p><input type="text" id="spec" name="spec"  th:value="${spec}" size="26"></td>
+                            <td><p>材质：</p><input type="text" id="material" name="material"  th:value="${shelfResource.material}" size="26"></td>
+                            <td><p>规格：</p><input type="text" id="specification" name="specification"  th:value="${shelfResource.specification}" size="26"></td>
                             <td>
 <!--                                <p>品名：</p><input type="text" id="varietyname" name="varietyname" value="" size="26">-->
                             </td>
                         </tr>
                         <tr>
-                            <td><p>仓库：</p><input type="text" id="cangku" name="cangku"  th:value="${cangku}" size="26"></td>
-                            <td><p>产地：</p><input type="text" id="originCode" name="originCode"  th:value="${originCode}" size="26"></td>
-                            <td><a href="javascript:void(0);"   onclick="submitForm();"  >搜索</a></td>
+                            <td><p>仓库：</p><input type="text" id="warehouse" name="warehouse"  th:value="${shelfResource.warehouse}" size="26"></td>
+                            <td><p>产地：</p><input type="text" id="factory" name="factory"  th:value="${shelfResource.factory}" size="26"></td>
+                            <td>
+                                <input type="hidden" name="vid" th:value="${shelfResource.vId}">
+                                <a href="javascript:void(0);"   onclick="submitForm();"  >搜索</a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -54,65 +64,79 @@
         <table class="steel_list_table w1000" cellspacing="0" cellpadding="0" border="0">
             <thead>
                 <tr>
-<!--                    <td class="checkbox">选择</td>-->
+                    <td class="checkbox">选择</td>
                     <td>品名</td>
                     <td>材质</td>
                     <td>规格</td>
                     <td>仓库</td>
                     <td>产地</td>
-                    <td>件数</td>
-                    <td>成交量/资源量(吨)</td>
+                    <td th:if="${shelfResource.vId == 1}">件重</td>
+                    <td>资源量(吨)</td>
                     <td>价格</td>
-                    <td>有效期</td>
                     <td class="caozuo">操作</td>
                 </tr>
             </thead>
-            <tbody th:each="resourceSales:${resourceSalesList}" >
+            <tbody th:each="resourceSales:${resourceList}" >
                 <tr   >
-<!--                    <td class="checkbox"><input type="checkbox" value="" checked=""></td>-->
-                    <td th:text="${resourceSales.varietyname}">螺纹钢</td>
-                    <td th:text="${resourceSales.material}">HRB400</td>
-                    <td th:text="${resourceSales.spec}">Φ10*12</td>
-                    <td th:text="${resourceSales.cangku}">A</td>
-                    <td th:text="${resourceSales.originCode}">钢晨库</td>
-                    <td th:text="${resourceSales.piece}">20</td>
-                    <td th:text="${resourceSales.soldNum}+'/'+${resourceSales.num}"><span class="red">210</span></td>
-                    <td ><span class="red" th:text="${resourceSales.price}">¥ 4,370.00</span></td>
-                    <td ><span th:text="${#dates.format(resourceSales.salesEndTime, 'MM-dd HH:mm:ss')}"></span></td>
-                    <td class="nocaozuo" th:if="${purchaseMid} eq ${resourceSales.salesMid} or ${resourceSales.soldNum} ge ${resourceSales.num}">
-                        <a href="javascript:void(0);" th:if="${purchaseMid} eq ${resourceSales.salesMid}"  onclick="alert('您不可以购买自己的资源！');"  >购物车</a>
-                        <a href="javascript:void(0);" th:if="${purchaseMid} ne ${resourceSales.salesMid} and ${resourceSales.soldNum} ge ${resourceSales.num}"  onclick="alert('资源已售完！');"  >购物车</a>
+                    <td class="checkbox" th:if="${resourceSales.soldNum} lt ${resourceSales.num} and ${isStart} and (${resourceSales.weight} eq 0 or (${resourceSales.num}-${resourceSales.soldNum}) gt ${resourceSales.weight})">
+                        <input type="checkbox" name='check_num' th:id="@{'check_num_'+${resourceSales.id}}" th:value="${resourceSales.id}">
                     </td>
-                    <td class="caozuo" th:if="${purchaseMid} ne ${resourceSales.salesMid} and ${resourceSales.soldNum} lt ${resourceSales.num}">
-                        <a href="javascript:void(0);"   th:onclick="'add_purchase_car(\''+${resourceSales.id}+'\')'" >购物车</a>
+                    <td class="checkbox" th:if="${resourceSales.soldNum} ge ${resourceSales.num} or (${resourceSales.weight} gt 0 and (${resourceSales.num} - ${resourceSales.soldNum}) lt ${resourceSales.weight}) or !${isStart} ">
+                        <input type="checkbox" disabled th:id="@{'check_num_'+${resourceSales.id}}" th:value="${resourceSales.id}">
+                    </td>
+                    <td th:text="${resourceSales.varietyName}"></td>
+                    <td th:text="${resourceSales.material}"></td>
+                    <td th:text="${resourceSales.specification}"></td>
+                    <td th:text="${resourceSales.warehouse}"></td>
+                    <td th:text="${resourceSales.factory}"></td>
+                    <td th:if="${shelfResource.vId == 1}" th:text="${resourceSales.weight}+''"></td>
+<!--                    <td th:text="${T(com.isechome.ecommerce.common.StringUtils).valueFormat(resourceSales.price)}">20</td>-->
+                    <td th:text="${T(com.isechome.ecommerce.common.StringUtils).valueFormat(resourceSales.num - resourceSales.soldNum)}"><span class="red"></span></td>
+                    <td sec:authorize="isAuthenticated()"><span sec:authorize="hasAuthority('ROLE_GYLQX_YSH') or hasAuthority('ROLE_GYLQX_PTF')" class="red" th:text="${T(com.isechome.ecommerce.common.StringUtils).valueFormat(resourceSales.price)}"></span></td>
+                    <td sec:authorize="isAnonymous()"><span class="red">****</span></td>
+<!--                    <td ><span class="red" th:text="${resourceSales.price}">¥ 4,370.00</span></td>-->
+<!--                    <td class="nocaozuo" th:if="${purchaseMid} eq ${resourceSales.salesMid} or ${resourceSales.soldNum} ge ${resourceSales.num}">-->
+<!--                        <a href="javascript:void(0);" th:if="${purchaseMid} eq ${resourceSales.salesMid}"  onclick="alert('您不可以购买自己的资源！');"  >购物车</a>-->
+<!--                        <a href="javascript:void(0);" th:if="${purchaseMid} ne ${resourceSales.salesMid} and ${resourceSales.soldNum} ge ${resourceSales.num}"  onclick="alert('资源已售完！');"  >购物车</a>-->
+<!--                    </td>-->
+<!--                    <td class="caozuo" th:if="${purchaseMid} ne ${resourceSales.salesMid} and ${resourceSales.soldNum} lt ${resourceSales.num}">-->
+<!--                        <a href="javascript:void(0);"   th:onclick="'add_purchase_car(\''+${resourceSales.id}+'\')'" >购物车</a>-->
+<!--                    </td>-->
+                    <td class="caozuo" th:if="${resourceSales.soldNum} lt ${resourceSales.num} and ${isStart} and (${resourceSales.weight} eq 0 or (${resourceSales.num}-${resourceSales.soldNum}) gt ${resourceSales.weight})">
+                        <a href="javascript:void(0);" sec:authorize="isAnonymous()"   onclick="location.href = '/login_p';" >采购车</a>
+                        <a href="javascript:void(0);"  sec:authorize="isAuthenticated()"  th:onclick="'add_purchase_car(\''+${resourceSales.id}+'\')'" >采购车</a>
+                    </td>
+                    <td class="nocaozuo" th:if="${resourceSales.soldNum} ge ${resourceSales.num} or (${resourceSales.weight} gt 0 and (${resourceSales.num} - ${resourceSales.soldNum}) lt ${resourceSales.weight}) or !${isStart} ">
+                        <a href="javascript:void(0);" >采购车</a>
                     </td>
                 </tr>
             </tbody>
 
             <tfoot>
-<!--            <tr>-->
-<!--                <td class="checkbox" colspan="10" id="onlyChoseAlert">-->
-<!--                    <input type="checkbox" value=""> <p>全选</p><a href="javascript:void(0);" onclick="show('SonContent1')">加入购物车</a>-->
-<!--                </td>-->
-<!--            </tr>-->
+            <tr>
+                <td class="checkbox" colspan="10" id="onlyChoseAlert">
+                    <input type="checkbox" id="selallbox" onclick="selall();"> <p>全选</p>
+                    <a href="javascript:void(0);" sec:authorize="isAnonymous()"   onclick="location.href = '/login_p';" >加入采购车</a>
+                    <a href="javascript:void(0);"  sec:authorize="isAuthenticated()"  onclick="save()" >加入采购车</a>
+                </td>
+            </tr>
             </tfoot>
         </table>
         <div class="page">
-            <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+','+${vid}+');'">上一页</a>
+            <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+','+${shelfResource.vId}+');'">上一页</a>
             <p th:each="navigatepageNum:${pageInfo.navigatepageNums}" >
                 <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now" th:text="${navigatepageNum}"></a>
-                <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+','+${vid}+');'" th:text="${navigatepageNum}"></a>
+                <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}" th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+','+${shelfResource.vId}+');'" th:text="${navigatepageNum}"></a>
             </p>
-            <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+','+${vid}+');'">下一页</a>
+            <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+','+${shelfResource.vId}+');'">下一页</a>
             <span>到第</span>
             <input type="text" id="jump_num" onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')">
             <span>页</span>
-            <button th:onclick="@{'var pageNum=document.getElementById(\'jump_num\').value;if(pageNum>0){queryDeviceRecords(pageNum,'+${vid}+');}'}">确定</button>
+            <button th:onclick="@{'var pageNum=document.getElementById(\'jump_num\').value;if(pageNum>0){queryDeviceRecords(pageNum,'+${shelfResource.vId}+');}'}">确定</button>
         </div>
 
     </div>
 </section>
-
 
 <div th:insert="~{footer :: footer}"></div>
 <div th:include="common::commonFooter"></div>

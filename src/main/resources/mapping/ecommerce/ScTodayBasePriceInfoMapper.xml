@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScTodayBasePriceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScTodayBasePriceInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="price" property="price" jdbcType="REAL" />
+    <result column="review_price" property="reviewPrice" jdbcType="REAL" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="review_status" property="reviewStatus" jdbcType="TINYINT" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="adminid" property="adminid" jdbcType="INTEGER" />
+    <result column="review_date" property="reviewDate" jdbcType="TIMESTAMP" />
+    <result column="review_id" property="reviewId" jdbcType="INTEGER" />
+    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+    <result column="review_name" property="reviewName" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_today_basePrice_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScTodayBasePriceInfo" >
+    insert into sc_today_basePrice_info (id, `type`, price, 
+      review_price, pmid, `status`, 
+      review_status, `date`, create_date, 
+      adminid, review_date, review_id, 
+      admin_name, review_name)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, #{price,jdbcType=REAL}, 
+      #{reviewPrice,jdbcType=REAL}, #{pmid,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{reviewStatus,jdbcType=TINYINT}, #{date,jdbcType=DATE}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{adminid,jdbcType=INTEGER}, #{reviewDate,jdbcType=TIMESTAMP}, #{reviewId,jdbcType=INTEGER}, 
+      #{adminName,jdbcType=VARCHAR}, #{reviewName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScTodayBasePriceInfo" >
+    update sc_today_basePrice_info
+    set `type` = #{type,jdbcType=TINYINT},
+      price = #{price,jdbcType=REAL},
+      review_price = #{reviewPrice,jdbcType=REAL},
+      pmid = #{pmid,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=TINYINT},
+      review_status = #{reviewStatus,jdbcType=TINYINT},
+      `date` = #{date,jdbcType=DATE},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      adminid = #{adminid,jdbcType=INTEGER},
+      review_date = #{reviewDate,jdbcType=TIMESTAMP},
+      review_id = #{reviewId,jdbcType=INTEGER},
+      admin_name = #{adminName,jdbcType=VARCHAR},
+      review_name = #{reviewName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, `type`, price, review_price, pmid, `status`, review_status, `date`, create_date, 
+    adminid, review_date, review_id, admin_name, review_name
+    from sc_today_basePrice_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getTodayBasePriceLog" resultMap="BaseResultMap" >
+    select id, `type`, price, review_price, pmid, `status`, review_status, `date`, create_date, 
+    adminid, review_date, review_id, admin_name, review_name
+    from sc_today_basePrice_info
+    where pmid = #{pmid}
+    order by id desc
+  </select>
+
+
+  <select id="getTodayBasePrice" resultMap="BaseResultMap" >
+    select id, `type`, price, review_price, pmid, `status`, review_status, `date`
+    from sc_today_basePrice_info
+    where date = #{date,jdbcType=DATE} and status = 1 and pmid =#{pmid}
+  </select>
+
+  <select id="getTodayBasePriceReview" resultMap="BaseResultMap" >
+    select id, `type`, price, review_price, pmid, `status`, review_status, `date`
+    from sc_today_basePrice_info
+    where date = #{date,jdbcType=DATE} and status = 1 and pmid =#{pmid} and review_status = 1
+  </select>
+
+  <update id="setTodayBasePriceInvalid"  >
+    update sc_today_basePrice_info
+    set status = 0
+    <where>
+      date = #{date,jdbcType=DATE} and pmid =#{pmid}
+      <if test="reviewStatus!=0">
+        and review_status =#{reviewStatus}
+      </if>
+    </where>
+  </update>
+
+  <insert id="insertListData" parameterType="java.util.List" useGeneratedKeys="false">
+    insert into sc_today_basePrice_info
+    ( `type`, price, review_price, pmid, `status`, review_status, `date`, create_date, adminid, review_date, review_id, admin_name, review_name)
+    values
+    <foreach collection="list" item="item" index="index" separator ="," >
+      (#{item.type,jdbcType=INTEGER},
+      #{item.price,jdbcType=DOUBLE},
+      #{item.reviewPrice,jdbcType=DOUBLE},
+      #{item.pmid,jdbcType=INTEGER},
+      #{item.status,jdbcType=INTEGER},
+      #{item.reviewStatus,jdbcType=INTEGER},
+      #{item.date,jdbcType=DATE},
+      #{item.createDate,jdbcType=TIMESTAMP},
+      #{item.adminid,jdbcType=INTEGER},
+      #{item.reviewDate,jdbcType=TIMESTAMP},
+      #{item.reviewId,jdbcType=INTEGER},
+      #{item.adminName,jdbcType=VARCHAR},
+      #{item.reviewName,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+
+</mapper>

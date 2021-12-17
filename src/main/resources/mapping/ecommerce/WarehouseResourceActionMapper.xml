@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.WarehouseResourceActionMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.WarehouseResourceAction" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="w_id" property="wId" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="DOUBLE" />
+    <result column="reserved_num" property="reservedNum" jdbcType="DOUBLE" />
+    <result column="reserved_date" property="reservedDate" jdbcType="DATE" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="audit_userid" property="auditUserid" jdbcType="INTEGER" />
+    <result column="system_type" property="systemType" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_warehouse_resource_action
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.WarehouseResourceAction" >
+    insert into sc_warehouse_resource_action set create_time=NOW()
+    <if test="wId != null and wId != ''">
+      , w_id =#{wId}
+    </if>
+    <if test="num != null and num != ''">
+      , num =#{num}
+    </if>
+    <if test="reservedNum != null and reservedNum != ''">
+      , reserved_num =#{reservedNum}
+    </if>
+    <if test="reservedDate != null">
+      , reserved_date =#{reservedDate}
+    </if>
+    <if test="type != null and type != ''">
+      , type =#{type}
+    </if>
+    <if test="auditUserid != null and auditUserid != ''">
+      , audit_userid =#{auditUserid}
+    </if>
+    <if test="systemType != null and systemType != ''">
+      , system_type =#{systemType}
+    </if>
+    <if test="pmid != null and pmid != ''">
+      , pmid =#{pmid}
+    </if>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.WarehouseResourceAction" >
+    update sc_warehouse_resource_action
+    set w_id = #{wId,jdbcType=INTEGER},
+      num = #{num,jdbcType=DOUBLE},
+      reserved_num = #{reservedNum,jdbcType=DOUBLE},
+      reserved_date = #{reservedDate,jdbcType=DATE},
+      `type` = #{type,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      audit_userid = #{auditUserid,jdbcType=INTEGER},
+      system_type = #{systemType,jdbcType=INTEGER},
+      pmid = #{pmid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, w_id, num, reserved_num, reserved_date, `type`, create_time, audit_userid, 
+    system_type, pmid
+    from sc_warehouse_resource_action
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, w_id, num, reserved_num, reserved_date, `type`, create_time, audit_userid,
+    system_type, pmid
+    from sc_warehouse_resource_action
+  </select>
+
+  <select id="selectByResource" resultMap="BaseResultMap" >
+    select id, w_id, num, reserved_num, reserved_date, `type`, create_time, audit_userid,
+    system_type, pmid
+    from sc_warehouse_resource_action order by id desc
+  </select>
+</mapper>

@@ -8,9 +8,120 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>安徽钢之家供应链微电商平台</title>
+<script>
+	var jsonList=[
+    {"provice":"北京市","city":["东城区", "西城区", "朝阳区", "丰台区", "石景山区", "海淀区", "门头沟区", "房山区", "通州区", "顺义区", "昌平区", "大兴区", "怀柔区", "平谷区", "密云区", "延庆区"]},
+    {"provice":"天津市","city":["和平区", "河东区", "河西区", "南开区", "河北区", "红桥区", "东丽区", "西青区", "津南区", "北辰区", "武清区", "宝坻区", "滨海新区", "宁河区", "静海区", "蓟州区"]},
+    {"provice":"河北省","city":["石家庄市", "唐山市", "秦皇岛市", "邯郸市", "邢台市", "保定市", "张家口市", "承德市", "沧州市", "廊坊市", "衡水市"]},
+    {"provice":"山西省","city":["太原市", "大同市", "阳泉市", "长治市", "晋城市", "朔州市", "晋中市", "运城市", "忻州市", "临汾市", "吕梁市"]},
+    {"provice":"内蒙古自治区","city":["呼和浩特市", "包头市", "乌海市", "赤峰市", "通辽市", "鄂尔多斯市", "呼伦贝尔市", "巴彦淖尔市", "乌兰察布市", "兴安盟", "锡林郭勒盟", "阿拉善盟"]},
+    {"provice":"辽宁省","city":["沈阳市", "大连市", "鞍山市", "抚顺市", "本溪市", "丹东市", "锦州市", "营口市", "阜新市", "辽阳市", "盘锦市", "铁岭市", "朝阳市", "葫芦岛市"]},
+    {"provice":"吉林省","city":["长春市", "吉林市", "四平市", "辽源市", "通化市", "白山市", "松原市", "白城市", "延边朝鲜族自治州"]},
+    {"provice":"黑龙江省","city":["哈尔滨市", "齐齐哈尔市", "鸡西市", "鹤岗市", "双鸭山市", "大庆市", "伊春市", "佳木斯市", "七台河市", "牡丹江市", "黑河市", "绥化市", "大兴安岭地区"]},
+    {"provice":"上海市","city":["黄浦区", "徐汇区", "长宁区", "静安区", "普陀区", "虹口区", "杨浦区", "闵行区", "宝山区", "嘉定区", "浦东新区", "金山区", "松江区", "青浦区", "奉贤区", "崇明区"]},
+    {"provice":"江苏省","city":["南京市", "无锡市", "徐州市", "常州市", "苏州市", "南通市", "连云港市", "淮安市", "盐城市", "扬州市", "镇江市", "泰州市", "宿迁市"]},
+    {"provice":"浙江省","city":["杭州市", "宁波市", "温州市", "嘉兴市", "湖州市", "绍兴市", "金华市", "衢州市", "舟山市", "台州市", "丽水市"]},
+    {"provice":"安徽省","city":["合肥市", "芜湖市", "蚌埠市", "淮南市", "马鞍山市", "淮北市", "铜陵市", "安庆市", "黄山市", "滁州市", "阜阳市", "宿州市", "六安市", "亳州市", "池州市", "宣城市"]},
+    {"provice":"福建省","city":["福州市", "厦门市", "莆田市", "三明市", "泉州市", "漳州市", "南平市", "龙岩市", "宁德市"]},
+    {"provice":"江西省","city":["南昌市", "景德镇市", "萍乡市", "九江市", "新余市", "鹰潭市", "赣州市", "吉安市", "宜春市", "抚州市", "上饶市"]},
+    {"provice":"山东省","city":["济南市", "青岛市", "淄博市", "枣庄市", "东营市", "烟台市", "潍坊市", "济宁市", "泰安市", "威海市", "日照市", "莱芜市", "临沂市", "德州市", "聊城市", "滨州市", "菏泽市"]},
+    {"provice":"河南省","city":["郑州市", "开封市", "洛阳市", "平顶山市", "安阳市", "鹤壁市", "新乡市", "焦作市", "濮阳市", "许昌市", "漯河市", "三门峡市", "南阳市", "商丘市", "信阳市", "周口市", "驻马店市", "济源市"]},
+    {"provice":"湖北省","city":["武汉市", "黄石市", "十堰市", "宜昌市", "襄阳市", "鄂州市", "荆门市", "孝感市", "荆州市", "黄冈市", "咸宁市", "随州市", "恩施土家族苗族自治州", "仙桃市", "潜江市", "天门市", "神农架林区"]},
+    {"provice":"湖南省","city":["长沙市", "株洲市", "湘潭市", "衡阳市", "邵阳市", "岳阳市", "常德市", "张家界市", "益阳市", "郴州市", "永州市", "怀化市", "娄底市", "湘西土家族苗族自治州"]},
+    {"provice":"广东省","city":["广州市", "韶关市", "深圳市", "珠海市", "汕头市", "佛山市", "江门市", "湛江市", "茂名市", "肇庆市", "惠州市", "梅州市", "汕尾市", "河源市", "阳江市", "清远市", "东莞市", "中山市", "潮州市", "揭阳市", "云浮市"]},
+    {"provice":"广西壮族自治区","city":["南宁市", "柳州市", "桂林市", "梧州市", "北海市", "防城港市", "钦州市", "贵港市", "玉林市", "百色市", "贺州市", "河池市", "来宾市", "崇左市"]},
+    {"provice":"海南省","city":["海口市", "三亚市", "三沙市", "儋州市", "五指山市", "琼海市", "文昌市", "万宁市", "东方市", "定安县", "屯昌县", "澄迈县", "临高县", "白沙黎族自治县", "昌江黎族自治县", "乐东黎族自治县", "陵水黎族自治县", "保亭黎族苗族自治县", "琼中黎族苗族自治县"]},
+    {"provice":"重庆市","city":["万州区", "涪陵区", "渝中区", "大渡口区", "江北区", "沙坪坝区", "九龙坡区", "南岸区", "北碚区", "綦江区", "大足区", "渝北区", "巴南区", "黔江区", "长寿区", "江津区", "合川区", "永川区", "南川区", "璧山区", "铜梁区", "潼南区", "荣昌区", "开州区", "梁平区", "武隆区", "城口县", "丰都县", "垫江县", "忠县", "云阳县", "奉节县", "巫山县", "巫溪县", "石柱土家族自治县", "秀山土家族苗族自治县", "酉阳土家族苗族自治县", "彭水苗族土家族自治县"]},
+    {"provice":"四川省","city":["成都市", "自贡市", "攀枝花市", "泸州市", "德阳市", "绵阳市", "广元市", "遂宁市", "内江市", "乐山市", "南充市", "眉山市", "宜宾市", "广安市", "达州市", "雅安市", "巴中市", "资阳市", "阿坝藏族羌族自治州", "甘孜藏族自治州", "凉山彝族自治州"]},
+    {"provice":"贵州省","city":["贵阳市", "六盘水市", "遵义市", "安顺市", "毕节市", "铜仁市", "黔西南布依族苗族自治州", "黔东南苗族侗族自治州", "黔南布依族苗族自治州"]},
+    {"provice":"云南省","city":["昆明市", "曲靖市", "玉溪市", "保山市", "昭通市", "丽江市", "普洱市", "临沧市", "楚雄彝族自治州", "红河哈尼族彝族自治州", "文山壮族苗族自治州", "西双版纳傣族自治州", "大理白族自治州", "德宏傣族景颇族自治州", "怒江傈僳族自治州", "迪庆藏族自治州"]},
+    {"provice":"西藏自治区","city":["拉萨市", "日喀则市", "昌都市", "林芝市", "山南市", "那曲市", "阿里地区"]},
+    {"provice":"陕西省","city":["西安市", "铜川市", "宝鸡市", "咸阳市", "渭南市", "延安市", "汉中市", "榆林市", "安康市", "商洛市"]},
+    {"provice":"甘肃省","city":["兰州市", "嘉峪关市", "金昌市", "白银市", "天水市", "武威市", "张掖市", "平凉市", "酒泉市", "庆阳市", "定西市", "陇南市", "临夏回族自治州", "甘南藏族自治州"]},
+    {"provice":"青海省","city":["西宁市", "海东市", "海北藏族自治州", "黄南藏族自治州", "海南藏族自治州", "果洛藏族自治州", "玉树藏族自治州", "海西蒙古族藏族自治州"]},
+    {"provice":"宁夏回族自治区","city":["银川市", "石嘴山市", "吴忠市", "固原市", "中卫市"]},
+    {"provice":"新疆维吾尔自治区","city":["乌鲁木齐市", "克拉玛依市", "吐鲁番市", "哈密市", "昌吉回族自治州", "博尔塔拉蒙古自治州", "巴音郭楞蒙古自治州", "阿克苏地区", "克孜勒苏柯尔克孜自治州", "喀什地区", "和田地区", "伊犁哈萨克自治州", "塔城地区", "阿勒泰地区", "石河子市", "阿拉尔市", "图木舒克市", "五家渠市", "铁门关市"]},
+    {"provice":"香港","city":["香港"]},
+    {"provice":"澳门","city":["澳门"]}];
+
+    window.onload = function() {	
+      loadCityData();
+	  $(".provinceTarget").change(function(){
+        $(".cityTarget").empty();
+        var opt=$(".provinceTarget option:selected").attr("data-index");
+//        console.log(opt);
+        if(opt == "-1"){
+            city="<option data-index='-1' value='城市'>城市</option>";
+            $(".cityTarget").append(city);
+        }else{
+            
+            var length=jsonList[opt].city.length;
+        
+            for(var j=0;j<length;j++){
+                city="<option data-index="+j+" value="+jsonList[opt].city[j]+">"+jsonList[opt].city[j]+"</option>";
+                $(".cityTarget").append(city);
+            }
+        }
+        
+
+    });
+    }
+    
+
+    
+    
+
+	/*    资料添加*/
+var provice="";
+var city="";
+function loadCityData(){
+
+    for(var i=0;i<jsonList.length;i++){
+        provice="<option data-index="+i+" value='"+jsonList[i].provice+"'>"+jsonList[i].provice+"</option>";
+        $(".provinceTarget").append(provice);
+    }
+    /*for(var j=0;j<jsonList[0].city.length;j++){
+        city="<option data-index="+j+" value="+jsonList[0].city[j]+">"+jsonList[0].city[j]+"</option>";
+        $(".cityTarget").append(city);
+    }*/
+}
 
 
-		<!-- sreach 下拉 start -->
+//更新省份和城市
+function updateLocationInfo(proviceName,cityName){
+    
+    var pIndex = -1;
+    for(var i=0;i<jsonList.length;i++){
+        if(jsonList[i].provice.indexOf(proviceName) != -1){
+            pIndex = i;
+            $(".provinceTarget").empty();
+            for(var j=0;j<jsonList.length;j++){
+                provice="<option data-index="+j+" value='"+jsonList[j].provice+"'>"+jsonList[j].provice+"</option>";
+                if(j == pIndex){
+                    provice="<option data-index="+j+" selected value='"+jsonList[j].provice+"'>"+jsonList[j].provice+"</option>";    
+                }
+                $(".provinceTarget").append(provice);
+            }
+            
+            $(".cityTarget").empty();
+            var cLen=jsonList[pIndex].city.length;
+            
+            for(var w=0;w<cLen;w++){
+                city="<option data-index="+w+" value="+jsonList[pIndex].city[w]+">"+jsonList[pIndex].city[w]+"</option>";
+                if(jsonList[pIndex].city[w] == cityName){
+                    city="<option data-index="+w+" selected value="+jsonList[pIndex].city[w]+">"+jsonList[pIndex].city[w]+"</option>";
+                }
+                $(".cityTarget").append(city);
+            }
+            
+            
+            break;
+        }
+    }
+    
+    
+}
+	</script>
 </head>
 
 <div th:insert="~{header :: header}"></div>	
@@ -18,7 +129,7 @@
 <div class="registered" >	
 <div class="pozition"><p>当前位置：会员注册</p></div>
 <h4>基本信息</h4>
-<form action="/register/registerAddAction" name="regform" id="regform" method="POST" enctype="multipart/form-data"  onsubmit="return check()">
+<form action="/register/registerAddAction" name="regform" id="regform" method="POST" enctype="multipart/form-data" onsubmit="return check()">
 		<table class="Information" cellspacing="0" cellpadding="0" border="0">
 			
 		<tbody>
@@ -26,23 +137,22 @@
 			
 			<td><span>*</span>姓   名</td>
 			<td><input type="text"  name="real_name"></td>
-			<td><span>*</span>昵   称</td>
-			<td><input type="text"  name="nick_name"></td>
+
 			</tr>
 				<tr>
 			<td><span>*</span>用户名</td>
 			<td><input type="text"   name="user_name" autocomplete="new-text" onchange="ajaxcheckuname(this.value)" ></td>
 			<td><span>*</span>密 码</td>
-			<td><input type="password" name="password" autocomplete="new-password" onchange="onblurcheckpassword(this.value);"  ></td>
+			<td><input type="password" name="password" autocomplete="new-password" onchange="onblurcheckpassword(this.value);" style="width: 150px;" > <span style="font-size: 12px;color: #ff0000;">6~16位字母数字下划线，不能以数字开头</span></td>
 			</tr>
 				<tr>
-			<td><span>*</span>交易密码</td>
+			<td><span>*</span>确认密码</td>
 			<td ><input type="password" name="pay_password"   onchange="onblurcheckpassword2(this.value);"> </td>
 			<td><span>*</span>手机号</td>
 			<td ><input type="text" name="mobile" onchange="ajaxchecktel(this.value)" > </td>
 			</tr>
 				<tr>
-			<td><span>*</span>身份证号</td>
+			<td>身份证号</td>
 			<td ><input type="text" name="idcard"  onchange="onblurcheckidcard(this.value);"  > </td>
 			<td>&nbsp; 邮   箱</td>
 			<td ><input type="text" name="email" > </td>
@@ -56,12 +166,7 @@
 				<option value="2">女</option>
 			</select></td>
 			</tr>
-			<tr>
-			<td><span>*</span>地    址</td>
-			<td colspan="3"><input type="text" name="address_user" > </td>
-			
-			</tr>
-			
+
 		</tbody>	
 </table>
 	
@@ -76,29 +181,92 @@
 			<td><input type="text" name="com_name_short"></td>
 			</tr>
 				<tr>
-			<td><span>*</span>公司描述</td>
+			<td>公司描述</td>
 			<td colspan="3"><textarea name="com_desc" ></textarea></td>
 			
 			</tr>
 				<tr>
 			<td><span>*</span>省   份</td>
-			<td><input type="text" name="address_state"></td>
+			<td>
+				<select  class="provinceTarget inputEle selectTag" name="address_state" style ="height: 27px;min-width: 173px; text-indent: 10px;color: #666666;">
+					<option data-index="-1" value="省份">省份</option>
+					</span>
+				  </select>
+			
+			
+			</td>
 			<td><span>*</span>城   市</td>
-			<td><input type="text" name="address_city"></td>
+			<td>
+				<select class="cityTarget inputEle selectTag"  name="address_city" style ="height: 27px;min-width: 173px; text-indent: 10px;color: #666666;">
+				<option data-index="-1" value="城市">城市</option>
+			</select>
+		    </td>
 			</tr>
 				<tr>
-			<td><span>*</span>详细地址</td>
+			<td>详细地址</td>
 			<td colspan="3"><input type="text" name="address"></td>
 			
 			</tr>
 				<tr>
 			<td>&nbsp; 三证附件</td>
 			 <td><input type="file" name="file"></td>
-			
+
 			</tr>
 			
-		</tbody>	
+		</tbody>
+
 </table>
+
+<h4>发票信息</h4>
+<table class="Information" cellspacing="0" cellpadding="0" border="0">
+
+	<tbody>
+	<tr>
+		<td>名  称</td>
+		<td><input type="text" name="rise" id="rise"></td>
+		<td>税  号</td>
+		<td ><input type="text" name="taxnum" id="taxnum"> </td>
+	</tr>
+	<tr>
+		<td>邮寄地址</td>
+		<td ><input type="text" name="addressMail" id="addressMail"> </td>
+		<td>公司地址</td>
+		<td ><input type="text" name="addressCompany" id="addressCompany"> </td>
+
+	</tr>
+	<tr>
+		<td>开户银行</td>
+		<td ><input type="text" name="openBank" id="openBank"> </td>
+		<td>银行账号</td>
+		<td ><input type="text" name="account" id="account"> </td>
+
+	</tr>
+	<tr>
+		<td>电  话</td>
+		<td ><input type="text" name="phone"  id="phone" > </td>
+		<td>是否默认抬头</td>
+		<td >
+		<select name="isdefault" style="width: 70%; color: #3333338c; padding: 8px 20px; margin: 12px auto; display: inline-block;border: 1px solid #ccc; border-radius: 0px;box-sizing: border-box;">
+				<option  value="0">否</option>
+				<option  value="1">是</option>
+		</select>
+		
+		</td>
+	 
+	</tr>
+	<tr>
+		<td>发票代码</td>
+		<td ><input type="text" name="invoiceCode" id="invoiceCode"> </td>   
+	<td>备注说明</td>
+	<td ><input type="text" name="remark" id="remark"> </td>    
+   </tr> 
+	</tbody>
+</table>
+</table>
+
+
+
+                <input type="hidden" name="pmid" id = "pmid" th:value = "${pmid}">  
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 				<input type="hidden" name="erro" id = "erro" value = "">
 	<div class="save"><input type="submit" value="保存"  id="ty" style="background: #FF6632;color: white;width: 300px;height: 30px;border: 0;cursor:pointer;"></div>
@@ -120,11 +288,7 @@ function check(){
 		f.user_name.focus();
 		return false;
 	}
-	if( f.nick_name.value == '' ){
-	    alert("请输入昵称");
-		f.nick_name.focus();
-		return false;
-	}
+
     if( f.password.value == '' ){
         alert("请输入密码");
 		f.password.focus();
@@ -140,43 +304,33 @@ function check(){
 
 
 	if( f.pay_password.value == '' ){
-        alert("请输入交易密码");
+        alert("请确认密码");
 		f.pay_password.focus();
         return false;
     }
-	var pay_password=f.pay_password.value.replace(/\s*/g,"");
-	if(f.pay_password.value.length < 6 ){
-	alert("请输入六位以上的交易密码");
-	f.pay_password.focus();
-        return false;
-        }
+
    
     if( f.mobile.value == '' ){
         alert("请输入手机号码");
 		f.mobile.focus();
         return false;
     }
-	if(!(/^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z_][A-Za-z_0-9]{0,}$/).test(f.user_name.value)) {
-        alert("用户名长度应该为6～18位，且不能包含字母数字下划线以外的字符");
+	if(!(/^[0-9a-zA-Z_]{1,}$/).test(f.user_name.value)) {
+        alert("用户名只能包含数字、字母、下划线");
 		f.user_name.focus();
         return false;
         }
 
 	if( f.idcard.value == '' ){
-        alert("请输入身份证号");
-		f.idcard.focus();
-        return false;
+        //alert("请输入身份证号");
+		f.idcard.value = 0;
     }
-	if(f.idcard.value.length != 18){
+	if(f.idcard.value.length != "" && f.idcard.value != "0"){
 		alert("身份证号码长度错误");
 		f.idcard.focus();
         return false;
         }
-	if( f.address_user.value == '' ){
-	    alert("请输入地址");
-		f.address_user.focus();
-		return false;
-	}
+
 	if( f.com_name.value == '' ){
 	    alert("请输入公司名称");
 		f.com_name.focus();
@@ -188,11 +342,7 @@ function check(){
 		f.com_name_short.focus();
 		return false;
 	}
-	if( f.com_desc.value == '' ){
-	    alert("请输入公司描述");
-		f.com_desc.focus();
-		return false;
-	}
+
 	if( f.address_state.value == '' ){
 	    alert("请输入省份");
 		f.address_state.focus();
@@ -204,15 +354,11 @@ function check(){
 		return false;
 	}
 	if( f.address.value == '' ){
-	    alert("请输入详细地址");
-		f.address.focus();
-		return false;
+	  //  alert("请输入详细地址");
+	  f.address.value = 0;
+		//return false;
 	}
-	if( f.erro.value == '0' ){
-	    alert("有信息填写错误，请检查！");
-		//f.com_name.focus();
-		return false;
-	}
+
 	　return true;
 }
 
@@ -230,8 +376,8 @@ function ajaxcheckuname(name){
             return;
         }
 	  
-        if(!(/^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z_][A-Za-z_0-9]{0,}$/).test(name)) {
-        alert("用户名长度应该为6～18位，且不能包含字母数字下划线以外的字符");
+        if(!(/^[0-9a-zA-Z_]{1,}$/).test(name)) {
+        alert("用户名只能包含数字、字母、下划线");
 			f.user_name.focus();
             return;
         }
@@ -279,8 +425,9 @@ function onblurcheckpassword(i){
 	var f = document.forms["regform"];
 	//var regPwd = /^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z_][A-Za-z_0-9]{5,16}$/;
 	var pay_password=f.pay_password.value.replace(/\s*/g,"");
-	if(f.pay_password.value.length < 6 ){
-	alert("请输入六位以上的交易密码");
+	var password=f.password.value.replace(/\s*/g,"");
+	if( pay_password != password ){
+	   alert("两次密码输入不同,请重新输入!");
 		document.getElementById('erro').value = 1;
         }
 		else{
@@ -335,6 +482,10 @@ function onblurcheckpassword(i){
             }
         });
 }
+
+
+    
+
 
 </script> 
 

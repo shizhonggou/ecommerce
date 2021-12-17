@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta http-equiv="X-UA-Compatible" content="IEedge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<title>安徽钢之家供应链微电商平台</title>
+<script>
+	document.createElement('header');
+	document.createElement('section');
+	document.createElement('footer');
+</script>
+<style>
+	header,section,footer{ display:block;}
+	#errormsg {margin-left:70px; color:red;}
+	#logout {float:right; color:grey;cursor:pointer}
+</style>
+  <link rel="stylesheet" type="text/css" href="/css/base.css">
+    <script src="/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="/js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+	    <!-- tab -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				jQuery.jqtab = function(tabtit,tab_conbox,shijian) {
+					$(tab_conbox).find("li").hide();
+					$(tabtit).find("li:first").addClass("thistab").show();
+					$(tab_conbox).find("li:first").show();
+	
+					$(tabtit).find("li").bind(shijian,function(){
+					  $(this).addClass("thistab").siblings("li").removeClass("thistab");
+						var activeindex = $(tabtit).find("li").index(this);
+						$(tab_conbox).children().eq(activeindex).show().siblings().hide();
+						return false;
+					});
+				};
+				/* 调用方法如下 */
+				$.jqtab("#tabs","#tab_conbox","click");
+				$.jqtab("#tabs1","#tab_conbox1","mouseenter");
+				$.jqtab("#tabs2","#tab_conbox2","mouseenter");
+				$.jqtab("#tabs3","#tab_conbox3","mouseenter");
+				$.jqtab("#tabs4","#tab_conbox4","mouseenter");
+				$.jqtab("#tabs5","#tab_conbox5","mouseenter");
+				$.jqtab("#tabs6","#tab_conbox6","mouseenter");
+				$.jqtab("#tabs7","#tab_conbox7","mouseenter");
+				$.jqtab("#tabs8","#tab_conbox8","mouseenter");
+				$.jqtab("#tabs9","#tab_conbox9","mouseenter");
+				$.jqtab("#tabs10","#tab_conbox10","mouseenter");
+			});
+		</script>
+		<!-- sreach 下拉 start -->
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+			$('.son_ul').hide(); //初始ul隐藏
+			$('.select_box span').hover(function(){ //鼠标移动函数
+			$(this).parent().find('ul.son_ul').slideDown();  //找到ul.son_ul显示
+			$(this).parent().find('li').hover(function(){$(this).addClass('hover')},function(){$(this).removeClass('hover')}); //li的hover效果
+			$(this).parent().hover(function(){},
+			 function(){
+				 $(this).parent().find("ul.son_ul").slideUp(); 
+				 }
+			 );
+			},function(){}
+			);
+			$('ul.son_ul li').click(function(){
+			$(this).parents('li').find('span').html($(this).html());
+			$(this).parents('li').find('ul').slideUp();
+			});
+			}
+			);
+		</script>
+		<!-- sreach 下拉 end -->
+	<!-- 登录切换  start -->
+	<script type="text/javascript">
+function setTab(name,cursel){
+	cursel_0=cursel;
+	for(var i=1; i<=links_len; i++){
+		var menu = document.getElementById(name+i);
+		var menudiv = document.getElementById("con_"+name+"_"+i);
+		if(i==cursel){
+			menu.className="off";
+			menudiv.style.display="block";
+		}
+		else{
+			menu.className="";
+			menudiv.style.display="none";
+		}
+	}
+}
+function Next(){                                                        
+	cursel_0++;
+	if (cursel_0>links_len)cursel_0=1
+	setTab(name_0,cursel_0);
+} 
+var name_0='one';
+var cursel_0=1;
+var ScrollTime=10000;//循环周期（毫秒）
+var links_len,iIntervalId;
+onload=function(){
+	var links = document.getElementById("tab1").getElementsByTagName('li')
+	links_len=links.length;
+	for(var i=0; i<links_len; i++){
+		links[i].onmouseover=function(){
+			clearInterval(iIntervalId);
+			this.onmouseout=function(){
+			//	iIntervalId = setInterval(Next,ScrollTime);;
+			}
+		}
+	}
+	document.getElementById("con_"+name_0+"_"+links_len).parentNode.onmouseover=function(){
+		clearInterval(iIntervalId);
+		this.onmouseout=function(){
+		//	iIntervalId = setInterval(Next,ScrollTime);;
+		}
+	}
+	setTab(name_0,cursel_0);
+//	iIntervalId = setInterval(Next,ScrollTime);
+}
+</script>
+
+		<!-- 登录切换  end -->
+</head>
+<div th:insert="~{header :: header}"></div>
+<section>
+<div class="login" >
+	
+<div class="tab1" id="tab1">
+
+	<div id="errormsg"></div>
+	<div class="menu">
+		<ul>
+		
+			<li id="one1" >找回密码</li>
+			
+		</ul>
+	</div>
+	<div class="menudiv">
+
+		
+		
+		<div id="con_one_1" style="display:none;">
+			<input type="tel" id="tel" placeholder="您的手机号码">
+			<span class="yz2"><input type="button" id="smsMsg1" name="smsMsg1"   value="获取验证码" onclick="sendSmsMsg();" style="background-color: #FF7A4D;color: white;padding: 12px 20px;margin: 12px auto;border: none;border-radius: 0px;cursor: pointer;"></span>
+			<input type="text" id="mobileVcode" placeholder="请输入验证码" style="width: 60%; float: left;padding: 12px 20px;margin: 12px auto;display: inline-block;border: 1px solid #ccc;border-radius: 0px;box-sizing: border-box;">
+            <input type="password" id="newpassword" name="newpassword" placeholder="请输入新密码">
+			<input type="submit" value="提交"  onclick="smslogin();">
+			
+			</div>
+		
+	</div>
+</div>
+</div>
+<input type="hidden" id="callback" th:value="${param.callback}" value="/" />
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+<body>
+<script type="text/javascript">
+    function login() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var username = $("#username").val();
+        var password = $("#password").val();
+      //  var rememberme = $("#remember-me").val();
+	//	alert(password);
+        //var username =
+        $.ajax({
+            url: "/login",
+            type: "POST",
+            dataType:"json",
+            data: {"username": username, "password": password, },
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header,token);
+            },
+            success: function(data) {
+                if(data.status==200){
+                    var callback = $("#callback").val();
+                    if(callback == ""){
+                        if(data.jumpTo == ""){
+                            window.location.href = "/index";
+                        }else {
+                            window.location.href = data.jumpTo;
+                        }
+                    }else{
+                        window.location.href = callback;
+                    }
+                }else {
+                    $("#errormsg").text(data.msg);
+                }
+            },
+            error: function (xhr,ajaxOptions, thrownError) {
+                console.log(xhr.status + ": " + thrownError);
+            }
+        });
+    }
+
+    function logout(){
+        $.ajax({
+            url: "/logout",
+            type: "GET",
+            dataType:"json",
+            success: function(data) {
+                if(data.status==200){
+                    window.location.href = "/login_p";
+                }else {
+                    $("#errormsg").text(data.msg);
+                }
+            },
+            error: function (xhr,ajaxOptions, thrownError) {
+                console.log(xhr.status + ": " + thrownError);
+            }
+        });
+    }
+	function smslogin() {
+                       
+                       var tel = $("#tel").val();
+                       var mobileVcode = $("#mobileVcode").val();
+                       var newpassword = $("#newpassword").val();
+                       if(newpassword == ''){
+                        alert("请输入新密码");
+                        return false;
+                       }
+                       var regPwd = /^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z_][A-Za-z_0-9]{5,16}$/;
+	                   var password2=newpassword.replace(/\s*/g,"");
+                      if(!regPwd.test(password2)){
+                        alert("请输入正确的密码（6~16位字母数字下划线，不能以数字开头）");
+                            return false;
+                            }
+					   var token = $("meta[name='_csrf']").attr("content");
+        			var header = $("meta[name='_csrf_header']").attr("content");
+                       //var username =
+                       $.ajax({
+                           url: "/smslogin2",
+                           type: "POST",
+                           dataType:"json",
+                           data: {"tel": tel, "mobileVcode": mobileVcode,"newpassword": newpassword,"[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"},
+                          
+                           success: function(data) {
+                              
+                               if(data.Success==1){
+								usname= data.username;
+								pwd=data.password;   
+                                        
+			$.ajax({
+            url: "/login",
+            type: "POST",
+            dataType:"json",
+            data: {"username": usname, "password": pwd},
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header,token);
+            },
+            success: function(data2) {
+                if(data2.status==200){
+                    var callback = $("#callback").val();
+                    if(callback == ""){
+                        if(data2.jumpTo == ""){
+                            window.location.href = "/index";
+                        }else {
+                            window.location.href = data2.jumpTo;
+                        }
+                    }else{
+                        window.location.href = callback;
+                    }
+                }else {
+                    $("#errormsg").text(data2.msg);
+                }
+            },
+            error: function (xhr,ajaxOptions, thrownError) {
+                console.log(xhr.status + ": " + thrownError);
+            }
+        });
+							//	alert(111);
+                               }else {
+                                   alert(data.Message);
+                                   
+                               }
+                           },
+                           error: function (xhr,ajaxOptions, thrownError) {
+                               console.log(xhr.status + ": " + thrownError);
+                           }
+                       });
+                   } 
+                   function sendSmsMsg() 
+                    {
+                        var tel = $("#tel").val();
+                        if(tel == "" || tel == null) {
+                            alert("请填写有效手机号");
+                            return false;
+                        } else if(!/^1[0123456789]\d{9}$/i.test(tel)) {
+                            alert("手机号错误，请重新填写");
+                            return false;
+                        } 
+                        timeSms()
+                        document.getElementById("smsMsg1").setAttribute("disabled", true);
+                        $.ajax({
+                            url: "/getsmscode",
+                            type: "POST",
+                            dataType:"json",
+                            data: {"tel": tel,"[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"},
+                           
+                            success: function(data) {
+                                document.getElementById("smsMsg1").removeAttribute("disabled");
+                                if(data.Message!="验证码发送成功")
+                                {
+                                    alert(data.Message);  
+                                }
+                                else
+                                {
+                                    timeSms();
+                                }
+                                
+                            },
+                            error: function (xhr,ajaxOptions, thrownError) {
+                                console.log(xhr.status + ": " + thrownError);
+                            }
+                        });
+
+                    }
+                 var wait = 120;
+                // 短信验证 码
+                function timeSms() {
+                    var sms = document.getElementById('smsMsg1');
+                    if(wait == 0) {
+                        sms.setAttribute("onclick", "sendSmsMsg()");
+                        sms.disabled = false;
+                       // document.getElementById('mobileVcode').style.width = "199px";
+                        //sms.style.width = "105px";
+                        //sms.style.background = "#428ffa";
+                       // sms.style.cursor = "pointer";
+                        sms.value = "获取验证码";
+                        wait = 120;
+                    } else {
+                        sms.setAttribute("onclick", "");
+                        //sms.style.background = "gray";
+                       // sms.style.cursor = "default";
+                        sms.value = "已发送(" + wait + ")s";
+                        wait--;
+                        setTimeout(function() {
+                                    timeSms();
+                                },
+                                1000);
+                    }
+
+                }
+                   
+
+</script>
+</body>
+</html>

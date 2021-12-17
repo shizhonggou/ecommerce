@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScPurchasBaseMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScPurchasBase" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="resource_id" property="resourceId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="kind" property="kind" jdbcType="INTEGER" />
+    <result column="distribute_num" property="distributeNum" jdbcType="DOUBLE" />
+    <result column="purchase_num" property="purchaseNum" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="depository" property="depository" jdbcType="VARCHAR" />
+    <result column="purchase_amount" property="purchaseAmount" jdbcType="DOUBLE" />
+    <result column="purchase_user_id" property="purchaseUserId" jdbcType="INTEGER" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+    <result column="supplier_mid" property="supplierMid" jdbcType="INTEGER" />
+    <result column="purchase_time" property="purchaseTime" jdbcType="TIMESTAMP" />
+    <result column="audit_user_id" property="auditUserId" jdbcType="INTEGER" />
+    <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+     <association property="scshelfResource" javaType="com.isechome.ecommerce.entity.ScShelfResource"> 
+      <result column="variety_name" jdbcType="VARCHAR" property="varietyName" />
+      <result column="material" jdbcType="VARCHAR" property="material" />
+      <result column="specification" jdbcType="VARCHAR" property="specification" />
+      <result column="factory" jdbcType="VARCHAR" property="factory" />
+      <result column="warehouse" jdbcType="VARCHAR" property="warehouse" />
+      <result column="sold_num" jdbcType="DOUBLE" property="soldNum" />
+      <result column="snum" jdbcType="DOUBLE" property="num" />
+      <result column="status" jdbcType="INTEGER" property="status" />
+      <result column="type" jdbcType="INTEGER" property="type" />
+      <result column="pmid" jdbcType="INTEGER" property="pmid" />
+    </association>
+  </resultMap>
+  <resultMap id="lpResultMap" type="com.isechome.ecommerce.entity.ScPurchasBase" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="distribute_num" property="distributeNum" jdbcType="DOUBLE" />
+    <result column="purchase_num" property="purchaseNum" jdbcType="DOUBLE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_purchaseorder_management_base
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScPurchasBase" >
+   <selectKey keyProperty="id"  order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    insert into sc_purchaseorder_management_base ( `date`, resource_id, 
+      `type`, kind, distribute_num, 
+      purchase_num, price, depository, 
+      purchase_amount, purchase_user_id, supplier_name, 
+      supplier_mid, purchase_time, audit_user_id, 
+      audit_time, create_user_id, create_time
+      )
+    values ( #{date,jdbcType=DATE}, #{resourceId,jdbcType=INTEGER}, 
+      #{type,jdbcType=TINYINT}, #{kind,jdbcType=INTEGER}, #{distributeNum,jdbcType=DOUBLE}, 
+      #{purchaseNum,jdbcType=DOUBLE}, #{price,jdbcType=DOUBLE}, #{depository,jdbcType=VARCHAR}, 
+      #{purchaseAmount,jdbcType=DOUBLE}, #{purchaseUserId,jdbcType=INTEGER}, #{supplierName,jdbcType=VARCHAR}, 
+      #{supplierMid,jdbcType=INTEGER}, #{purchaseTime,jdbcType=TIMESTAMP}, #{auditUserId,jdbcType=INTEGER}, 
+      #{auditTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}, NOW()
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScPurchasBase" >
+    update sc_purchaseorder_management_base
+    set `date` = #{date,jdbcType=DATE},
+      resource_id = #{resourceId,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=TINYINT},
+      kind = #{kind,jdbcType=INTEGER},
+      distribute_num = #{distributeNum,jdbcType=DOUBLE},
+      purchase_num = #{purchaseNum,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DOUBLE},
+      depository = #{depository,jdbcType=VARCHAR},
+      purchase_amount = #{purchaseAmount,jdbcType=DOUBLE},
+      purchase_user_id = #{purchaseUserId,jdbcType=INTEGER},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
+      supplier_mid = #{supplierMid,jdbcType=INTEGER},
+      purchase_time = #{purchaseTime,jdbcType=TIMESTAMP},
+      audit_user_id = #{auditUserId,jdbcType=INTEGER},
+      audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, `date`, resource_id, `type`, kind, distribute_num, purchase_num, price, 
+    depository, purchase_amount, purchase_user_id, supplier_name, supplier_mid, purchase_time, 
+    audit_user_id, audit_time, create_user_id, create_time
+    from sc_purchaseorder_management_base
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, `date`, resource_id, `type`, kind, distribute_num, purchase_num, price, 
+    depository, purchase_amount, purchase_user_id, supplier_name, supplier_mid, purchase_time, 
+    audit_user_id, audit_time, create_user_id, create_time
+    from sc_purchaseorder_management_base
+  </select>
+
+
+  
+
+  <insert id="insertPurchasBase" parameterType="com.isechome.ecommerce.entity.ScPurchasBase" >
+    insert into sc_purchaseorder_management_base set create_time = NOW()
+     <if test="date != null">
+      , date =#{date}
+    </if>
+    <if test="resourceId != null and resourceId != ''">
+      , resource_id =#{resourceId}
+    </if>
+    <if test="type != null and type != ''">
+      , type =#{type}
+    </if>
+    <if test="kind != null and kind != ''">
+      , kind =#{kind}
+    </if>
+    <if test="purchaseNum != null and purchaseNum != ''">
+      , purchase_num =#{purchaseNum}
+    </if>
+    <if test="price != null and price != ''">
+      , price =#{price}
+    </if>
+    <if test="depository != null and depository != ''">
+      , depository =#{depository}
+    </if>
+    <if test="createUserId != null and createUserId != ''">
+      , create_user_id =#{createUserId}
+    </if>
+  </insert>
+
+
+
+  <select id="selectByResourceId" resultMap="BaseResultMap" >
+    select * from sc_purchaseorder_management_base where kind=1 and resource_id=#{resource_id,jdbcType=INTEGER}
+  </select>
+
+  <update id="updatePurchaseNumByid" parameterType="com.isechome.ecommerce.entity.ScPurchasBase" >
+    update sc_purchaseorder_management_base set purchase_num=#{purchase_num,jdbcType=DOUBLE} where id= #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getPurchasBaseList" resultMap="BaseResultMap" >
+    select base.*,res.variety_name, res.material, res.specification, res.factory, res.warehouse
+    from sc_purchaseorder_management_base base LEFT JOIN sc_shelf_resource res ON base.resource_id=res.id 
+    
+    <where>
+       res.pmid=#{pmid,jdbcType=INTEGER} and base.type=#{type}
+
+      <if test="supplier_mid != null and supplier_mid!=''">
+        and base.supplier_mid=#{supplier_mid}
+      </if>
+      <if test="supplierName != null and supplierName!=''">
+        and base.supplier_name like '%${supplierName}%'
+      </if>
+      <if test="varietyName != null and varietyName!=''">
+        and res.variety_name like '%${varietyName}%'
+      </if>
+
+      <if test="Material != null and Material!=''">
+        and res.material like '%${Material}%'
+      </if>
+
+      <if test="Spec != null and Spec!=''">
+        and res.specification like '%${Spec}%'
+      </if>
+
+      <if test="origin_code!=null and origin_code!=''">
+        and res.factory like '%${origin_code}%'
+      </if>
+      <if test="warehouse!=null and warehouse!=''">
+        and res.warehouse like '%${warehouse}%'
+      </if>
+      <if test="stime!=null and stime!=''">
+        AND base.create_time &gt;= #{stime}
+      </if>
+      <if test="etime!=null and etime!=''">
+        AND base.create_time &lt;= #{etime}
+      </if>
+
+      order by base.id desc
+      
+      </where>
+  </select>
+
+
+  <update id="updatePurchaseById" parameterType="com.isechome.ecommerce.entity.ScPurchasBase" >
+    update sc_purchaseorder_management_base
+
+    <set>
+      <if test="type != null and type != ''">
+          type =#{type} ,
+      </if>
+      <if test="purchaseAmount != null and purchaseAmount != ''">
+          purchase_amount =#{purchaseAmount} ,
+      </if>
+      <if test="purchaseUserId != null and purchaseUserId != ''">
+          purchase_user_id =#{purchaseUserId} ,
+      </if>
+      <if test="supplierMid != null and supplierMid != ''">
+          supplier_mid =#{supplierMid} ,
+      </if>
+      <if test="supplierName != null and supplierName != ''">
+          supplier_name =#{supplierName} ,
+      </if>
+      <if test="auditUserId != null and auditUserId != ''">
+          audit_user_id =#{auditUserId} ,audit_time=NOW(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+  <select id="getPurchaseIdBymoney"  resultType="java.lang.Integer">
+    select purchase.id  from sc_purchaseorder_management_base purchase LEFT JOIN sc_shelf_resource resource ON purchase.resource_id=resource.id
+    where resource.pmid= #{pmid,jdbcType=INTEGER} and  purchase.type=4 and  supplier_mid=#{supplier_mid,jdbcType=INTEGER} and   purchase_amount=#{purchase_amount,jdbcType=DOUBLE} order by purchase.create_time desc limit 1
+  </select>
+
+
+  <update id="purchaseMoneyMach" parameterType="com.isechome.ecommerce.entity.ScPurchasBase" >
+    update sc_purchaseorder_management_base set `type` = #{type,jdbcType=TINYINT} where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectUnassignedList" resultMap="lpResultMap" parameterType="java.lang.Integer">
+    select lp.id,lp.distribute_num,lp.purchase_num,lp.type
+    from sc_purchaseorder_management_base lp,sc_shelf_resource sr,sc_warehouse_resource wr where
+    lp.resource_id=sr.id and sr.w_id=wr.id and lp.type='5' and lp.kind='1' and wr.id=#{id}
+  </select>
+
+  <update id="updateByMatchResource" parameterType="com.isechome.ecommerce.entity.ScPurchasBase" >
+    update sc_purchaseorder_management_base
+    set  distribute_num =#{distributeNum}
+    <if test="type != null and type != ''">
+      ,type =#{type}
+    </if>
+    where id = #{id}
+  </update>
+
+</mapper>

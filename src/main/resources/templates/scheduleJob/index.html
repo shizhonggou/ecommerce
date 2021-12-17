@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>任务调度管理</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <script type="text/javascript" th:src="@{/js/layui/layui.all.js}"></script>
+    <link th:href="@{/js/layui/css/layui.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+    <style>
+        .steel_list_table input[type="text"] {
+            border: 1px solid #dedede;
+            text-align: center;
+            padding: 1px 2px;
+            width: 50px;
+            height: 22px;
+        }
+
+        .ss input, .ss select {
+            border: 1px solid #dedede;
+            width: 95px;
+            height: 28px;
+            line-height: 28px;
+            padding: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<section>
+    <div class="main w1000">
+        <div th:insert="~{left :: left('joblist')}"></div>
+        <aside>
+            <div class="resources">
+                <div class="resources_tt" th:include="common::varietyTag2"></div>
+
+                <div class="pozition">
+                    <p>当前位置：会员中心 &gt; 系统管理 &gt; 任务调度管理</p>
+                </div>
+
+                <section>
+                    <div class="steel_list w830">
+                        <div class="ss">
+                            <form name="form1" id="form1" th:action="@{'/job/index'}" method="post">
+                                <table cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                    <tr>
+                                        <td><p>任务id：</p><input type="text" name="taskId" id="taskId"
+                                                               th:value="${taskConfigEntity.taskId}" size="18"></td>
+                                        <td><p>job地址：</p><input type="text" name="className" id="className"
+                                                                th:value="${taskConfigEntity.className}" size="18"></td>
+                                        <input type="hidden" name="page" id="page"/>
+                                        <input type="hidden" th:name="${_csrf.parameterName}"
+                                               th:value="${_csrf.token}"/>
+                                        <td colspan="2"><a href="javascript:find();">搜索</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                        <form name="form2" id="form2" action="" method="post">
+                            <table class="steel_list_table w830" cellspacing="0" cellpadding="0" border="0">
+                                <thead>
+                                <tr>
+                                    <!--            <td class="checkbox">全选 <input type='checkbox' id="selallbox" onclick="selall();"/></td>-->
+                                    <td>任务id</td>
+                                    <td>cron表达式</td>
+                                    <td>job引用类</td>
+                                    <td>平台方</td>
+                                    <td>描述</td>
+                                    <td>状态</td>
+                                    <td>操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="list:${taskList}">
+                                    <!--            <td class="checkbox"><input type='checkbox' name='checkednum' th:id="@{'checkednum_'+${list.id}}" th:value="${list.id}"/></td>-->
+                                    <td th:text="${list.taskId}"></td>
+                                    <td th:text="${list.cron}"></td>
+                                    <td th:text="${list.className}"></td>
+                                    <td th:text="${list.pmName}"></td>
+                                    <td th:text="${list.description}"></td>
+                                    <td th:if="${list.status}=='1'">启用</td>
+                                    <td th:if="${list.status}=='0'">停用</td>
+                                    <td class="cz">
+                                        <span class="xg"><a href="javascript:void(0);" th:onclick="update([[${list.id}]]);">修改</a></span>
+                                        <span class="delete" th:if="${list.status}=='1'"><a href="javascript:void(0);" th:onclick="stop([[${list.taskId}]]);">停用</a></span>
+                                        <span class="delete" th:if="${list.status}=='0'"><a href="javascript:void(0);" th:onclick="recover([[${list.taskId}]]);">启用</a></span>
+                                        <span class="delete"><a href="javascript:void(0);" th:onclick="del([[${list.taskId}]]);">删除</a></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" id="add" class="layui-btn layui-btn-sm">新增任务</button>
+                            <div class="page">
+
+                                <a th:href="'javascript:queryDeviceRecords('+${pageInfo.prePage}+');'">上一页</a>
+
+                                <p th:each="navigatepageNum:${pageInfo.navigatepageNums}">
+                                    <a th:if="${navigatepageNum} eq ${pageInfo.pageNum}" class="now"
+                                       th:text="${navigatepageNum}"></a>
+                                    <a th:if=" ${navigatepageNum} ne ${pageInfo.pageNum}"
+                                       th:href="'javascript:queryDeviceRecords('+${navigatepageNum}+');'"
+                                       th:text="${navigatepageNum}"></a>
+                                </p>
+                                <a th:href="'javascript:queryDeviceRecords('+${pageInfo.nextPage}+');'">下一页</a>
+
+
+                                <span>到第</span>
+                                <input type="text" id="jump_num">
+                                <span>页</span>
+                                <button type="button" onclick="jumppage();">确定</button>
+                            </div>
+                        </form>
+                        <div style="clear:both"></div>
+                    </div>
+                </section>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+<script>
+    // 翻页
+    function jumppage() {
+        var pageNum = document.getElementById("jump_num").value;
+        if (pageNum > 0) {
+            queryDeviceRecords(pageNum);
+        }
+    }
+
+    function find(pageNum) {
+        document.getElementById('form1').submit();
+    }
+
+    function queryDeviceRecords(pageNum) {
+        $("#page").val(pageNum);
+        document.getElementById('form1').submit();
+    }
+
+    function del (taskId) {
+        layer.confirm('确认删除？', {icon: 3}, function(index) {
+            $.ajax({
+                type: "post",
+                url: "/job/delete",
+                dataType: "json",
+                data: {
+                    'taskId': taskId,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                },
+                success: function (data) {
+                    if (data.code === 0) {
+                        layer.alert('删除成功', {closeBtn: 0}, function () {
+                            window.parent.location.reload();//刷新父页面
+                        });
+
+                    }else{
+                        layer.alert("删除失败");
+                    }
+                },
+                error: function (request, status, error) {
+                    console.log(error);
+                }
+            });
+            layer.close(index);
+        });
+    }
+
+    function stop (taskId) {
+        layer.confirm('确认停用？', {icon: 3}, function(index) {
+            $.ajax({
+                type: "post",
+                url: "/job/stop",
+                dataType: "json",
+                data: {
+                    'taskId': taskId,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                },
+                success: function (data) {
+                    if (data.code === 0) {
+                        layer.alert('停用成功', {closeBtn: 0}, function () {
+                            location.reload();
+                        });
+
+                    }else{
+                        layer.alert("停用失败");
+                    }
+                },
+                error: function (request, status, error) {
+                    console.log(error);
+                }
+            });
+            layer.close(index);
+        });
+    }
+
+    function recover (taskId) {
+        layer.confirm('确认启用？', {icon: 3}, function(index) {
+            $.ajax({
+                type: "post",
+                url: "/job/resume",
+                dataType: "json",
+                data: {
+                    'taskId': taskId,
+                    "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+                },
+                success: function (data) {
+                    if (data.code === 0) {
+                        layer.alert('启用成功', {closeBtn: 0}, function () {
+                            location.reload();
+                        });
+
+                    }else{
+                        layer.alert("启用失败");
+                    }
+                },
+                error: function (request, status, error) {
+                    console.log(error);
+                }
+            });
+            layer.close(index);
+        });
+    }
+
+    // 绑定新增任务事件
+    $("#add").on("click", function() {
+        layer.open({
+            skin : 'layui-layer-molv',
+            type : 2,
+            title : '新增任务',
+            area : [ '440px', '390px' ],
+            shade : 0.8, // 遮罩层透明度
+            id : 'LAY_layuipro', //设定一个id，防止重复弹出
+            resize : false, //是否允许拉伸
+            btn : [ '确认', '关闭' ],
+            moveType : 1, //拖拽模式，0或者1
+            content :  'add',
+            yes: function(index, layero){  // 确认按钮回调方法,两个参数分别为当前层索引、当前层DOM对象
+                var submitID = 'LAY-back-submit'; // 1.提交按钮ID
+                var submitFilterID = 'LAY-front-submit'; // 2.提交按钮lay-filter
+
+                var submit = layero.find('iframe').contents().find('#'+ submitID); // 3.获取子页面按钮
+                var iframeWindow = layero.find('iframe')[0].contentWindow; // 4.获取子页面iframe对象
+                // 5.监听子页面提交事件
+                iframeWindow.layui.form.on('submit(' + submitFilterID + ')', function(data) {
+                    // 5.1新增用户
+                    addTask(index, data);
+                });
+                // 6.触发子页面点击事件
+                submit.trigger('click');
+            }
+        });
+    });
+
+    // 新增任务
+    function addTask(index,formData) {
+        // 加载提示
+        var loadingMsg = layer.msg('数据请求中,请稍候...', {icon: 16,scrollbar: false,time: 0,shade: [0.8, '#393D49']});
+        // form请求地址
+        var formUrl = "do_add";
+        $.ajax({
+            type: 'POST',
+            async: false, // 默认异步true,false表示同步
+            url: formUrl, // 请求地址
+            dataType: 'json', // 服务器返回数据类型
+            data: formData.field, //获取提交的表单字段
+            success: function(data) {
+                layer.close(loadingMsg); // 关闭提示层
+                if (data.code === 0) {
+                    // 信息提示
+                    layer.alert(data.msg, {skin: 'layui-layer-molv', closeBtn: 0,icon: 1}, function(alertIndex){
+                        layer.close(alertIndex) // 关闭当前alert
+                        layer.close(index);     // 关闭弹出层open
+                        window.parent.location.reload();//刷新父页面
+                    });
+                } else {
+                    layer.alert(data.msg, {icon: 5});
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, e) {
+                layer.close(loadingMsg);
+                layer.msg('数据请求发生异常,请稍后重试', {icon: 16,scrollbar: false});
+            }
+        });
+    }
+
+    // 绑定新增任务事件
+    function update(id) {
+        layer.open({
+            skin : 'layui-layer-molv',
+            type : 2,
+            title : '修改任务',
+            area : [ '440px', '390px' ],
+            shade : 0.8, // 遮罩层透明度
+            id : 'LAY_layuipro', //设定一个id，防止重复弹出
+            resize : false, //是否允许拉伸
+            btn : [ '确认', '关闭' ],
+            moveType : 1, //拖拽模式，0或者1
+            content :  'edit?id='+id,
+            yes: function(index, layero){  // 确认按钮回调方法,两个参数分别为当前层索引、当前层DOM对象
+                var submitID = 'LAY-back-submit'; // 1.提交按钮ID
+                var submitFilterID = 'LAY-front-submit'; // 2.提交按钮lay-filter
+
+                var submit = layero.find('iframe').contents().find('#'+ submitID); // 3.获取子页面按钮
+                var iframeWindow = layero.find('iframe')[0].contentWindow; // 4.获取子页面iframe对象
+                // 5.监听子页面提交事件
+                iframeWindow.layui.form.on('submit(' + submitFilterID + ')', function(data) {
+                    // 5.1新增用户
+                    updateTask(index, data);
+                });
+                // 6.触发子页面点击事件
+                submit.trigger('click');
+            }
+        });
+    }
+
+    // 新增任务
+    function updateTask(index,formData) {
+        // 加载提示
+        var loadingMsg = layer.msg('数据请求中,请稍候...', {icon: 16,scrollbar: false,time: 0,shade: [0.8, '#393D49']});
+        // form请求地址
+        var formUrl = "do_edit";
+        $.ajax({
+            type: 'POST',
+            async: false, // 默认异步true,false表示同步
+            url: formUrl, // 请求地址
+            dataType: 'json', // 服务器返回数据类型
+            data: formData.field, //获取提交的表单字段
+            success: function(data) {
+                layer.close(loadingMsg); // 关闭提示层
+                if (data.code === 0) {
+                    // 信息提示
+                    layer.alert(data.msg, {skin: 'layui-layer-molv', closeBtn: 0,icon: 1}, function(alertIndex){
+                        layer.close(alertIndex) // 关闭当前alert
+                        layer.close(index);     // 关闭弹出层open
+                        window.parent.location.reload();//刷新父页面
+                    });
+                } else {
+                    layer.alert(data.msg, {icon: 5});
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, e) {
+                layer.close(loadingMsg);
+                layer.msg('数据请求发生异常,请稍后重试', {icon: 16,scrollbar: false});
+            }
+        });
+    }
+
+</script>
+</html>

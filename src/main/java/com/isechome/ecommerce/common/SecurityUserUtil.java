@@ -20,5 +20,15 @@ public class SecurityUserUtil {
         }
         return securitySysUser.getId();
     }
+
+    public static Integer getPmid() {
+        SecuritySysUser securitySysUser = getCurrentUser();
+        if (null == securitySysUser) {
+            return null;
+        }
+        return securitySysUser.getPmid();
+        //return 191233;
+    }
+
 }
 

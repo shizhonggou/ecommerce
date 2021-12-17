@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>采购单管理</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <script language="javascript" type="text/javascript" th:src="@{/js/My97DatePicker/WdatePicker.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/chosen.css}" rel="stylesheet" type="text/css"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+   
+   
+
+    <style>
+        .gbtn{padding: 6px 10px;color: #fff;}
+        .ebtn{background: #007FFF;padding: 6px 10px;color: #fff;}
+        .sbtn{background: #F7836A;padding: 6px 10px;color: #fff;}
+        .confirmed_order a:hover{color: #fff;}
+        .tt input{    height: 20px;line-height: 20px;width: 70px;}
+        .chosen-container a:hover{color: #333;}
+       
+        .chosen-container a{width: 180px;}
+        .chosen-container a:hover{color: #333;background: #fff;}
+        .ss td {
+    padding: 5px 5px;
+}
+    </style>
+ 
+
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<section>
+    <div class="main w1000">
+        <div th:insert="~{left :: left(${mark})}"></div>
+        <aside>
+            <div class="resources">
+              <div class="resources_tt" th:include="common::varietyTag2"></div>
+              <div class="pozition">
+                <p>当前位置：会员中心 &gt; 系统管理 &gt; 采购单管理 &gt; 新增采购</p>
+              </div>
+      
+              <form id="form1" method="POST" action="/scorderlist/addpurchaseSave" onsubmit=" return checkForm();">
+                <table class="heavy_set" cellspacing="0" cellpadding="0" border="0">
+                  <thead>
+                  <tr>
+                    <td>资源</td>
+                    <td>采购量</td>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select name="resource_id" style="width: 400px;">
+                          
+                            <option th:each="list:${resourceList}"  th:value ="${list.id}" th:text="${list.varietyName} +' | '+ ${list.material} +' | '+${list.specification} +' | '+${list.factory} +' | '+${list.warehouse} "></option>
+                         
+                        </select>
+                      </td>
+
+
+                      <td><input type="text" autocomplete="off" name="num" id="num"  placeholder="请输入采购量" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,4})?).*$/g, '$1')"  /></td>
+                    
+                    </tr>
+                    <tr>
+                      <td class="cz" colspan="2">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="submit" id="saveSubmitBtn" value="保存">
+                        <span class="delete">
+                          <a href="/scorderlist/cgindex" th:text="返回"  ></a>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </aside>
+    </div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+<script>
+   
+    function checkForm(){
+        if ($.trim($("#num").val()) == "" ||  $.trim($("#num").val())<=0) {
+            alert("请输入采购量");
+            return false;
+        }
+    }
+
+</script>
+</body>
+</html>

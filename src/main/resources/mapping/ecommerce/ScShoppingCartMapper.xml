@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScShoppingCartMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScShoppingCart" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="purchase_mid" property="purchase_mid" jdbcType="INTEGER" />
+    <result column="create_date" property="create_date" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="update_time" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_split_lading" property="is_split_lading" jdbcType="INTEGER" />
+    <result column="resources_id" property="resources_id" jdbcType="INTEGER" />
+    <result column="weight" property="weight" jdbcType="DOUBLE" />
+    <result column="weight2" property="weight2" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="bargain" property="bargain" jdbcType="DOUBLE" />
+    <result column="ticket" property="ticket" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="gwcResResultMap" type="com.isechome.ecommerce.entity.ScShoppingCartResoueces" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="purchase_mid" property="purchase_mid" jdbcType="INTEGER" />
+    <result column="create_date" property="create_date" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="update_time" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_split_lading" property="is_split_lading" jdbcType="INTEGER" />
+    <result column="resources_id" property="resources_id" jdbcType="INTEGER" />
+    <result column="weight" property="weight" jdbcType="DOUBLE" />
+    <result column="weight2" property="weight2" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="bargain" property="bargain" jdbcType="DOUBLE" />
+    <result column="ticket" property="ticket" jdbcType="INTEGER" />
+    <result column="variety_name" jdbcType="VARCHAR" property="variety_name" />
+    <result column="material" jdbcType="VARCHAR" property="material" />
+    <result column="specification" jdbcType="VARCHAR" property="specification" />
+    <result column="factory" jdbcType="VARCHAR" property="factory" />
+    <result column="warehouse" jdbcType="VARCHAR" property="warehouse" />
+    <result column="v_id" jdbcType="TINYINT" property="v_id" />
+    <result column="sold_num" property="sold_num" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="DOUBLE" />
+  </resultMap>
+  <insert id="insertScShoppingCart" parameterType="com.isechome.ecommerce.entity.ScShoppingCart" >
+    insert into sc_shopping_cart (userid, pmid, purchase_mid, create_date, update_time, 
+      status, is_split_lading, resources_id, weight, weight2, ticket,price)
+    values (#{userid,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER}, #{purchase_mid,jdbcType=INTEGER}, #{create_date,jdbcType=TIMESTAMP}, #{update_time,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{is_split_lading,jdbcType=INTEGER}, #{resources_id,jdbcType=INTEGER}, #{weight,jdbcType=DOUBLE}, #{weight2,jdbcType=DOUBLE}, #{ticket,jdbcType=INTEGER}, #{price,jdbcType=DOUBLE})
+  </insert>
+  <select id="getScShoppingCartAll" resultMap="gwcResResultMap" >
+    select gwc.*,res.variety_name,res.material,res.specification,res.factory,res.warehouse,res.sold_num,res.num,res.v_id from sc_shopping_cart as gwc,sc_shelf_resource as res
+    where gwc.resources_id = res.id and gwc.userid = #{userid,jdbcType=INTEGER} and gwc.pmid = #{pmid,jdbcType=INTEGER} and gwc.status = #{status,jdbcType=INTEGER} and gwc.create_date >= #{create_date,jdbcType=TIMESTAMP}
+  </select>
+  <update id="updateScShoppingCartById" parameterType="com.isechome.ecommerce.entity.ScShoppingCart" >
+    update sc_shopping_cart 
+    set update_time = #{update_time,jdbcType=TIMESTAMP},
+    weight = #{weight,jdbcType=DOUBLE},
+    weight2 = #{weight2,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <delete id="deleteScShoppingCartById" parameterType="java.util.List" >
+        delete from sc_shopping_cart 
+        where id in (
+        <foreach collection="list"  item="item" index="index" separator=",">  
+          #{item,jdbcType=INTEGER}
+        </foreach> 
+        )
+  </delete>
+  <delete id="deleteScShoppingCartAll" parameterType="java.util.Date" >
+        delete from sc_shopping_cart 
+        where create_date >= #{create_date,jdbcType=TIMESTAMP}
+  </delete>
+  <delete id="delByDatePmid">
+        delete from sc_shopping_cart 
+        where create_date &gt;= #{beginOfDay,jdbcType=TIMESTAMP} and create_date &lt;= #{endOfDay,jdbcType=TIMESTAMP} and pmid = #{pmid,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="delByResourceId">
+        delete from sc_shopping_cart
+        where resources_id = #{resources_id} and status = 0 and pmid = #{pmid}
+  </delete>
+</mapper>

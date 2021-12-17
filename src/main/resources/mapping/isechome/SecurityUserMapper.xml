@@ -1,58 +1,288 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.isechome.ecommerce.security.mapper.SecurityUserMapper" >
-    <resultMap id="AdminUserInfoResultMap" type="com.isechome.ecommerce.security.entity.AdminUserInfo" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="mid" property="mid" jdbcType="INTEGER" />
-        <result column="real_name" property="real_name" jdbcType="VARCHAR" />
-        <result column="nick_name" property="nick_name" jdbcType="VARCHAR" />
-        <result column="user_name" property="user_name" jdbcType="VARCHAR" />
-        <result column="password" property="password" jdbcType="VARCHAR" />
-        <result column="pay_password" property="pay_password" jdbcType="VARCHAR" />
-        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
-        <result column="idcard" property="idcard" jdbcType="VARCHAR" />
-        <result column="email" property="email" jdbcType="VARCHAR" />
-        <result column="job" property="job" jdbcType="VARCHAR" />
-        <result column="sex" property="sex" jdbcType="TINYINT" />
-        <result column="address_user" property="address_user" jdbcType="VARCHAR" />
-        <result column="rights" property="rights" jdbcType="BIGINT" />
-        <result column="status" property="status" jdbcType="TINYINT" />
-        <result column="create_date" property="create_date" jdbcType="TIMESTAMP" />
-        <result column="create_user_id" property="create_user_id" jdbcType="INTEGER" />
-    </resultMap>
-    <resultMap id="CompanyInfoResultMap" type="com.isechome.ecommerce.security.entity.CompanyInfo" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="com_name" property="com_name" jdbcType="VARCHAR" />
-        <result column="com_name_short" property="com_name_short" jdbcType="VARCHAR" />
-        <result column="com_desc" property="com_desc" jdbcType="VARCHAR" />
-        <result column="address_state" property="address_state" jdbcType="VARCHAR" />
-        <result column="address_city" property="address_city" jdbcType="VARCHAR" />
-        <result column="address" property="address" jdbcType="VARCHAR" />
-        <result column="enclosure_url" property="enclosure_url" jdbcType="VARCHAR" />
-        <result column="link_user_id" property="link_user_id" jdbcType="INTEGER" />
-        <result column="create_date" property="create_date" jdbcType="TIMESTAMP" />
-        <result column="create_user_id" property="create_user_id" jdbcType="VARCHAR" />
-        <result column="where_from" property="where_from" jdbcType="TINYINT" />
-        <result column="external_uniqueness" property="external_uniqueness" jdbcType="VARCHAR" />
+<mapper namespace="com.isechome.ecommerce.security.mapper.isechome.SecurityUserMapper" >
+    <resultMap id="AdminUserInfoResultMap" type="com.isechome.ecommerce.security.entity.SysAdminuser" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ComID" property="comid" jdbcType="INTEGER" />
+    <result column="DepartID" property="departid" jdbcType="INTEGER" />
+    <result column="ARealName" property="arealname" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="ANickName" property="anickname" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="AUserName" property="ausername" jdbcType="VARCHAR" />
+    <result column="APassWD" property="apasswd" jdbcType="VARCHAR" />
+    <result column="APassWDUpDate" property="apasswdupdate" jdbcType="TIMESTAMP" />
+    <result column="AQueryPassWD" property="aquerypasswd" jdbcType="VARCHAR" />
+    <result column="Mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="Job" property="job" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="ADesc" property="adesc" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="APowerRoles" property="apowerroles" jdbcType="VARCHAR" />
+    <result column="AWHs" property="awhs" jdbcType="VARCHAR" />
+    <result column="IsAllWH" property="isallwh" jdbcType="BIT" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="IsMain" property="ismain" jdbcType="TINYINT" />
+    <result column="LoginIpType" property="loginiptype" jdbcType="BIT" />
+    <result column="LoginLockIp" property="loginlockip" jdbcType="VARCHAR" />
+    <result column="CxtNum1" property="cxtnum1" jdbcType="INTEGER" />
+    <result column="CxtNum2" property="cxtnum2" jdbcType="INTEGER" />
+    <result column="CxtNum3" property="cxtnum3" jdbcType="INTEGER" />
+    <result column="Status" property="status" jdbcType="TINYINT" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CreateUser" property="createuser" jdbcType="VARCHAR" />
+    <result column="UpdateDate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="UpdateUser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="LastDate" property="lastdate" jdbcType="TIMESTAMP" />
+    <result column="LastIP" property="lastip" jdbcType="VARCHAR" />
+    <result column="SType" property="stype" jdbcType="TINYINT" />
+    <result column="IsLimit" property="islimit" jdbcType="BIT" />
+    <result column="IsSteel" property="issteel" jdbcType="TINYINT" />
+    <result column="PowerLimit" property="powerlimit" jdbcType="TINYINT" />
+    <result column="childroot" property="childroot" jdbcType="VARCHAR" />
+    <result column="FirstSign" property="firstsign" jdbcType="TINYINT" />
+    <result column="MobileCheck" property="mobilecheck" jdbcType="VARCHAR" />
+    <result column="TelePhone" property="telephone" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="QQNum" property="qqnum" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="Fax" property="fax" jdbcType="VARCHAR" />
+    <result column="PostCode" property="postcode" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="yq_registered" property="yqRegistered" jdbcType="TINYINT" />
+    <result column="yq_isSealMember" property="yqIssealmember" jdbcType="TINYINT" />
+    <result column="yq_isYQSealMember" property="yqIsyqsealmember" jdbcType="TINYINT" />
+    <result column="yq_telnumber" property="yqTelnumber" jdbcType="VARCHAR" />
+    <result column="yq_changedUserInfo" property="yqChangeduserinfo" jdbcType="TINYINT" />
+    <result column="Rights" property="rights" jdbcType="BIGINT" />
+    <result column="IdNum" property="idnum" jdbcType="VARCHAR" />
+    <result column="TradePwd" property="tradepwd" jdbcType="VARCHAR" />
+  </resultMap>
+    <resultMap id="CompanyInfoResultMap" type="com.isechome.ecommerce.security.entity.SysCompany" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="GUID" property="guid" jdbcType="VARCHAR" />
+    <result column="MemberID" property="memberid" jdbcType="INTEGER" />
+    <result column="GroupID" property="groupid" jdbcType="INTEGER" />
+    <result column="mg_id" property="mgId" jdbcType="VARCHAR" />
+    <result column="ComName" property="comname" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="ComNameShort" property="comnameshort" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="MemberType" property="membertype" jdbcType="TINYINT" />
+    <result column="MCH_NO" property="mchNo" jdbcType="VARCHAR" />
+    <result column="SIT_NO" property="sitNo" jdbcType="VARCHAR" />
+    <result column="ComType" property="comtype" jdbcType="TINYINT" />
+    <result column="ComType2" property="comtype2" jdbcType="TINYINT" />
+    <result column="ComType3" property="comtype3" jdbcType="TINYINT" />
+    <result column="ComTransType" property="comtranstype" jdbcType="TINYINT" />
+    <result column="TradePassWD" property="tradepasswd" jdbcType="VARCHAR" />
+    <result column="TradePassWDUpDate" property="tradepasswdupdate" jdbcType="TIMESTAMP" />
+    <result column="pysametd" property="pysametd" jdbcType="TINYINT" />
+    <result column="MobileChecked" property="mobilechecked" jdbcType="VARCHAR" />
+    <result column="LinkMan" property="linkman" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="MobileCheckedDate" property="mobilecheckeddate" jdbcType="TIMESTAMP" />
+    <result column="ContactTel" property="contacttel" jdbcType="VARCHAR" />
+    <result column="AddressState" property="addressstate" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="AddressCity" property="addresscity" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Address" property="address" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="MapX" property="mapx" jdbcType="DOUBLE" />
+    <result column="MapY" property="mapy" jdbcType="DOUBLE" />
+    <result column="Frdb" property="frdb" jdbcType="VARCHAR" />
+    <result column="ParentID" property="parentid" jdbcType="INTEGER" />
+    <result column="IsNoFinance" property="isnofinance" jdbcType="TINYINT" />
+    <result column="AdminUser1" property="adminuser1" jdbcType="INTEGER" />
+    <result column="AdminUser1Date" property="adminuser1date" jdbcType="TIMESTAMP" />
+    <result column="AdminUser2" property="adminuser2" jdbcType="INTEGER" />
+    <result column="AdminUser2Date" property="adminuser2date" jdbcType="TIMESTAMP" />
+    <result column="AdminUser3" property="adminuser3" jdbcType="INTEGER" />
+    <result column="AdminUser3Date" property="adminuser3date" jdbcType="TIMESTAMP" />
+    <result column="LastServiceDate" property="lastservicedate" jdbcType="TIMESTAMP" />
+    <result column="LastServiceId" property="lastserviceid" jdbcType="INTEGER" />
+    <result column="ContactFax" property="contactfax" jdbcType="VARCHAR" />
+    <result column="BankType" property="banktype" jdbcType="VARCHAR" />
+    <result column="TaxNo" property="taxno" jdbcType="VARCHAR" />
+    <result column="RegIp" property="regip" jdbcType="VARCHAR" />
+    <result column="FirstSignDate" property="firstsigndate" jdbcType="DATE" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="postcode" property="postcode" jdbcType="VARCHAR" />
+    <result column="registerfrom" property="registerfrom" jdbcType="TINYINT" />
+    <result column="Status" property="status" jdbcType="TINYINT" />
+    <result column="ZxFlag" property="zxflag" jdbcType="TINYINT" />
+    <result column="ReceiveSmsType" property="receivesmstype" jdbcType="VARCHAR" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CreateUser" property="createuser" jdbcType="VARCHAR" />
+    <result column="UpdateDate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="UpdateUser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="IsShowWeb" property="isshowweb" jdbcType="TINYINT" />
+    <result column="StartDate" property="startdate" jdbcType="DATE" />
+    <result column="EndDate" property="enddate" jdbcType="DATE" />
+    <result column="EmpowerType" property="empowertype" jdbcType="TINYINT" />
+    <result column="IsShowCj" property="isshowcj" jdbcType="TINYINT" />
+    <result column="IsNeedZs" property="isneedzs" jdbcType="BIT" />
+    <result column="BankNo" property="bankno" jdbcType="VARCHAR" />
+    <result column="InvoiceStar" property="invoicestar" jdbcType="VARCHAR" />
+    <result column="InvoiceNo" property="invoiceno" jdbcType="VARCHAR" />
+    <result column="PayPassWD" property="paypasswd" jdbcType="VARCHAR" />
+    <result column="IsDownTd" property="isdowntd" jdbcType="TINYINT" />
+    <result column="gctrybegintime" property="gctrybegintime" jdbcType="TIMESTAMP" />
+    <result column="gctryendtime" property="gctryendtime" jdbcType="TIMESTAMP" />
+    <result column="isgctry" property="isgctry" jdbcType="TINYINT" />
+    <result column="ComUrl" property="comurl" jdbcType="VARCHAR" />
+    <result column="BankAccount" property="bankaccount" jdbcType="VARCHAR" />
+    <result column="MemberTypeDate" property="membertypedate" jdbcType="TIMESTAMP" />
+    <result column="IsTry" property="istry" jdbcType="TINYINT" />
+    <result column="IsSteelHq" property="issteelhq" jdbcType="TINYINT" />
+    <result column="doarea" property="doarea" jdbcType="VARCHAR" />
+    <result column="icnumber" property="icnumber" jdbcType="VARCHAR" />
+    <result column="enterprisecode" property="enterprisecode" jdbcType="VARCHAR" />
+    <result column="variety1" property="variety1" jdbcType="VARCHAR" />
+    <result column="variety2" property="variety2" jdbcType="VARCHAR" />
+    <result column="variety3" property="variety3" jdbcType="VARCHAR" />
+    <result column="variety4" property="variety4" jdbcType="VARCHAR" />
+    <result column="variety5" property="variety5" jdbcType="VARCHAR" />
+    <result column="sc_steelcom" property="scSteelcom" jdbcType="VARCHAR" />
+    <result column="dl_com" property="dlCom" jdbcType="VARCHAR" />
+    <result column="rz_market" property="rzMarket" jdbcType="VARCHAR" />
+    <result column="jy_citys" property="jyCitys" jdbcType="VARCHAR" />
+    <result column="jy_variety" property="jyVariety" jdbcType="VARCHAR" />
+    <result column="zy_variety" property="zyVariety" jdbcType="VARCHAR" />
+    <result column="IsDzGys" property="isdzgys" jdbcType="TINYINT" />
+    <result column="Tieluz" property="tieluz" jdbcType="VARCHAR" />
+    <result column="Tieluz2" property="tieluz2" jdbcType="VARCHAR" />
+    <result column="Tieluz3" property="tieluz3" jdbcType="VARCHAR" />
+    <result column="Tieluz4" property="tieluz4" jdbcType="VARCHAR" />
+    <result column="Tieluz5" property="tieluz5" jdbcType="VARCHAR" />
+    <result column="Matou" property="matou" jdbcType="VARCHAR" />
+    <result column="Matou2" property="matou2" jdbcType="VARCHAR" />
+    <result column="Matou3" property="matou3" jdbcType="VARCHAR" />
+    <result column="Matou4" property="matou4" jdbcType="VARCHAR" />
+    <result column="Matou5" property="matou5" jdbcType="VARCHAR" />
+    <result column="IsTj" property="istj" jdbcType="TINYINT" />
+    <result column="px" property="px" jdbcType="INTEGER" />
+    <result column="website2" property="website2" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="areacode" property="areacode" jdbcType="VARCHAR" />
+    <result column="scale" property="scale" jdbcType="TINYINT" />
+    <result column="sales" property="sales" jdbcType="VARCHAR" />
+    <result column="turnover" property="turnover" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="TINYINT" />
+    <result column="GZJadmin1" property="gzjadmin1" jdbcType="INTEGER" />
+    <result column="GZJadmin2" property="gzjadmin2" jdbcType="INTEGER" />
+    <result column="kpcom" property="kpcom" jdbcType="VARCHAR" />
+    <result column="kpren" property="kpren" jdbcType="VARCHAR" />
+    <result column="kpaddress" property="kpaddress" jdbcType="VARCHAR" />
+    <result column="kptel" property="kptel" jdbcType="VARCHAR" />
+    <result column="try_out" property="tryOut" jdbcType="TINYINT" />
+    <result column="yq_companyname" property="yqCompanyname" jdbcType="VARCHAR" />
+    <result column="signCompanyname" property="signcompanyname" jdbcType="VARCHAR" />
+    <result column="yq_muban" property="yqMuban" jdbcType="TINYINT" />
+    <result column="yq_liucheng" property="yqLiucheng" jdbcType="TINYINT" />
+    <result column="yj_salestype" property="yjSalestype" jdbcType="VARCHAR" />
+    <result column="AllowMultiFh" property="allowmultifh" jdbcType="TINYINT" />
+    <result column="JiaoGeFinishNum" property="jiaogefinishnum" jdbcType="INTEGER" />
+    <result column="PingJiaZongFen1" property="pingjiazongfen1" jdbcType="DOUBLE" />
+    <result column="PingJiaNum1" property="pingjianum1" jdbcType="INTEGER" />
+    <result column="PingJiaZongFen2" property="pingjiazongfen2" jdbcType="DOUBLE" />
+    <result column="PingJiaNum2" property="pingjianum2" jdbcType="INTEGER" />
+    <result column="AllowSendJingJiaSms" property="allowsendjingjiasms" jdbcType="TINYINT" />
+    <result column="AllowDaiZhuCeMember" property="allowdaizhucemember" jdbcType="TINYINT" />
+    <result column="mg_att" property="mgAtt" jdbcType="INTEGER" />
+    <result column="downPrice" property="downprice" jdbcType="DOUBLE" />
+    <result column="mg_endTime" property="mgEndtime" jdbcType="DATE" />
+    <result column="mg_startTime" property="mgStarttime" jdbcType="DATE" />
+    <result column="payType" property="paytype" jdbcType="TINYINT" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="mg_userId" property="mgUserid" jdbcType="INTEGER" />
+    <result column="mg_userName" property="mgUsername" jdbcType="VARCHAR" />
+    <result column="mg_mid" property="mgMid" jdbcType="INTEGER" />
+    <result column="mg_date" property="mgDate" jdbcType="TIMESTAMP" />
+    <result column="mg_ManageDaoZhanCode" property="mgManagedaozhancode" jdbcType="TINYINT" />
+    <result column="mg_DaoZhanCode" property="mgDaozhancode" jdbcType="VARCHAR" />
+    <result column="mg_DaoZhanCangKu" property="mgDaozhancangku" jdbcType="VARCHAR" />
+    <result column="mg_TiHuoMode" property="mgTihuomode" jdbcType="TINYINT" />
+    <result column="mg_CanKaoRemarkPrice" property="mgCankaoremarkprice" jdbcType="TINYINT" />
+    <result column="mg_canBuyOther" property="mgCanbuyother" jdbcType="TINYINT" />
+    <result column="mg_canBuyMaterialType" property="mgCanbuymaterialtype" jdbcType="TINYINT" />
+    <result column="mg_MaterialList" property="mgMateriallist" jdbcType="VARCHAR" />
+    <result column="mg_isXieYi" property="mgIsxieyi" jdbcType="TINYINT" />
+    <result column="mg_XieYiNum" property="mgXieyinum" jdbcType="DOUBLE" />
+    <result column="mg_XieYiNum_1200" property="mgXieyinum1200" jdbcType="DOUBLE" />
+    <result column="mg_isFenGongSi" property="mgIsfengongsi" jdbcType="TINYINT" />
+    <result column="mg_LockPrice" property="mgLockprice" jdbcType="DOUBLE" />
+    <result column="mg_canUseShengYuKeyRes" property="mgCanuseshengyukeyres" jdbcType="TINYINT" />
+    <result column="mg_MonthNum" property="mgMonthnum" jdbcType="DOUBLE" />
+    <result column="mg_HeTongTotalNum" property="mgHetongtotalnum" jdbcType="DOUBLE" />
+    <result column="mg_CapitalPolicy" property="mgCapitalpolicy" jdbcType="VARCHAR" />
+    <result column="mg_SubordinateDepartments" property="mgSubordinatedepartments" jdbcType="TINYINT" />
+    <result column="mg_gcDayPriceType" property="mgGcdaypricetype" jdbcType="TINYINT" />
+    <result column="mg_jijia_luowen" property="mgJijiaLuowen" jdbcType="DOUBLE" />
+    <result column="mg_jijia_gaoxian" property="mgJijiaGaoxian" jdbcType="DOUBLE" />
+    <result column="mg_jijia_panluo" property="mgJijiaPanluo" jdbcType="DOUBLE" />
+    <result column="ComDesc" property="comdesc" jdbcType="LONGVARCHAR" />
     </resultMap>
 
+    <resultMap id="ScplatformsidesettingResultMap" type="com.isechome.ecommerce.security.entity.Scplatformsidesetting" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="background_type" property="backgroundType" jdbcType="VARCHAR" />
+    <result column="review_type" property="reviewType" jdbcType="TINYINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="adminid" property="adminid" jdbcType="INTEGER" />
+    <result column="review_date" property="reviewDate" jdbcType="TIMESTAMP" />
+    <result column="review_id" property="reviewId" jdbcType="INTEGER" />
+  </resultMap>
     <select id="getUserInfoByUsername" resultMap="AdminUserInfoResultMap" parameterType="java.lang.String" >
-        select id, mid, real_name, nick_name, user_name, `password`, pay_password, mobile,
-        idcard, email, job, sex, address_user, rights, `status`, create_date, create_user_id
+        <!-- select ID, ComID, ARealName, ANickName, AUserName, `APassWD`, Mobile, TradePwd -->
+        select ID, ComID, DepartID, ARealName, ANickName, AUserName, APassWD, APassWDUpDate, 
+    AQueryPassWD, Mobile, Job, ADesc, APowerRoles, AWHs, IsAllWH, Email, IsMain, LoginIpType, 
+    LoginLockIp, CxtNum1, CxtNum2, CxtNum3, `Status`, CreateDate, `CreateUser`, UpdateDate, 
+    UpdateUser, LastDate, LastIP, SType, IsLimit, IsSteel, PowerLimit, childroot, FirstSign, 
+    MobileCheck, TelePhone, city, province, address, QQNum, Fax, PostCode, sex, yq_registered, 
+    yq_isSealMember, yq_isYQSealMember, yq_telnumber, yq_changedUserInfo, Rights, IdNum, 
+    TradePwd 
         from sys_adminuser
-        where user_name = #{username,jdbcType=VARCHAR} and status=1
+        where AUserName = #{username,jdbcType=VARCHAR} 
     </select>
     <select id="getMemberInfoById" resultMap="CompanyInfoResultMap" parameterType="java.lang.Integer" >
-        select id, com_name, com_name_short, com_desc, address_state, address_city, address,
-        enclosure_url, link_user_id, create_date, create_user_id, where_from, external_uniqueness
+        select ID, GUID, MemberID, GroupID, mg_id, ComName, ComNameShort, MemberType, MCH_NO, 
+    SIT_NO, ComType, ComType2, ComType3, ComTransType, TradePassWD, TradePassWDUpDate, 
+    pysametd, MobileChecked, LinkMan, MobileCheckedDate, ContactTel, AddressState, AddressCity, 
+    Address, MapX, MapY, Frdb, ParentID, IsNoFinance, AdminUser1, AdminUser1Date, AdminUser2, 
+    AdminUser2Date, AdminUser3, AdminUser3Date, LastServiceDate, LastServiceId, ContactFax, 
+    BankType, TaxNo, RegIp, FirstSignDate, country, `state`, city, postcode, registerfrom, 
+    `Status`, ZxFlag, ReceiveSmsType, CreateDate, `CreateUser`, UpdateDate, UpdateUser, 
+    IsShowWeb, StartDate, EndDate, EmpowerType, IsShowCj, IsNeedZs, BankNo, InvoiceStar, 
+    InvoiceNo, PayPassWD, IsDownTd, gctrybegintime, gctryendtime, isgctry, ComUrl, BankAccount, 
+    MemberTypeDate, IsTry, IsSteelHq, doarea, icnumber, enterprisecode, variety1, variety2, 
+    variety3, variety4, variety5, sc_steelcom, dl_com, rz_market, jy_citys, jy_variety, 
+    zy_variety, IsDzGys, Tieluz, Tieluz2, Tieluz3, Tieluz4, Tieluz5, Matou, Matou2, Matou3, 
+    Matou4, Matou5, IsTj, px, website2, email, areacode, `scale`, sales, turnover, `source`, 
+    GZJadmin1, GZJadmin2, kpcom, kpren, kpaddress, kptel, try_out, yq_companyname, signCompanyname, 
+    yq_muban, yq_liucheng, yj_salestype, AllowMultiFh, JiaoGeFinishNum, PingJiaZongFen1, 
+    PingJiaNum1, PingJiaZongFen2, PingJiaNum2, AllowSendJingJiaSms, AllowDaiZhuCeMember, 
+    mg_att, downPrice, mg_endTime, mg_startTime, payType, city_id, mg_userId, mg_userName, 
+    mg_mid, mg_date, mg_ManageDaoZhanCode, mg_DaoZhanCode, mg_DaoZhanCangKu, mg_TiHuoMode, 
+    mg_CanKaoRemarkPrice, mg_canBuyOther, mg_canBuyMaterialType, mg_MaterialList, mg_isXieYi, 
+    mg_XieYiNum, mg_XieYiNum_1200, mg_isFenGongSi, mg_LockPrice, mg_canUseShengYuKeyRes, 
+    mg_MonthNum, mg_HeTongTotalNum, mg_CapitalPolicy, mg_SubordinateDepartments, mg_gcDayPriceType, 
+    mg_jijia_luowen, mg_jijia_gaoxian, mg_jijia_panluo, ComDesc
         from `sys_company`
-        where id = #{id,jdbcType=INTEGER}
+        where ID = #{id,jdbcType=INTEGER}
     </select>
+    
     <select id="getadminuserinfobymobile" resultMap="AdminUserInfoResultMap" parameterType="java.lang.Integer" >
-        select id, mid, real_name, nick_name, user_name, `password`, pay_password, mobile,
-        idcard, email, job, sex, address_user, rights, `status`, create_date, create_user_id
+        select ID, ComID, ARealName, ANickName, AUserName, `APassWD`, Mobile, TradePwd 
         from sys_adminuser
-        where 	mobile  = #{tel ,jdbcType=VARCHAR}
+        where 	Mobile  = #{tel ,jdbcType=VARCHAR}
     </select>
+    <select id="selectbytoken" resultMap="ScplatformsidesettingResultMap"  parameterType="java.lang.String">
+    select pmid from `sc_platform_side_setting`
+    where token = #{token,jdbcType=VARCHAR}
+  </select>
 
+    <select id="selectnewpmid" resultMap="ScplatformsidesettingResultMap" parameterType="java.lang.String">
+    select pmid from `sc_platform_side_setting`
+    order by id asc limit 1
+  </select>
 </mapper>

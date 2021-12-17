@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ResourceReportMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ResourceReport" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sales_today" property="salesToday" jdbcType="DOUBLE" />
+    <result column="ship_today" property="shipToday" jdbcType="DOUBLE" />
+    <result column="ready_ship_today" property="readyShipToday" jdbcType="DOUBLE" />
+    <result column="inventory_today" property="inventoryToday" jdbcType="DOUBLE" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="system_type" property="systemType" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_resource_report
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ResourceReport" >
+    insert into sc_resource_report (id, sales_today, ship_today, 
+      ready_ship_today, inventory_today, `date`, 
+      create_time, system_type, pmid
+      )
+    values (#{id,jdbcType=INTEGER}, #{salesToday,jdbcType=DOUBLE}, #{shipToday,jdbcType=DOUBLE}, 
+      #{readyShipToday,jdbcType=DOUBLE}, #{inventoryToday,jdbcType=DOUBLE}, #{date,jdbcType=DATE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{systemType,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ResourceReport" >
+    update sc_resource_report
+    set sales_today = #{salesToday,jdbcType=DOUBLE},
+      ship_today = #{shipToday,jdbcType=DOUBLE},
+      ready_ship_today = #{readyShipToday,jdbcType=DOUBLE},
+      inventory_today = #{inventoryToday,jdbcType=DOUBLE},
+      `date` = #{date,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      system_type = #{systemType,jdbcType=INTEGER},
+      pmid = #{pmid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, sales_today, ship_today, ready_ship_today, inventory_today, `date`, create_time, 
+    system_type, pmid
+    from sc_resource_report
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, sales_today, ship_today, ready_ship_today, inventory_today, `date`, create_time, 
+    system_type, pmid
+    from sc_resource_report
+  </select>
+</mapper>

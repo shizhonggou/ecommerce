@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.ScSteelMillMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.ScSteelMill" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="steel_name" property="steelName" jdbcType="VARCHAR" />
+    <result column="steel_name_short" property="steelNameShort" jdbcType="VARCHAR" />
+    <result column="steel_desc" property="steelDesc" jdbcType="VARCHAR" />
+    <result column="address_state" property="addressState" jdbcType="VARCHAR" />
+    <result column="address_city" property="addressCity" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="enclosure_url" property="enclosureUrl" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_user_id" property="updateUserId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <resultMap id="CollResultMap" type="com.isechome.ecommerce.entity.ScSteelMill" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="steel_name_short" property="steelNameShort" jdbcType="VARCHAR" />
+    <collection property="pieceWeightList"  ofType="com.isechome.ecommerce.entity.PieceWeight">
+      <result column="spec" jdbcType="VARCHAR" property="spec" />
+      <result column="weight" jdbcType="REAL" property="weight" />
+    </collection>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sc_steel_mill
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.ScSteelMill" >
+    insert into sc_steel_mill (id, pmid, steel_name, 
+      steel_name_short, steel_desc, address_state, 
+      address_city, address, enclosure_url, 
+      create_date, create_user_id, update_time, 
+      update_user_id)
+    values (#{id,jdbcType=INTEGER}, #{pmid,jdbcType=INTEGER}, #{steelName,jdbcType=VARCHAR}, 
+      #{steelNameShort,jdbcType=VARCHAR}, #{steelDesc,jdbcType=VARCHAR}, #{addressState,jdbcType=VARCHAR}, 
+      #{addressCity,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{enclosureUrl,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUserId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.ScSteelMill" >
+    update sc_steel_mill
+    set pmid = #{pmid,jdbcType=INTEGER},
+      steel_name = #{steelName,jdbcType=VARCHAR},
+      steel_name_short = #{steelNameShort,jdbcType=VARCHAR},
+      steel_desc = #{steelDesc,jdbcType=VARCHAR},
+      address_state = #{addressState,jdbcType=VARCHAR},
+      address_city = #{addressCity,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      enclosure_url = #{enclosureUrl,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user_id = #{updateUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateStatusById">
+    update sc_steel_mill
+    set status =  #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, pmid, steel_name, steel_name_short, steel_desc, address_state, address_city, 
+    address, enclosure_url, create_date, create_user_id, update_time, update_user_id
+    from sc_steel_mill
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, pmid, steel_name, steel_name_short, steel_desc, address_state, address_city, 
+    address, enclosure_url, create_date, create_user_id, update_time, update_user_id
+    from sc_steel_mill
+  </select>
+  <select id="getScSteelMilList" resultMap="BaseResultMap" >
+    select id, pmid, steel_name, steel_name_short, steel_desc, address_state, address_city, 
+    address, enclosure_url, create_date, create_user_id, update_time, update_user_id
+    from sc_steel_mill
+    <where>
+      status = 1 and pmid = #{pmid,jdbcType=INTEGER}
+      <if test="name != null and name!=''">
+        and (steel_name like '%${name}%' or steel_name_short like '%${name}%')
+      </if>
+      <if test="state!=null and state!=''">
+        and address_state like '%${state}%'
+      </if>
+      <if test="city!=null and city!=''">
+        and address_city like '%${city}%'
+      </if>
+      order by id desc
+    </where>
+  </select>
+
+  <select id="getSteelMillAndWeight" resultMap="CollResultMap">
+    select mill.steel_name_short,mill.id,pw.spec,pw.weight from sc_steel_mill mill left join sc_piece_weight_manage pw on mill.id = pw.stmid where
+     mill.pmid=#{pmid}
+    and mill.status = 1
+    and pw.status = 1
+  </select>
+</mapper>

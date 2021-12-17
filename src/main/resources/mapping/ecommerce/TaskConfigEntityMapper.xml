@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.ecommerce.TaskConfigEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.TaskConfigEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="cron" property="cron" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="is_deleted" property="isDeleted" jdbcType="TINYINT" />
+    <result column="pmid" property="pmid" jdbcType="INTEGER" />
+    <result column="pmName" property="pmName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update `task_config` set is_deleted = '1'
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="realDeleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `task_config`
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.TaskConfigEntity">
+    insert into `task_config` (id, task_id, cron, 
+      class_name, description, `status`, `is_deleted`, `pmid`
+      )
+    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=VARCHAR}, #{cron,jdbcType=VARCHAR}, 
+      #{className,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 0, #{pmid,jdbcType=INTEGER}
+      )
+    <selectKey keyColumn="id" resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.TaskConfigEntity" >
+    update `task_config`
+    set task_id = #{taskId}, cron = #{cron}, class_name = #{className}, description = #{description}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateTask" parameterType="com.isechome.ecommerce.entity.TaskConfigEntity" >
+    update `task_config`
+    set cron = #{cron,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=TINYINT}
+    where class_name = #{className,jdbcType=VARCHAR}
+    and `status` = #{status,jdbcType=TINYINT}
+    and `is_deleted` = #{isDeleted,jdbcType=TINYINT}
+    and `pmid` = #{pmid,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, task_id, cron, class_name, description, `status`
+    from `task_config`
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByTaskId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, task_id, cron, class_name, description, `status`, is_deleted, pmid 
+    from `task_config`
+    where task_id = #{task_id,jdbcType=VARCHAR}
+  </select>
+  <select id="getTask" resultMap="BaseResultMap" parameterType="com.isechome.ecommerce.entity.TaskConfigEntity" >
+    select id, task_id, cron, class_name, description, `status`, `is_deleted`, `pmid`
+    from `task_config`
+    where class_name = #{className,jdbcType=VARCHAR}
+    and `status` = #{status,jdbcType=TINYINT}
+    and `is_deleted` = #{isDeleted,jdbcType=TINYINT}
+    and `pmid` = #{pmid,jdbcType=INTEGER}
+    limit 1
+  </select>
+  <select id="getMaxTaskId" resultType="string" parameterType="java.lang.String">
+    select max(task_id)
+    from `task_config`
+    where class_name = #{className,jdbcType=VARCHAR}
+  </select>
+  <select id="getMaxTaskIdByTaskId" resultType="string" parameterType="java.lang.String">
+    select max(task_id)
+    from `task_config`
+    where task_id like '%${task_id_head,jdbcType=VARCHAR}%'
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, task_id, cron, class_name, description, `status`, `is_deleted`, `pmid`
+    from `task_config` where status = 1 and is_deleted = 0
+  </select>
+  <select id="selectNowTaskByClass" resultMap="BaseResultMap" >
+    select id, task_id, cron, class_name, description, `status`, `is_deleted`, `pmid`
+    from `task_config` where status = 1 and is_deleted = 0
+    and cron = #{cron,jdbcType=VARCHAR}
+    and class_name = #{class_name,jdbcType=VARCHAR}
+  </select>
+  <select id="selectBySearch" resultMap="BaseResultMap" parameterType="com.isechome.ecommerce.entity.TaskConfigEntity">
+    select task.id, task.task_id, task.cron, task.class_name, task.description, task.`status`,plat.description as pmName
+    from `task_config` task left join sc_platform_side_setting plat on task.pmid = plat.pmid where task.is_deleted = 0 and plat.status = 1
+    <if test="className != null and className != ''">
+      AND task.class_name like concat('%', #{className}, '%')
+    </if>
+    <if test="taskId  != null and taskId != ''">
+      AND task.task_id = #{taskId}
+    </if>
+
+    <if test="pmid  != null and pmid != ''">
+      AND task.pmid = #{pmid}
+    </if>
+  </select>
+
+  <update id="changeTaskByTaskId" >
+    update `task_config`
+    set `status` = #{status}
+    where task_id = #{task_id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="changeTaskDeleteByTaskId" >
+    update `task_config`
+    set `is_deleted` = '1'
+    where task_id = #{task_id,jdbcType=VARCHAR}
+  </update>
+</mapper>

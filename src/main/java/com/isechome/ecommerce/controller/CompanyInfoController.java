@@ -1,14 +1,9 @@
 package com.isechome.ecommerce.controller;
 
-import com.isechome.ecommerce.entity.CompanyInfo;
 import com.isechome.ecommerce.service.CompanyInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @program: ecommerce
@@ -28,22 +23,22 @@ public class CompanyInfoController {
      * @param
      * @return
      */
-    @RequestMapping("list")
-    public List<CompanyInfo> getCompanyInfo( ){
-        //model.addAttribute("companyInfoList", companyInfoService.getCompanyInfo() );
-        return companyInfoService.getCompanyInfo();
-        //return "company/list";
-    }
+    // @RequestMapping("list")
+    // public List<CompanyInfo> getCompanyInfo( ){
+    //     //model.addAttribute("companyInfoList", companyInfoService.getCompanyInfo() );
+    //     return companyInfoService.getCompanyInfo();
+    //     //return "company/list";
+    // }
 
-    @RequestMapping("/test")
-    public String test(){
-        return "coming!!!";
-    }
+    // @RequestMapping("/test")
+    // public String test(){
+    //     return "coming!!!";
+    // }
 
-    @RequestMapping("add")
-    public String insertCompany(HttpServletRequest request ) {
-        companyInfoService.saveCompanyInfo( request );
-        return "";
-    }
+    // @RequestMapping("add")
+    // public String insertCompany(HttpServletRequest request ) {
+    //     companyInfoService.saveCompanyInfo( request );
+    //     return "";
+    // }
 
 }

@@ -20,5 +20,7 @@ public interface CompanyInfoMapper {
     void insertres(CompanyInfo companyInfo);
     int updateusid (CompanyInfo record);
 
+    List<CompanyInfo> seletSerch(String searchName);
+
     
 }

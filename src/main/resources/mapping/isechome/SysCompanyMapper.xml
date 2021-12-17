@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isechome.ecommerce.mapper.isechome.SysCompanyMapper" >
+  <resultMap id="BaseResultMap" type="com.isechome.ecommerce.entity.SysCompany" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="GUID" property="guid" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="MemberID" property="memberid" jdbcType="INTEGER" />
+    <result column="GroupID" property="groupid" jdbcType="INTEGER" />
+    <result column="mg_id" property="mgId" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="ComName" property="comname" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="ComNameShort" property="comnameshort" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="MemberType" property="membertype" jdbcType="TINYINT" />
+    <result column="MCH_NO" property="mchNo" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="SIT_NO" property="sitNo" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="ComType" property="comtype" jdbcType="TINYINT" />
+    <result column="ComType2" property="comtype2" jdbcType="TINYINT" />
+    <result column="ComType3" property="comtype3" jdbcType="TINYINT" />
+    <result column="ComTransType" property="comtranstype" jdbcType="TINYINT" />
+    <result column="TradePassWD" property="tradepasswd" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="TradePassWDUpDate" property="tradepasswdupdate" jdbcType="TIMESTAMP" />
+    <result column="pysametd" property="pysametd" jdbcType="TINYINT" />
+    <result column="MobileChecked" property="mobilechecked" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="LinkMan" property="linkman" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="MobileCheckedDate" property="mobilecheckeddate" jdbcType="TIMESTAMP" />
+    <result column="ContactTel" property="contacttel" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="AddressState" property="addressstate" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="AddressCity" property="addresscity" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="Address" property="address" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="MapX" property="mapx" jdbcType="DOUBLE" />
+    <result column="MapY" property="mapy" jdbcType="DOUBLE" />
+    <result column="Frdb" property="frdb" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="ParentID" property="parentid" jdbcType="INTEGER" />
+    <result column="IsNoFinance" property="isnofinance" jdbcType="TINYINT" />
+    <result column="AdminUser1" property="adminuser1" jdbcType="INTEGER" />
+    <result column="AdminUser1Date" property="adminuser1date" jdbcType="TIMESTAMP" />
+    <result column="AdminUser2" property="adminuser2" jdbcType="INTEGER" />
+    <result column="AdminUser2Date" property="adminuser2date" jdbcType="TIMESTAMP" />
+    <result column="AdminUser3" property="adminuser3" jdbcType="INTEGER" />
+    <result column="AdminUser3Date" property="adminuser3date" jdbcType="TIMESTAMP" />
+    <result column="LastServiceDate" property="lastservicedate" jdbcType="TIMESTAMP" />
+    <result column="LastServiceId" property="lastserviceid" jdbcType="INTEGER" />
+    <result column="ContactFax" property="contactfax" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="BankType" property="banktype" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="TaxNo" property="taxno" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="RegIp" property="regip" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="FirstSignDate" property="firstsigndate" jdbcType="DATE" />
+    <result column="country" property="country" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="state" property="state" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="city" property="city" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="postcode" property="postcode" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="registerfrom" property="registerfrom" jdbcType="TINYINT" />
+    <result column="Status" property="status" jdbcType="TINYINT" />
+    <result column="ZxFlag" property="zxflag" jdbcType="TINYINT" />
+    <result column="ReceiveSmsType" property="receivesmstype" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CreateUser" property="createuser" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="UpdateDate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="UpdateUser" property="updateuser" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="IsShowWeb" property="isshowweb" jdbcType="TINYINT" />
+    <result column="StartDate" property="startdate" jdbcType="DATE" />
+    <result column="EndDate" property="enddate" jdbcType="DATE" />
+    <result column="EmpowerType" property="empowertype" jdbcType="TINYINT" />
+    <result column="IsShowCj" property="isshowcj" jdbcType="TINYINT" />
+    <result column="IsNeedZs" property="isneedzs" jdbcType="BIT" />
+    <result column="BankNo" property="bankno" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="InvoiceStar" property="invoicestar" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="InvoiceNo" property="invoiceno" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="PayPassWD" property="paypasswd" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="IsDownTd" property="isdowntd" jdbcType="TINYINT" />
+    <result column="gctrybegintime" property="gctrybegintime" jdbcType="TIMESTAMP" />
+    <result column="gctryendtime" property="gctryendtime" jdbcType="TIMESTAMP" />
+    <result column="isgctry" property="isgctry" jdbcType="TINYINT" />
+    <result column="ComUrl" property="comurl" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="BankAccount" property="bankaccount" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="MemberTypeDate" property="membertypedate" jdbcType="TIMESTAMP" />
+    <result column="IsTry" property="istry" jdbcType="TINYINT" />
+    <result column="IsSteelHq" property="issteelhq" jdbcType="TINYINT" />
+    <result column="doarea" property="doarea" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="icnumber" property="icnumber" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="enterprisecode" property="enterprisecode" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="variety1" property="variety1" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="variety2" property="variety2" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="variety3" property="variety3" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="variety4" property="variety4" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="variety5" property="variety5" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="sc_steelcom" property="scSteelcom" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="dl_com" property="dlCom" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="rz_market" property="rzMarket" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="jy_citys" property="jyCitys" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="jy_variety" property="jyVariety" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="zy_variety" property="zyVariety" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="IsDzGys" property="isdzgys" jdbcType="TINYINT" />
+    <result column="Tieluz" property="tieluz" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Tieluz2" property="tieluz2" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Tieluz3" property="tieluz3" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Tieluz4" property="tieluz4" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Tieluz5" property="tieluz5" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Matou" property="matou" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Matou2" property="matou2" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Matou3" property="matou3" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Matou4" property="matou4" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="Matou5" property="matou5" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="IsTj" property="istj" jdbcType="TINYINT" />
+    <result column="px" property="px" jdbcType="INTEGER" />
+    <result column="website2" property="website2" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="email" property="email" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="areacode" property="areacode" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="scale" property="scale" jdbcType="TINYINT" />
+    <result column="sales" property="sales" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="turnover" property="turnover" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="source" property="source" jdbcType="TINYINT" />
+    <result column="GZJadmin1" property="gzjadmin1" jdbcType="INTEGER" />
+    <result column="GZJadmin2" property="gzjadmin2" jdbcType="INTEGER" />
+    <result column="kpcom" property="kpcom" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="kpren" property="kpren" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="kpaddress" property="kpaddress" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="kptel" property="kptel" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="try_out" property="tryOut" jdbcType="TINYINT" />
+    <result column="yq_companyname" property="yqCompanyname" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="signCompanyname" property="signcompanyname" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="yq_muban" property="yqMuban" jdbcType="TINYINT" />
+    <result column="yq_liucheng" property="yqLiucheng" jdbcType="TINYINT" />
+    <result column="yj_salestype" property="yjSalestype" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="AllowMultiFh" property="allowmultifh" jdbcType="TINYINT" />
+    <result column="JiaoGeFinishNum" property="jiaogefinishnum" jdbcType="INTEGER" />
+    <result column="PingJiaZongFen1" property="pingjiazongfen1" jdbcType="DOUBLE" />
+    <result column="PingJiaNum1" property="pingjianum1" jdbcType="INTEGER" />
+    <result column="PingJiaZongFen2" property="pingjiazongfen2" jdbcType="DOUBLE" />
+    <result column="PingJiaNum2" property="pingjianum2" jdbcType="INTEGER" />
+    <result column="AllowSendJingJiaSms" property="allowsendjingjiasms" jdbcType="TINYINT" />
+    <result column="AllowDaiZhuCeMember" property="allowdaizhucemember" jdbcType="TINYINT" />
+    <result column="mg_att" property="mgAtt" jdbcType="INTEGER" />
+    <result column="downPrice" property="downprice" jdbcType="DOUBLE" />
+    <result column="mg_endTime" property="mgEndtime" jdbcType="DATE" />
+    <result column="mg_startTime" property="mgStarttime" jdbcType="DATE" />
+    <result column="payType" property="paytype" jdbcType="TINYINT" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="mg_userId" property="mgUserid" jdbcType="INTEGER" />
+    <result column="mg_userName" property="mgUsername" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="mg_mid" property="mgMid" jdbcType="INTEGER" />
+    <result column="mg_date" property="mgDate" jdbcType="TIMESTAMP" />
+    <result column="mg_ManageDaoZhanCode" property="mgManagedaozhancode" jdbcType="TINYINT" />
+    <result column="mg_DaoZhanCode" property="mgDaozhancode" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="mg_DaoZhanCangKu" property="mgDaozhancangku" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="mg_TiHuoMode" property="mgTihuomode" jdbcType="TINYINT" />
+    <result column="mg_CanKaoRemarkPrice" property="mgCankaoremarkprice" jdbcType="TINYINT" />
+    <result column="mg_canBuyOther" property="mgCanbuyother" jdbcType="TINYINT" />
+    <result column="mg_canBuyMaterialType" property="mgCanbuymaterialtype" jdbcType="TINYINT" />
+    <result column="mg_MaterialList" property="mgMateriallist" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="mg_isXieYi" property="mgIsxieyi" jdbcType="TINYINT" />
+    <result column="mg_XieYiNum" property="mgXieyinum" jdbcType="DOUBLE" />
+    <result column="mg_XieYiNum_1200" property="mgXieyinum1200" jdbcType="DOUBLE" />
+    <result column="mg_isFenGongSi" property="mgIsfengongsi" jdbcType="TINYINT" />
+    <result column="mg_LockPrice" property="mgLockprice" jdbcType="DOUBLE" />
+    <result column="mg_canUseShengYuKeyRes" property="mgCanuseshengyukeyres" jdbcType="TINYINT" />
+    <result column="mg_MonthNum" property="mgMonthnum" jdbcType="DOUBLE" />
+    <result column="mg_HeTongTotalNum" property="mgHetongtotalnum" jdbcType="DOUBLE" />
+    <result column="mg_CapitalPolicy" property="mgCapitalpolicy" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+    <result column="mg_SubordinateDepartments" property="mgSubordinatedepartments" jdbcType="TINYINT" />
+    <result column="mg_gcDayPriceType" property="mgGcdaypricetype" jdbcType="TINYINT" />
+    <result column="mg_jijia_luowen" property="mgJijiaLuowen" jdbcType="DOUBLE" />
+    <result column="mg_jijia_gaoxian" property="mgJijiaGaoxian" jdbcType="DOUBLE" />
+    <result column="mg_jijia_panluo" property="mgJijiaPanluo" jdbcType="DOUBLE" />
+    <result column="ComDesc" property="comdesc" jdbcType="LONGVARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler"/>
+    <result column="ecommerce_state" property="ecommerce_state" jdbcType="VARCHAR" typeHandler="com.isechome.ecommerce.handler.StringTypeHandler" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_company
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.isechome.ecommerce.entity.SysCompany" >
+      <selectKey keyProperty="id"  order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_company (ID, GUID, MemberID, 
+      GroupID, mg_id, ComName, 
+      ComNameShort, MemberType, MCH_NO, 
+      SIT_NO, ComType, ComType2, 
+      ComType3, ComTransType, TradePassWD, 
+      TradePassWDUpDate, pysametd, MobileChecked, 
+      LinkMan, MobileCheckedDate, ContactTel, 
+      AddressState, AddressCity, Address, 
+      MapX, MapY, Frdb, ParentID, 
+      IsNoFinance, AdminUser1, AdminUser1Date, 
+      AdminUser2, AdminUser2Date, AdminUser3, 
+      AdminUser3Date, LastServiceDate, LastServiceId, 
+      ContactFax, BankType, TaxNo, 
+      RegIp, FirstSignDate, country, 
+      `state`, city, postcode, 
+      registerfrom, `Status`, ZxFlag, 
+      ReceiveSmsType, CreateDate, `CreateUser`, 
+      UpdateDate, UpdateUser, IsShowWeb, 
+      StartDate, EndDate, EmpowerType, 
+      IsShowCj, IsNeedZs, BankNo, 
+      InvoiceStar, InvoiceNo, PayPassWD, 
+      IsDownTd, gctrybegintime, gctryendtime, 
+      isgctry, ComUrl, BankAccount, 
+      MemberTypeDate, IsTry, IsSteelHq, 
+      doarea, icnumber, enterprisecode, 
+      variety1, variety2, variety3, 
+      variety4, variety5, sc_steelcom, 
+      dl_com, rz_market, jy_citys, 
+      jy_variety, zy_variety, IsDzGys, 
+      Tieluz, Tieluz2, Tieluz3, 
+      Tieluz4, Tieluz5, Matou, 
+      Matou2, Matou3, Matou4, 
+      Matou5, IsTj, px, website2, 
+      email, areacode, `scale`, 
+      sales, turnover, `source`, 
+      GZJadmin1, GZJadmin2, kpcom, 
+      kpren, kpaddress, kptel, 
+      try_out, yq_companyname, signCompanyname, 
+      yq_muban, yq_liucheng, yj_salestype, 
+      AllowMultiFh, JiaoGeFinishNum, PingJiaZongFen1, 
+      PingJiaNum1, PingJiaZongFen2, PingJiaNum2, 
+      AllowSendJingJiaSms, AllowDaiZhuCeMember, 
+      mg_att, downPrice, mg_endTime, 
+      mg_startTime, payType, city_id, 
+      mg_userId, mg_userName, mg_mid, 
+      mg_date, mg_ManageDaoZhanCode, mg_DaoZhanCode, 
+      mg_DaoZhanCangKu, mg_TiHuoMode, mg_CanKaoRemarkPrice, 
+      mg_canBuyOther, mg_canBuyMaterialType, mg_MaterialList, 
+      mg_isXieYi, mg_XieYiNum, mg_XieYiNum_1200, 
+      mg_isFenGongSi, mg_LockPrice, mg_canUseShengYuKeyRes, 
+      mg_MonthNum, mg_HeTongTotalNum, mg_CapitalPolicy, 
+      mg_SubordinateDepartments, mg_gcDayPriceType, 
+      mg_jijia_luowen, mg_jijia_gaoxian, mg_jijia_panluo, 
+      ComDesc)
+    values (#{id,jdbcType=INTEGER}, #{guid,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{memberid,jdbcType=INTEGER}, 
+      #{groupid,jdbcType=INTEGER}, #{mgId,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{comname,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{comnameshort,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{membertype,jdbcType=TINYINT}, #{mchNo,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{sitNo,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{comtype,jdbcType=TINYINT}, #{comtype2,jdbcType=TINYINT}, 
+      #{comtype3,jdbcType=TINYINT}, #{comtranstype,jdbcType=TINYINT}, #{tradepasswd,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{tradepasswdupdate,jdbcType=TIMESTAMP}, #{pysametd,jdbcType=TINYINT}, #{mobilechecked,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{linkman,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{mobilecheckeddate,jdbcType=TIMESTAMP}, #{contacttel,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{addressstate,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{addresscity,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{address,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{mapx,jdbcType=DOUBLE}, #{mapy,jdbcType=DOUBLE}, #{frdb,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{parentid,jdbcType=INTEGER}, 
+      #{isnofinance,jdbcType=TINYINT}, #{adminuser1,jdbcType=INTEGER}, #{adminuser1date,jdbcType=TIMESTAMP}, 
+      #{adminuser2,jdbcType=INTEGER}, #{adminuser2date,jdbcType=TIMESTAMP}, #{adminuser3,jdbcType=INTEGER}, 
+      #{adminuser3date,jdbcType=TIMESTAMP}, #{lastservicedate,jdbcType=TIMESTAMP}, #{lastserviceid,jdbcType=INTEGER}, 
+      #{contactfax,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{banktype,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{taxno,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{regip,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{firstsigndate,jdbcType=DATE}, #{country,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{state,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{city,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{postcode,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{registerfrom,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{zxflag,jdbcType=TINYINT}, 
+      #{receivesmstype,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{createdate,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{updatedate,jdbcType=TIMESTAMP}, #{updateuser,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{isshowweb,jdbcType=TINYINT}, 
+      #{startdate,jdbcType=DATE}, #{enddate,jdbcType=DATE}, #{empowertype,jdbcType=TINYINT}, 
+      #{isshowcj,jdbcType=TINYINT}, #{isneedzs,jdbcType=BIT}, #{bankno,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{invoicestar,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{invoiceno,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{paypasswd,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{isdowntd,jdbcType=TINYINT}, #{gctrybegintime,jdbcType=TIMESTAMP}, #{gctryendtime,jdbcType=TIMESTAMP}, 
+      #{isgctry,jdbcType=TINYINT}, #{comurl,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{bankaccount,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{membertypedate,jdbcType=TIMESTAMP}, #{istry,jdbcType=TINYINT}, #{issteelhq,jdbcType=TINYINT}, 
+      #{doarea,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{icnumber,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{enterprisecode,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{variety1,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{variety2,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{variety3,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{variety4,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{variety5,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{scSteelcom,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{dlCom,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{rzMarket,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{jyCitys,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{jyVariety,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{zyVariety,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{isdzgys,jdbcType=TINYINT}, 
+      #{tieluz,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{tieluz2,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{tieluz3,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{tieluz4,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{tieluz5,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{matou,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{matou2,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{matou3,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{matou4,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{matou5,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{istj,jdbcType=TINYINT}, #{px,jdbcType=INTEGER}, #{website2,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{email,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{areacode,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{scale,jdbcType=TINYINT}, 
+      #{sales,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{turnover,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{source,jdbcType=TINYINT}, 
+      #{gzjadmin1,jdbcType=INTEGER}, #{gzjadmin2,jdbcType=INTEGER}, #{kpcom,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{kpren,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{kpaddress,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{kptel,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{tryOut,jdbcType=TINYINT}, #{yqCompanyname,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{signcompanyname,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{yqMuban,jdbcType=TINYINT}, #{yqLiucheng,jdbcType=TINYINT}, #{yjSalestype,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{allowmultifh,jdbcType=TINYINT}, #{jiaogefinishnum,jdbcType=INTEGER}, #{pingjiazongfen1,jdbcType=DOUBLE}, 
+      #{pingjianum1,jdbcType=INTEGER}, #{pingjiazongfen2,jdbcType=DOUBLE}, #{pingjianum2,jdbcType=INTEGER}, 
+      #{allowsendjingjiasms,jdbcType=TINYINT}, #{allowdaizhucemember,jdbcType=TINYINT}, 
+      #{mgAtt,jdbcType=INTEGER}, #{downprice,jdbcType=DOUBLE}, #{mgEndtime,jdbcType=DATE}, 
+      #{mgStarttime,jdbcType=DATE}, #{paytype,jdbcType=TINYINT}, #{cityId,jdbcType=INTEGER}, 
+      #{mgUserid,jdbcType=INTEGER}, #{mgUsername,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{mgMid,jdbcType=INTEGER}, 
+      #{mgDate,jdbcType=TIMESTAMP}, #{mgManagedaozhancode,jdbcType=TINYINT}, #{mgDaozhancode,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{mgDaozhancangku,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, #{mgTihuomode,jdbcType=TINYINT}, #{mgCankaoremarkprice,jdbcType=TINYINT}, 
+      #{mgCanbuyother,jdbcType=TINYINT}, #{mgCanbuymaterialtype,jdbcType=TINYINT}, #{mgMateriallist,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{mgIsxieyi,jdbcType=TINYINT}, #{mgXieyinum,jdbcType=DOUBLE}, #{mgXieyinum1200,jdbcType=DOUBLE}, 
+      #{mgIsfengongsi,jdbcType=TINYINT}, #{mgLockprice,jdbcType=DOUBLE}, #{mgCanuseshengyukeyres,jdbcType=TINYINT}, 
+      #{mgMonthnum,jdbcType=DOUBLE}, #{mgHetongtotalnum,jdbcType=DOUBLE}, #{mgCapitalpolicy,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, 
+      #{mgSubordinatedepartments,jdbcType=TINYINT}, #{mgGcdaypricetype,jdbcType=TINYINT}, 
+      #{mgJijiaLuowen,jdbcType=DOUBLE}, #{mgJijiaGaoxian,jdbcType=DOUBLE}, #{mgJijiaPanluo,jdbcType=DOUBLE}, 
+      #{comdesc,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.isechome.ecommerce.entity.SysCompany" >
+    update sys_company
+    set GUID = #{guid,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      MemberID = #{memberid,jdbcType=INTEGER},
+      GroupID = #{groupid,jdbcType=INTEGER},
+      mg_id = #{mgId,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      ComName = #{comname,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      ComNameShort = #{comnameshort,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      MemberType = #{membertype,jdbcType=TINYINT},
+      MCH_NO = #{mchNo,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      SIT_NO = #{sitNo,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      ComType = #{comtype,jdbcType=TINYINT},
+      ComType2 = #{comtype2,jdbcType=TINYINT},
+      ComType3 = #{comtype3,jdbcType=TINYINT},
+      ComTransType = #{comtranstype,jdbcType=TINYINT},
+      TradePassWD = #{tradepasswd,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      TradePassWDUpDate = #{tradepasswdupdate,jdbcType=TIMESTAMP},
+      pysametd = #{pysametd,jdbcType=TINYINT},
+      MobileChecked = #{mobilechecked,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      LinkMan = #{linkman,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      MobileCheckedDate = #{mobilecheckeddate,jdbcType=TIMESTAMP},
+      ContactTel = #{contacttel,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      AddressState = #{addressstate,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      AddressCity = #{addresscity,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Address = #{address,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      MapX = #{mapx,jdbcType=DOUBLE},
+      MapY = #{mapy,jdbcType=DOUBLE},
+      Frdb = #{frdb,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      ParentID = #{parentid,jdbcType=INTEGER},
+      IsNoFinance = #{isnofinance,jdbcType=TINYINT},
+      AdminUser1 = #{adminuser1,jdbcType=INTEGER},
+      AdminUser1Date = #{adminuser1date,jdbcType=TIMESTAMP},
+      AdminUser2 = #{adminuser2,jdbcType=INTEGER},
+      AdminUser2Date = #{adminuser2date,jdbcType=TIMESTAMP},
+      AdminUser3 = #{adminuser3,jdbcType=INTEGER},
+      AdminUser3Date = #{adminuser3date,jdbcType=TIMESTAMP},
+      LastServiceDate = #{lastservicedate,jdbcType=TIMESTAMP},
+      LastServiceId = #{lastserviceid,jdbcType=INTEGER},
+      ContactFax = #{contactfax,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      BankType = #{banktype,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      TaxNo = #{taxno,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      RegIp = #{regip,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      FirstSignDate = #{firstsigndate,jdbcType=DATE},
+      country = #{country,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      `state` = #{state,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      city = #{city,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      postcode = #{postcode,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      registerfrom = #{registerfrom,jdbcType=TINYINT},
+      `Status` = #{status,jdbcType=TINYINT},
+      ZxFlag = #{zxflag,jdbcType=TINYINT},
+      ReceiveSmsType = #{receivesmstype,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      `CreateUser` = #{createuser,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      UpdateDate = #{updatedate,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateuser,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      IsShowWeb = #{isshowweb,jdbcType=TINYINT},
+      StartDate = #{startdate,jdbcType=DATE},
+      EndDate = #{enddate,jdbcType=DATE},
+      EmpowerType = #{empowertype,jdbcType=TINYINT},
+      IsShowCj = #{isshowcj,jdbcType=TINYINT},
+      IsNeedZs = #{isneedzs,jdbcType=BIT},
+      BankNo = #{bankno,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      InvoiceStar = #{invoicestar,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      InvoiceNo = #{invoiceno,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      PayPassWD = #{paypasswd,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      IsDownTd = #{isdowntd,jdbcType=TINYINT},
+      gctrybegintime = #{gctrybegintime,jdbcType=TIMESTAMP},
+      gctryendtime = #{gctryendtime,jdbcType=TIMESTAMP},
+      isgctry = #{isgctry,jdbcType=TINYINT},
+      ComUrl = #{comurl,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      BankAccount = #{bankaccount,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      MemberTypeDate = #{membertypedate,jdbcType=TIMESTAMP},
+      IsTry = #{istry,jdbcType=TINYINT},
+      IsSteelHq = #{issteelhq,jdbcType=TINYINT},
+      doarea = #{doarea,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      icnumber = #{icnumber,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      enterprisecode = #{enterprisecode,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      variety1 = #{variety1,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      variety2 = #{variety2,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      variety3 = #{variety3,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      variety4 = #{variety4,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      variety5 = #{variety5,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      sc_steelcom = #{scSteelcom,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      dl_com = #{dlCom,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      rz_market = #{rzMarket,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      jy_citys = #{jyCitys,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      jy_variety = #{jyVariety,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      zy_variety = #{zyVariety,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      IsDzGys = #{isdzgys,jdbcType=TINYINT},
+      Tieluz = #{tieluz,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Tieluz2 = #{tieluz2,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Tieluz3 = #{tieluz3,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Tieluz4 = #{tieluz4,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Tieluz5 = #{tieluz5,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Matou = #{matou,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Matou2 = #{matou2,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Matou3 = #{matou3,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Matou4 = #{matou4,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      Matou5 = #{matou5,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      IsTj = #{istj,jdbcType=TINYINT},
+      px = #{px,jdbcType=INTEGER},
+      website2 = #{website2,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      email = #{email,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      areacode = #{areacode,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      `scale` = #{scale,jdbcType=TINYINT},
+      sales = #{sales,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      turnover = #{turnover,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      `source` = #{source,jdbcType=TINYINT},
+      GZJadmin1 = #{gzjadmin1,jdbcType=INTEGER},
+      GZJadmin2 = #{gzjadmin2,jdbcType=INTEGER},
+      kpcom = #{kpcom,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      kpren = #{kpren,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      kpaddress = #{kpaddress,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      kptel = #{kptel,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      try_out = #{tryOut,jdbcType=TINYINT},
+      yq_companyname = #{yqCompanyname,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      signCompanyname = #{signcompanyname,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      yq_muban = #{yqMuban,jdbcType=TINYINT},
+      yq_liucheng = #{yqLiucheng,jdbcType=TINYINT},
+      yj_salestype = #{yjSalestype,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      AllowMultiFh = #{allowmultifh,jdbcType=TINYINT},
+      JiaoGeFinishNum = #{jiaogefinishnum,jdbcType=INTEGER},
+      PingJiaZongFen1 = #{pingjiazongfen1,jdbcType=DOUBLE},
+      PingJiaNum1 = #{pingjianum1,jdbcType=INTEGER},
+      PingJiaZongFen2 = #{pingjiazongfen2,jdbcType=DOUBLE},
+      PingJiaNum2 = #{pingjianum2,jdbcType=INTEGER},
+      AllowSendJingJiaSms = #{allowsendjingjiasms,jdbcType=TINYINT},
+      AllowDaiZhuCeMember = #{allowdaizhucemember,jdbcType=TINYINT},
+      mg_att = #{mgAtt,jdbcType=INTEGER},
+      downPrice = #{downprice,jdbcType=DOUBLE},
+      mg_endTime = #{mgEndtime,jdbcType=DATE},
+      mg_startTime = #{mgStarttime,jdbcType=DATE},
+      payType = #{paytype,jdbcType=TINYINT},
+      city_id = #{cityId,jdbcType=INTEGER},
+      mg_userId = #{mgUserid,jdbcType=INTEGER},
+      mg_userName = #{mgUsername,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      mg_mid = #{mgMid,jdbcType=INTEGER},
+      mg_date = #{mgDate,jdbcType=TIMESTAMP},
+      mg_ManageDaoZhanCode = #{mgManagedaozhancode,jdbcType=TINYINT},
+      mg_DaoZhanCode = #{mgDaozhancode,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      mg_DaoZhanCangKu = #{mgDaozhancangku,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      mg_TiHuoMode = #{mgTihuomode,jdbcType=TINYINT},
+      mg_CanKaoRemarkPrice = #{mgCankaoremarkprice,jdbcType=TINYINT},
+      mg_canBuyOther = #{mgCanbuyother,jdbcType=TINYINT},
+      mg_canBuyMaterialType = #{mgCanbuymaterialtype,jdbcType=TINYINT},
+      mg_MaterialList = #{mgMateriallist,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      mg_isXieYi = #{mgIsxieyi,jdbcType=TINYINT},
+      mg_XieYiNum = #{mgXieyinum,jdbcType=DOUBLE},
+      mg_XieYiNum_1200 = #{mgXieyinum1200,jdbcType=DOUBLE},
+      mg_isFenGongSi = #{mgIsfengongsi,jdbcType=TINYINT},
+      mg_LockPrice = #{mgLockprice,jdbcType=DOUBLE},
+      mg_canUseShengYuKeyRes = #{mgCanuseshengyukeyres,jdbcType=TINYINT},
+      mg_MonthNum = #{mgMonthnum,jdbcType=DOUBLE},
+      mg_HeTongTotalNum = #{mgHetongtotalnum,jdbcType=DOUBLE},
+      mg_CapitalPolicy = #{mgCapitalpolicy,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+      mg_SubordinateDepartments = #{mgSubordinatedepartments,jdbcType=TINYINT},
+      mg_gcDayPriceType = #{mgGcdaypricetype,jdbcType=TINYINT},
+      mg_jijia_luowen = #{mgJijiaLuowen,jdbcType=DOUBLE},
+      mg_jijia_gaoxian = #{mgJijiaGaoxian,jdbcType=DOUBLE},
+      mg_jijia_panluo = #{mgJijiaPanluo,jdbcType=DOUBLE},
+      ComDesc = #{comdesc,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ID, GUID, MemberID, GroupID, mg_id, ComName, ComNameShort, MemberType, MCH_NO, 
+    SIT_NO, ComType, ComType2, ComType3, ComTransType, TradePassWD, TradePassWDUpDate, 
+    pysametd, MobileChecked, LinkMan, MobileCheckedDate, ContactTel, AddressState, AddressCity, 
+    Address, MapX, MapY, Frdb, ParentID, IsNoFinance, AdminUser1, AdminUser1Date, AdminUser2, 
+    AdminUser2Date, AdminUser3, AdminUser3Date, LastServiceDate, LastServiceId, ContactFax, 
+    BankType, TaxNo, RegIp, FirstSignDate, country, `state`, city, postcode, registerfrom, 
+    `Status`, ZxFlag, ReceiveSmsType, CreateDate, `CreateUser`, UpdateDate, UpdateUser, 
+    IsShowWeb, StartDate, EndDate, EmpowerType, IsShowCj, IsNeedZs, BankNo, InvoiceStar, 
+    InvoiceNo, PayPassWD, IsDownTd, gctrybegintime, gctryendtime, isgctry, ComUrl, BankAccount, 
+    MemberTypeDate, IsTry, IsSteelHq, doarea, icnumber, enterprisecode, variety1, variety2, 
+    variety3, variety4, variety5, sc_steelcom, dl_com, rz_market, jy_citys, jy_variety, 
+    zy_variety, IsDzGys, Tieluz, Tieluz2, Tieluz3, Tieluz4, Tieluz5, Matou, Matou2, Matou3, 
+    Matou4, Matou5, IsTj, px, website2, email, areacode, `scale`, sales, turnover, `source`, 
+    GZJadmin1, GZJadmin2, kpcom, kpren, kpaddress, kptel, try_out, yq_companyname, signCompanyname, 
+    yq_muban, yq_liucheng, yj_salestype, AllowMultiFh, JiaoGeFinishNum, PingJiaZongFen1, 
+    PingJiaNum1, PingJiaZongFen2, PingJiaNum2, AllowSendJingJiaSms, AllowDaiZhuCeMember, 
+    mg_att, downPrice, mg_endTime, mg_startTime, payType, city_id, mg_userId, mg_userName, 
+    mg_mid, mg_date, mg_ManageDaoZhanCode, mg_DaoZhanCode, mg_DaoZhanCangKu, mg_TiHuoMode, 
+    mg_CanKaoRemarkPrice, mg_canBuyOther, mg_canBuyMaterialType, mg_MaterialList, mg_isXieYi, 
+    mg_XieYiNum, mg_XieYiNum_1200, mg_isFenGongSi, mg_LockPrice, mg_canUseShengYuKeyRes, 
+    mg_MonthNum, mg_HeTongTotalNum, mg_CapitalPolicy, mg_SubordinateDepartments, mg_gcDayPriceType, 
+    mg_jijia_luowen, mg_jijia_gaoxian, mg_jijia_panluo, ComDesc
+    from sys_company
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ID, GUID, MemberID, GroupID, mg_id, ComName, ComNameShort, MemberType, MCH_NO, 
+    SIT_NO, ComType, ComType2, ComType3, ComTransType, TradePassWD, TradePassWDUpDate, 
+    pysametd, MobileChecked, LinkMan, MobileCheckedDate, ContactTel, AddressState, AddressCity, 
+    Address, MapX, MapY, Frdb, ParentID, IsNoFinance, AdminUser1, AdminUser1Date, AdminUser2, 
+    AdminUser2Date, AdminUser3, AdminUser3Date, LastServiceDate, LastServiceId, ContactFax, 
+    BankType, TaxNo, RegIp, FirstSignDate, country, `state`, city, postcode, registerfrom, 
+    `Status`, ZxFlag, ReceiveSmsType, CreateDate, `CreateUser`, UpdateDate, UpdateUser, 
+    IsShowWeb, StartDate, EndDate, EmpowerType, IsShowCj, IsNeedZs, BankNo, InvoiceStar, 
+    InvoiceNo, PayPassWD, IsDownTd, gctrybegintime, gctryendtime, isgctry, ComUrl, BankAccount, 
+    MemberTypeDate, IsTry, IsSteelHq, doarea, icnumber, enterprisecode, variety1, variety2, 
+    variety3, variety4, variety5, sc_steelcom, dl_com, rz_market, jy_citys, jy_variety, 
+    zy_variety, IsDzGys, Tieluz, Tieluz2, Tieluz3, Tieluz4, Tieluz5, Matou, Matou2, Matou3, 
+    Matou4, Matou5, IsTj, px, website2, email, areacode, `scale`, sales, turnover, `source`, 
+    GZJadmin1, GZJadmin2, kpcom, kpren, kpaddress, kptel, try_out, yq_companyname, signCompanyname, 
+    yq_muban, yq_liucheng, yj_salestype, AllowMultiFh, JiaoGeFinishNum, PingJiaZongFen1, 
+    PingJiaNum1, PingJiaZongFen2, PingJiaNum2, AllowSendJingJiaSms, AllowDaiZhuCeMember, 
+    mg_att, downPrice, mg_endTime, mg_startTime, payType, city_id, mg_userId, mg_userName, 
+    mg_mid, mg_date, mg_ManageDaoZhanCode, mg_DaoZhanCode, mg_DaoZhanCangKu, mg_TiHuoMode, 
+    mg_CanKaoRemarkPrice, mg_canBuyOther, mg_canBuyMaterialType, mg_MaterialList, mg_isXieYi, 
+    mg_XieYiNum, mg_XieYiNum_1200, mg_isFenGongSi, mg_LockPrice, mg_canUseShengYuKeyRes, 
+    mg_MonthNum, mg_HeTongTotalNum, mg_CapitalPolicy, mg_SubordinateDepartments, mg_gcDayPriceType, 
+    mg_jijia_luowen, mg_jijia_gaoxian, mg_jijia_panluo, ComDesc
+    from sys_company
+  </select>
+
+  <select id="companyInfoDetai" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from sys_company where ID = #{id,jdbcType=INTEGER} limit 1
+  </select>
+  <update id="updateCompanyInfoDetail" >
+    update `sys_company` set
+    ComName = #{com_name,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    ComNameShort = #{com_name_short,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    ComDesc = #{com_desc,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    ecommerce_state = #{address_state,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    city = #{address_city,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler},
+    Address = #{address,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}
+    <if test="strPath != null and strPath != ''">
+      , MCH_NO = #{strPath,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}
+    </if>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateCompanyInfoZhuLXR" >
+    update `sys_company` set
+    MemberID = #{link_user_id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectCompanyInfoForName" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from sys_company where ComName like concat('%', #{companyName,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, '%') limit 1
+  </select>
+
+   <select id="seletSerch" resultMap="BaseResultMap">
+    select ID, GUID, MemberID, GroupID, mg_id, ComName, ComNameShort from `sys_company` where 1
+    <!-- <where> -->
+    <if test="searchName != null and searchName!=''">
+      and  (ComNameShort like concat('%', #{searchName,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, '%') or ComName like concat('%', #{searchName,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, '%') ) 
+    </if>
+    <if test="comids != null and comids!=''">
+       and   ID in(${comids})
+    </if>
+      
+    <!-- </where> -->
+      limit #{pagesize}
+  </select>
+
+   <select id="seletIDs" resultMap="BaseResultMap">
+    select ID, MemberID, ComName, ComNameShort from `sys_company` where id in (${ids});
+  </select>
+   <insert id="companyInfoinsertbyname" parameterType="com.isechome.ecommerce.entity.SysCompany" >
+    <selectKey keyProperty="id"  order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_company (ComName, ComNameShort) 
+    values
+    (#{comname,jdbcType=VARCHAR},#{comname,jdbcType=VARCHAR})
+   </insert>
+
+  <select id="selectCompanyByName" resultMap="BaseResultMap">
+    select ID, GUID, MemberID, GroupID, mg_id, ComName, ComNameShort from `sys_company` where 1
+    <if test="companyName != null and companyName!=''">
+      and  (ComNameShort like concat('%', #{companyName,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, '%') or ComName like concat('%', #{companyName,jdbcType=VARCHAR,typeHandler=com.isechome.ecommerce.handler.StringTypeHandler}, '%') ) 
+    </if>
+  </select>
+
+</mapper>

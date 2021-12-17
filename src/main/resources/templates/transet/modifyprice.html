@@ -1,0 +1,133 @@
+<!--
+ * @Author: lina
+ * @Date: 2021-08-19 09:34:33
+ * @LastEditTime: 2021-09-17 17:16:57
+ * @FilePath: \e-commerce\src\main\resources\templates\transet\modifyprice.html
+ * @Description: 
+ * @Copyright: © 2021, SteelHome. All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>调价录入</title>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ajax.js}"></script>
+    <link  th:href="@{/css/base.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<section>
+<div class="main w1000">
+<div th:insert="~{left :: left(${mark})}"></div>
+<aside>
+<div class="resources">
+<div class="resources_tt" th:include="common::varietyTag2"></div>
+
+<div class="pozition">
+    <p>当前位置：会员中心 &gt; 系统管理 &gt; 调价录入 </p>
+</div>
+    
+<section>
+<form action="savemodifyprice" onsubmit="return checkForm()" method="POST" enctype="multipart/form-data">
+    <table class="Information" cellspacing="0" cellpadding="0" border="0">
+        <tbody>
+        <tr th:each="list:${scModifyPriceList}" th:if="${isnull ne '1'}">
+            <td th:if="${list.type eq 1}" width="300px" align="right">螺纹钢(元/吨)：</td>
+            <td th:if="${list.type eq 1}"><input type="text" name="luowen" id="luowen" th:value="${list.price}" oninput="checkNum(this)"> </td>
+            <td th:if="${list.type eq 2}" align="right">高  线(元/吨)：</td>
+            <td th:if="${list.type eq 2}"><input type="text" name="gaoxian" id="gaoxian" th:value="${list.price}" oninput="checkNum(this)"> </td>
+            <td th:if="${list.type eq 3}" align="right">盘  螺(元/吨)：</td>
+            <td th:if="${list.type eq 3}"><input type="text" name="panluo" id="panluo" th:value="${list.price}" oninput="checkNum(this)"> </td>
+        </tr>
+        <tr th:if="${isnull eq '1'}">
+            <td width="300px" align="right">螺纹钢(元/吨)：</td>
+            <td><input type="text" name="luowen" id="luowen" oninput="checkNum(this)"> </td>
+        </tr>
+        <tr th:if="${isnull eq '1'}">
+            <td align="right">高  线(元/吨)：</td>
+            <td><input type="text" name="gaoxian" id="gaoxian" oninput="checkNum(this)"> </td>
+        </tr>
+        <tr th:if="${isnull eq '1'}">
+            <td align="right">盘  螺(元/吨)：</td>
+            <td><input type="text" name="panluo" id="panluo" oninput="checkNum(this)"> </td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="text-align: center;" class="Information">
+        <input type="hidden" name="isnull" id="isnull" th:value="${isnull}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="password" name="pay_password" id="pay_password" placeholder="输入交易密码" style="width: 150px;height: 33px;">
+        <input type="submit" value="保存"  style="background: #FF6632;color: white;width: 100px;height: 30px;border: 0;cursor:pointer;">
+    </div>
+</form>
+</section>
+</div>
+</aside>
+</div>
+</section>
+
+<div th:insert="~{footer :: footer}"></div>
+<div th:include="common::commonFooter"></div>
+</body>
+<script>
+function checkNum(obj){
+	var t = obj.value.charAt(0);
+	//先把非数字的都替换掉，除了数字和.
+	obj.value = obj.value.replace(/[^\d.]/g, "");
+	//必须保证第一个为数字而不是.
+	obj.value = obj.value.replace(/^\./g, "");
+	//保证只有出现一个.而没有多个.
+	obj.value = obj.value.replace(/\.{2,}/g, ".");
+	//保证.只出现一次，而不能出现两次以上
+	obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+	// 限制三位小数
+	obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d\d).*$/,'$1$2.$3');
+	//如果第一位是负号，则允许添加   如果不允许添加负号 可以把这块注释掉
+	if (t == '-') {
+	    obj.value = '-' + obj.value;
+	}
+}
+
+function checkPayWord() {
+    var inputPayWord = $("#pay_password").val();
+    var str = "falsed";
+    if(inputPayWord==""){
+        alert("请输入交易密码！");
+        return str;
+    }
+    $.ajax({ 
+        type: "post", 
+        url: "/resourcemanage/checkPayWord",   
+        dataType: "json",
+        async:false, 
+        data: {
+            'inputPayWord': inputPayWord,
+            "[[${_csrf.parameterName}]]": "[[${_csrf.token}]]"
+        },
+        success: function (data) {
+            if (data == "1") {
+                str = "successed";
+            } else if(data == '2'){
+                alert("交易密码错误！")
+            }
+        },
+        error: function(request, status, error){
+            console.log(error);
+        }
+    });
+    return str;
+}
+
+function checkForm(){
+    var checkstr = checkPayWord();
+    if (checkstr != "successed") {
+        return false;
+    }
+}
+</script>
+</html>
